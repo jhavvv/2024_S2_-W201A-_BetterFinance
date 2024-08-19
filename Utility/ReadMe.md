@@ -1,0 +1,1 @@
+This folder is for storing all utility functions, such as auth, theme, handleApiError, etc.
