@@ -1,0 +1,117 @@
+/* Center content within the container */
+.home-container {
+  text-align: center;
+}
+
+/* Flexbox layout for horizontal image gallery */
+.image-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+/* Styling images within the gallery */
+.image-gallery img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-gallery h2 {
+  margin-bottom: 20px;
+  /* Adjust the value as needed */
+}
+
+/* Center the unordered list */
+.home-container ul {
+  list-style-position: inside;
+  text-align: center;
+  display: inline-block;
+  padding: 0;
+}
+
+.home-container aside img {
+  padding-top: 20px;
+
+}
+
+.home-container aside h2 {
+  margin-bottom: 20px;
+
+}
+
+#navbar {
+  display: flex;
+  justify-content: center;
+  background-color: #333;
+  padding: 14px;
+}
+
+#navbar a {
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+#navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+  text-align: center;
+}
+
+.mySlides img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+h4 {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  user-select: none;
+}
+
+.prev {
+  left: 300px;
+  /* Adjust as needed */
+}
+
+.next {
+  right: 300px;
+  /* Adjust as needed */
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
