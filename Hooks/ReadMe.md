@@ -1,0 +1,1 @@
+Hooks are functions that let you “hook into” React state and lifecycle features from function components. Also we can create custom hooks whose name starts with 'use' and can be used to call other hooks.
