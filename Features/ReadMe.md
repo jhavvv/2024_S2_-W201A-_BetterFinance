@@ -1,0 +1,1 @@
+This folder contains individual folder feature for each page (authentication, theme, modals). For example each page might have a modal feature.
