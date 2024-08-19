@@ -1,0 +1,1 @@
+Modules folder handles specific tasks in your application.
