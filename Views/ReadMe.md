@@ -1,0 +1,1 @@
+Views folder are like the pages folder, The views are used to represent your pages properly, that users can navigate back and forth.
