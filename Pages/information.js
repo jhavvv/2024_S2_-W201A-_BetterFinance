@@ -10,33 +10,42 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './pagestyling.css';
+import './Informationstyling.css';
+import './index.js'
 
 function App() {
+    App(); 
+    
     return (
-
-        <body>
-            <h1>Information</h1>
-
-            <td>1, 2</td>
-
-            <p>Spending
-                <button>Add expense</button>
-
-            </p>
-
-            <p>Income
+        
+           
 
 
-                <button>Add Income source</button>
-            </p>
 
-            <p>Regular Payees
+            <div id="info-container">
+                <h1>Information</h1>
+
+                <div id="boxes-container">
+                    <div className="info-box">
+                        <p>Income</p>
+                        <button>Add Income source</button>
+                    </div>
+
+                    <div className="info-box">
+                        <p>Spending</p>
+                        <button>Add expense</button>
+                    </div>
+
+                    <div className="info-box">
+                        <p>Regular Payees</p>
+                        <button>Add Payee</button>
+                    </div>
+                </div>
+            </div>
 
 
-                <button>Add Payee</button>
-            </p>
-        </body>
+        
     );
 }
-ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(<App />, document.getElementById('root'));
+export default App;
