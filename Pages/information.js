@@ -9,13 +9,19 @@
 
 
 import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './Informationstyling.css';
 import './index.js'
 
+
+
+
 function App() {
     App(); 
-    
+    const [income, setIncome] = useState('');
+    const [spending, setSpending] = useState('');
+    const [payee, setPayee] = useState('');
     return (
         
            
@@ -28,17 +34,40 @@ function App() {
                 <div id="boxes-container">
                     <div className="info-box">
                         <p>Income</p>
-                        <button>Add Income source</button>
+                        <label>Add income:</label>
+                        <input
+                        type="Income"
+                        value={income}
+                        onChange={(e) => setIncome(e.target.value)}
+                        required />
+                        
+                        <button type="submit">Add Income source</button>
                     </div>
 
+                    
+                    
                     <div className="info-box">
                         <p>Spending</p>
-                        <button>Add expense</button>
+                        <label>Add expense:</label>
+                        <input
+                        type="spending"
+                        value={spending}
+                        onChange={(e) => setSpending(e.target.value)}
+                        required />
+                        <button type="submit">Add expense</button>
                     </div>
 
+                    
+                    
                     <div className="info-box">
                         <p>Regular Payees</p>
-                        <button>Add Payee</button>
+                        <label>Add Payee:</label>
+                        <input
+                        type="Payee"
+                        value={payee}
+                        onChange={(e) => setPayee(e.target.value)}
+                        required />
+                        <button type="submit">Add Payee</button>
                     </div>
                 </div>
             </div>
