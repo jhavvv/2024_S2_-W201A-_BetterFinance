@@ -1,33 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+// <!DOCTYPE html>
+// <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Information</title>
-</head>
-
-<body>
-    <h1>Information</h1>
-
-    <td>1, 2</td>
-
-    <p>Spending
-        <button>Add expense</button>
-
-    </p>
-
-    <p>Income
+// <head>
+//     <meta charset="UTF-8">
+//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//     <title>Information</title>
+// </head>
 
 
-        <button>Add Income source</button>
-    </p>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './Informationstyling.css';
+import './index.js'
 
-    <p>Regular Payees
+function App() {
+    App(); 
+    
+    return (
+        
+           
 
 
-        <button>Add Payee</button>
-    </p>
-</body>
 
-</html>
+            <div id="info-container">
+                <h1>Information</h1>
+
+                <div id="boxes-container">
+                    <div className="info-box">
+                        <p>Income</p>
+                        <button>Add Income source</button>
+                    </div>
+
+                    <div className="info-box">
+                        <p>Spending</p>
+                        <button>Add expense</button>
+                    </div>
+
+                    <div className="info-box">
+                        <p>Regular Payees</p>
+                        <button>Add Payee</button>
+                    </div>
+                </div>
+            </div>
+
+
+        
+    );
+}
+// ReactDOM.render(<App />, document.getElementById('root'));
+export default App;
