@@ -1,1 +1,0 @@
-The public directory is directly served at the server root and contains public files that won't change e.g favicon.ico.

@@ -1,1 +1,0 @@
-The routes folder is just a place in your web application to store the routes path to different screens.
