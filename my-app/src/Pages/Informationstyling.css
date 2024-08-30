@@ -6,8 +6,9 @@
 /* Flexbox for the boxes */
 #boxes-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* Space out the boxes evenly */
     margin-top: 20px;
+    gap: 20px; /* Add spacing between the boxes */
 }
 
 /* Individual box styling */
@@ -15,14 +16,28 @@
     background-color: #f4f4f4;
     border: 1px solid #ccc;
     padding: 20px;
-    width: 30%;
+    width: 45%;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: left;
 }
 
 .info-box p {
     font-size: 18px;
     margin-bottom: 10px;
+}
+
+.info-box label {
+    display: block; /* Make sure labels stack on top of each other */
+    margin-bottom: 5px;
+}
+
+.info-box input,
+.info-box select {
+    width: 100%; /* Make inputs and selects fill the width of the box */
+    margin-bottom: 10px; /* Space out the inputs and selects */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .info-box button {
@@ -31,6 +46,8 @@
     color: white;
     border: none;
     cursor: pointer;
+    width: 100%; /* Make the button fill the width of the box */
+    border-radius: 4px;
 }
 
 .info-box button:hover {
