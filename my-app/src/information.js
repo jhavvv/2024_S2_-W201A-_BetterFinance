@@ -12,7 +12,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './Informationstyling.css';
-import '../index.js'
+import './index.js'
 import './stylesheet.css'
 
 
