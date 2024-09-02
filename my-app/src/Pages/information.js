@@ -12,7 +12,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './Informationstyling.css';
-import './index.js'
+import '../index.js'
 import './stylesheet.css'
 
 
@@ -28,7 +28,7 @@ function Infopage() {
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
 
-    
+
 
     return (
         <div>
@@ -92,30 +92,30 @@ function Infopage() {
                         <p>Spending</p>
                         <label> Add expense: </label>
                         <input
-                        type="text"
-                        value={spending}
-                        onChange={(e) => setSpending(e.target.value)}
-                        required
-                    />
-                    <label>Amount: </label>
-                    <input
-                        type="number"
-                        value={spendingAmount}
-                        onChange={(e) => setSpendingAmount(e.target.value)}
-                        required
-                    />
-                    <label> How often: </label>
-                    <select
-                        value={spendingFrequency}
-                        onChange={(e) => setSpendingFrequency(e.target.value)}
-                        required
-                    >
-                        <option value="">Select frequency(N/A if one-off)</option>
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                    </select>
-                    <button type="submit"> Add Expense </button>
+                            type="text"
+                            value={spending}
+                            onChange={(e) => setSpending(e.target.value)}
+                            required
+                        />
+                        <label>Amount: </label>
+                        <input
+                            type="number"
+                            value={spendingAmount}
+                            onChange={(e) => setSpendingAmount(e.target.value)}
+                            required
+                        />
+                        <label> How often: </label>
+                        <select
+                            value={spendingFrequency}
+                            onChange={(e) => setSpendingFrequency(e.target.value)}
+                            required
+                        >
+                            <option value="">Select frequency(N/A if one-off)</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                        <button type="submit"> Add Expense </button>
                     </div>
 
                 </div>
