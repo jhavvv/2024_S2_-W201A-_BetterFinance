@@ -8,10 +8,11 @@ function WelcomePage() {
     const navigate = useNavigate();
 
     return (
-            <div>
+        <div>
             {/* Navbar */}
             <header>
                 <div id="navbar">
+                    <img src="betterfinance.png" class="icon" alt="Logo"></img>
                     <button onClick={() => navigate("/welcome-page")}>Home</button>
                     <button onClick={() => navigate("/services")}>Services</button>
                     <button onClick={() => navigate("/about-us")}>About Us</button>
@@ -41,17 +42,17 @@ function WelcomePage() {
                         </div>
                     </div>
 
-                {/* Navigation pane */}
-                <aside className="navigation-container">
-                    {/* This is a fixed image for testing purposes */}
-                    <img src="/profile.jpg" alt="Profile" className="profile-pic" />
-                    {/* Navigation buttons */}
-                    <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
-                    <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
-                    <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
-                    <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
-                    <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
-                </aside>
+                    {/* Navigation pane */}
+                    <aside className="navigation-container">
+                        {/* This is a fixed image for testing purposes */}
+                        <img src="/profile.jpg" alt="Profile" className="profile-pic" />
+                        {/* Navigation buttons */}
+                        <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
+                        <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
+                        <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
+                        <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
+                        <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
+                    </aside>
                 </div>
             </main>
         </div>

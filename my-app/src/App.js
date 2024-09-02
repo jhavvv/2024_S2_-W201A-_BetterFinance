@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Infopage from './Pages/information.js';
+import Infopage from './information.js';
 import LoginPage from './LoginPage.js';
 import RegisterPage from './RegisterPage.js';
 import WelcomePage from './WelcomePage.js';
@@ -16,7 +16,7 @@ import AboutUs from './AboutUs';
 function App() {
   return (
     <Router>
-       <div className = "App">
+      <div className="App">
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/welcome-page" element={<WelcomePage />} />

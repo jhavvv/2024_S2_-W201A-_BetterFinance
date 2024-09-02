@@ -7,27 +7,33 @@
 
 /* Navbar container */
 #navbar {
-    display: flex;
-    justify-content: left;
-    background-color: #333;
-    padding: 14px;
-  }
-  
-  /* Navbar buttons */
-  #navbar button {
-    color: #f2f2f2;
-    background: none;
-    border: none;
-    padding: 14px 20px;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 0 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Button hover effect */
-  #navbar button:hover {
-    background-color: #555;
-  }
+  display: flex;
+  justify-content: left;
+  background-color: #907AD6;
+  padding: 14px;
+}
+
+/* Navbar buttons */
+#navbar button {
+  color: #f2f2f2;
+  background: none;
+  border: none;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+#navbar button:hover {
+  background-color: #555;
+}
+
+#navbar img.icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 20px;
+}
