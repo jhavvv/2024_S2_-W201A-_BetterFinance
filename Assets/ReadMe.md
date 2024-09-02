@@ -1,1 +1,0 @@
-The assets folder contains all images, icons, css files, font files, etc. that will be used in your web application. Custom images, icons, paid fonts are being placed inside this folder

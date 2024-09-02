@@ -1,1 +1,0 @@
-When using React Js as your preferred frontend ui library, the context folder stores all your react context files that are used across components and multiple pages.
