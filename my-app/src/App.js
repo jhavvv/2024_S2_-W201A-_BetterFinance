@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NotSignedIn from './NotSignedIn.js';
-import Infopage from './information.js';
 import LoginPage from './LoginPage.js';
 import RegisterPage from './RegisterPage';
 import WelcomePage from './WelcomePage.js';
+import Infopage from './information.js';
 import EditProfile from './EditProfile';
 import MonthlyRecap from './MonthlyRecap';
 import TransactionHistory from './TransactionHistory';
@@ -21,6 +21,9 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<NotSignedIn />} /> {/* Default route */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/monthly-recap" element={<MonthlyRecap />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />
@@ -28,10 +31,8 @@ function App() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/LoginPage" element={<LoginPage />} />
-          <Route path="/RegisterPage" element={<RegisterPage />} />
           <Route path="/Infopage" element={<Infopage />} />
-          <Route path="/WelcomePage" element={<WelcomePage />} />
+
         </Routes>
       </div>
     </Router>

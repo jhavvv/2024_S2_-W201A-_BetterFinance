@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { useNavigate } from 'react-router-dom';
 import './RegisterPage.css';
@@ -55,15 +55,16 @@ const RegisterPage = () => {
 
             console.log("User registered and data saved:", userCredential);
 
-            setTimeout(() => {
-                navigate('/WelcomePage');
-                setLoading(false); // Stop loading after navigating
-            }, 1000);
+            // Redirect to login page
+            setLoading(false); // Stop loading
+            navigate('/login');
         } catch (err) {
             setError(err.message);
             setLoading(false); // Stop loading on error
         }
+
     };
+
 
     return (
         <div className='register-cont'>

@@ -15,7 +15,7 @@ function LoginPage() {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            navigate('/WelcomePage'); // Navigate to WelcomePage after successful login
+            navigate('/welcome'); // Navigate to WelcomePage after successful login
         } catch (err) {
             setError(err.message);
         }

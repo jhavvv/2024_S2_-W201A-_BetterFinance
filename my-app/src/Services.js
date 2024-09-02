@@ -12,7 +12,7 @@ function Services() {
             {/* Navbar */}
             <header>
                 <div id="navbar">
-                    <button onClick={() => navigate("/welcome-page")}>Home</button>
+                    <button onClick={() => navigate("/welcome")}>Home</button>
                     <button onClick={() => navigate("/services")}>Services</button>
                     <button onClick={() => navigate("/about-us")}>About Us</button>
                 </div>

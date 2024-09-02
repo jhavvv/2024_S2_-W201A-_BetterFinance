@@ -11,8 +11,8 @@ const NotSignedIn = () => {
                 <h2>Welcome!</h2>
                 <p>Log in or Sign up!</p>
                 <div className="button-group">
-                    <button className="btn" onClick={() => navigate("/LoginPage")}>Log In</button>
-                    <button className="btn" onClick={() => navigate("/RegisterPage")}>Sign Up</button>
+                    <button className="btn" onClick={() => navigate("/login")}>Log In</button>
+                    <button className="btn" onClick={() => navigate("/register")}>Sign Up</button>
                 </div>
             </center>
         </div>
