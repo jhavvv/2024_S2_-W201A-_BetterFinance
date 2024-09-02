@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NotSignedIn from './NotSignedIn.js';
 import Infopage from './information.js';
 import LoginPage from './LoginPage.js';
-import RegisterPage from './RegisterPage.js';
+import RegisterPage from './RegisterPage';
 import WelcomePage from './WelcomePage.js';
 import EditProfile from './EditProfile';
 import MonthlyRecap from './MonthlyRecap';
@@ -13,14 +14,13 @@ import Services from './Services';
 import AboutUs from './AboutUs';
 
 
+
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/welcome-page" element={<WelcomePage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<NotSignedIn />} /> {/* Default route */}
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/monthly-recap" element={<MonthlyRecap />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />
@@ -28,6 +28,10 @@ function App() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="/Infopage" element={<Infopage />} />
+          <Route path="/WelcomePage" element={<WelcomePage />} />
         </Routes>
       </div>
     </Router>

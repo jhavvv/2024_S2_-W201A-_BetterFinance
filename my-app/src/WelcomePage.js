@@ -1,12 +1,25 @@
 /* Written by Ijaz */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
 import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
 
 function WelcomePage() {
+    const [userName, setUserName] = useState('');
     const navigate = useNavigate();
+    console.log("Current User:", auth.currentUser);
+
+
+    useEffect(() => {
+        const currentUser = auth.currentUser;
+
+        // If the user is logged in, extract their display name or email
+        if (currentUser) {
+            setUserName(currentUser.displayName || currentUser.email);
+        }
+    }, []);
 
     return (
         <div>
@@ -14,14 +27,19 @@ function WelcomePage() {
             <header>
                 <div id="navbar">
                     <img src="betterfinance.png" class="icon" alt="Logo"></img>
-                    <button onClick={() => navigate("/welcome-page")}>Home</button>
+                    <button onClick={() => navigate("/WelcomePage")}>Home</button>
                     <button onClick={() => navigate("/services")}>Services</button>
                     <button onClick={() => navigate("/about-us")}>About Us</button>
                 </div>
             </header>
 
-            {/* Graphs */}
+            {/* Welcome Message */}
             <main>
+                <div className="welcome-message">
+                    <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
+                </div>
+
+                {/* Graphs */}
                 <div className="content-container">
                     {/* Graphs container */}
                     <div className="graphs-container">
