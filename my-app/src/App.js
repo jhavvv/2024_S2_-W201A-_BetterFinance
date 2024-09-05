@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NotSignedIn from './NotSignedIn.js';
-import LoginPage from './LoginPage.js';
+import NotSignedIn from './NotSignedIn';
+import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
-import WelcomePage from './WelcomePage.js';
-import Infopage from './information.js';
+import WelcomePage from './WelcomePage';
+import Infopage from './information';
 import EditProfile from './EditProfile';
 import MonthlyRecap from './MonthlyRecap';
 import TransactionHistory from './TransactionHistory';
@@ -32,7 +32,6 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/Infopage" element={<Infopage />} />
-
         </Routes>
       </div>
     </Router>

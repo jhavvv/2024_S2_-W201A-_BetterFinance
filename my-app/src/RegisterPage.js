@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { useNavigate } from 'react-router-dom';
@@ -14,37 +14,42 @@ const RegisterPage = () => {
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false); // Success state
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        setError(null); // Clear previous errors
-        setLoading(true); // Start loading
+        setError(null);
+        setLoading(true);
 
         if (password !== confirmPassword) {
             setError("Passwords do not match");
-            setLoading(false); // Stop loading on error
+            setLoading(false);
             return;
         }
 
         try {
-            // Check if username exists
-            const querySnapshot = await getDocs(collection(db, 'users'));
-            const usernames = querySnapshot.docs.map(doc => doc.data().username);
+            console.log("Checking if username exists...");
+            // Check if the username exists
+            const usersRef = collection(db, 'users');
+            const usernameQuery = query(usersRef, where('username', '==', username));
+            const querySnapshot = await getDocs(usernameQuery);
 
-            if (usernames.includes(username)) {
+            if (!querySnapshot.empty) {
                 setError("Username already exists");
-                setLoading(false); // Stop loading on error
+                setLoading(false);
                 return;
             }
 
+            console.log("Registering user...");
             // Register user
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
+            console.log("User registered, adding details to Firestore...");
             // Add user details to Firestore
-            await addDoc(collection(db, 'users'), {
+            await addDoc(usersRef, {
                 uid: user.uid,
                 username,
                 firstName,
@@ -55,88 +60,102 @@ const RegisterPage = () => {
 
             console.log("User registered and data saved:", userCredential);
 
-            // Redirect to login page
-            setLoading(false); // Stop loading
-            navigate('/login');
+            // Show success message
+            setSuccess(true);
+            setLoading(false);
         } catch (err) {
+            console.error("Error during registration:", err); // Log error to console
             setError(err.message);
-            setLoading(false); // Stop loading on error
+            setLoading(false);
         }
-
     };
 
+    // Handle proceed to login
+    const handleProceedToLogin = () => {
+        console.log("Navigating to login page...");
+        navigate('/login');
+    };
 
     return (
         <div className='register-cont'>
             <h2>Create an Account</h2>
-            <form onSubmit={handleRegister}>
-                <div className="form-group">
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
+            {!success ? (
+                <form onSubmit={handleRegister}>
+                    <div className="form-group">
+                        <label>Username:</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>First Name:</label>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Last Name:</label>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Phone Number:</label>
+                        <input
+                            type="text"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Confirm Password:</label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="register-button" disabled={loading}>
+                        {loading ? 'Registering...' : 'Register'}
+                    </button>
+                </form>
+            ) : (
+                <div className="success-message">
+                    <p>Successfully registered!</p>
+                    <button onClick={handleProceedToLogin} className="proceed-button">
+                        Proceed to login with new account
+                    </button>
                 </div>
-                <div className="form-group">
-                    <label>First Name:</label>
-                    <input
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Last Name:</label>
-                    <input
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Phone Number:</label>
-                    <input
-                        type="text"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Confirm Password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" className="register-button" disabled={loading}>
-                    {loading ? 'Registering...' : 'Register'}
-                </button>
-            </form>
+            )}
             {error && <p className="error">{error}</p>}
         </div>
     );
