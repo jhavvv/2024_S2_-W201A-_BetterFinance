@@ -25,14 +25,6 @@ function WelcomePage() {
     return (
         <div>
             {/* Navbar */}
-            <header>
-                <div id="navbar">
-                    <img src="betterfinance.png" class="icon" alt="Logo"></img>
-                    <button onClick={() => navigate("/welcome")}>Home</button>
-                    <button onClick={() => navigate("/services")}>Services</button>
-                    <button onClick={() => navigate("/about-us")}>About Us</button>
-                </div>
-            </header>
             <Navbar />
 
             {/* Welcome Message */}
