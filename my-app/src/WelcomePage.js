@@ -5,6 +5,7 @@ import './WelcomePage.css';
 import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
+import Navbar from './Navbar';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -32,6 +33,7 @@ function WelcomePage() {
                     <button onClick={() => navigate("/about-us")}>About Us</button>
                 </div>
             </header>
+            <Navbar />
 
             {/* Welcome Message */}
             <main>
