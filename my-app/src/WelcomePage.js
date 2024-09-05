@@ -3,21 +3,14 @@
 import React from 'react';
 import './WelcomePage.css';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 function WelcomePage() {
     const navigate = useNavigate();
 
     return (
         <div>
-            {/* Navbar */}
-            <header>
-                <div id="navbar">
-                    <img src="betterfinance.png" class="icon" alt="Logo"></img>
-                    <button onClick={() => navigate("/welcome-page")}>Home</button>
-                    <button onClick={() => navigate("/services")}>Services</button>
-                    <button onClick={() => navigate("/about-us")}>About Us</button>
-                </div>
-            </header>
+            <Navbar />
 
             {/* Graphs */}
             <main>
