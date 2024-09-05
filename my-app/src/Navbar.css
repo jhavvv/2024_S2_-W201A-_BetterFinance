@@ -9,7 +9,7 @@
 #navbar {
   display: flex;
   justify-content: left;
-  background-color: #907AD6;
+  background-color: #333;
   padding: 14px;
 }
 
@@ -32,8 +32,9 @@
   background-color: #555;
 }
 
+/* Icon in the Navbar */
 #navbar img.icon {
-  width: 25px;
-  height: 25px;
-  margin-right: 20px;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
