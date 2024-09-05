@@ -19,11 +19,7 @@ function Services() {
             </header>
             <h1>Services Page</h1>
             {/* Content for Services page */}
-            <Navbar />
-            
-            <main>
-                <h1>Services</h1>
-            </main>
+
         </div>
     );
 }

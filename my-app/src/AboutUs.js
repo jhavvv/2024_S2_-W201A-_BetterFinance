@@ -18,11 +18,6 @@ function AboutUs() {
             </header>
             <h1>About Us Page</h1>
             {/* Content for About Us page */}
-            <Navbar />
-        
-            <main>
-                <h1>About Us</h1>
-            </main>
         </div>
 
     );
