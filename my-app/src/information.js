@@ -97,6 +97,12 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
+                        <input type="radio" id="essential" name="purchase" value="Essential">
+                            <label for="essential">Essential Purchase</label></input>
+
+                        <input type="radio" id="non-essential" name="purchase" value="Non-Essential">
+                            <label for="non-essential">Non-Essential Purchase</label></input>
+
                         <label>Amount: </label>
                         <input
                             type="number"
