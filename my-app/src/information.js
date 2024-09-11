@@ -27,6 +27,7 @@ function Infopage() {
     const [spending, setSpending] = useState('');
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
+    const [Essentiality, setEssentiality] = useState('');
 
 
 
@@ -97,12 +98,32 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
-                        <input type="radio" id="essential" name="purchase" value="Essential">
-                            <label for="essential">Essential Purchase</label></input>
+                        
 
-                        <input type="radio" id="non-essential" name="purchase" value="Non-Essential">
-                            <label for="non-essential">Non-Essential Purchase</label></input>
 
+                        <input
+                            type="radio"
+                            id="essential"
+                            name="purchase"
+                            value="Essential"
+                            checked={Essentiality === 'Essential'}
+                            onChange={(e) => setEssentiality(e.target.value)}
+                        />
+                        <label htmlFor="essential">Essential Purchase</label>
+
+                        <input
+                            type="radio"
+                            id="non-essential"
+                            name="purchase"
+                            value="Non-Essential"
+                            checked={Essentiality === 'Non-Essential'}
+                            onChange={(e) => setEssentiality(e.target.value)}
+                        />
+                        <label htmlFor="non-essential">Non-Essential Purchase</label>
+
+                        
+                        
+                        
                         <label>Amount: </label>
                         <input
                             type="number"
@@ -132,5 +153,5 @@ function Infopage() {
 
     );
 }
-// ReactDOM.render(<App />, document.getElementById('root'));
+
 export default Infopage;
