@@ -28,7 +28,7 @@ function Infopage() {
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
     const [Essentiality, setEssentiality] = useState('');
-
+    const [category, setCategory] = useState('');
 
 
     return (
@@ -98,7 +98,7 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
-                        
+
 
 
                         <input
@@ -121,9 +121,21 @@ function Infopage() {
                         />
                         <label htmlFor="non-essential">Non-Essential Purchase</label>
 
-                        
-                        
-                        
+                        <label>Category: </label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a category</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="investments">Investments</option>
+                            <option value="others">Others</option>
+                        </select>
+
+
                         <label>Amount: </label>
                         <input
                             type="number"
