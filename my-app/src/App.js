@@ -11,16 +11,18 @@ import MonthlyIncome from './MonthlyIncome';
 import Savings from './Savings';
 import Services from './Services';
 import AboutUs from './AboutUs';
+import LandingPage from './LandingPage.js'
 
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
+      <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/welcome-page" element={<WelcomePage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/monthly-recap" element={<MonthlyRecap />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />
@@ -28,7 +30,7 @@ function App() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
-        </Routes>
+</Routes>
       </div>
     </Router>
   );

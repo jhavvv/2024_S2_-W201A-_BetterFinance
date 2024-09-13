@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link } from 'react-router-dom';
-import { auth } from './firebase.js';
 import './LoginPage.css';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-        }
-        catch(err) {
-            setError(err.message);
-        }
     };
 
     return (
@@ -42,7 +31,7 @@ function LoginPage() {
                 </div>
                 <button type="submit" className="login-button">Login</button>
             </form>
-            <p>Don't have an account? <Link to="/RegisterPage">Create</Link></p>
+            <p>Don't have an account? <a href="#">Create one</a></p>
         </div>
     );
 }

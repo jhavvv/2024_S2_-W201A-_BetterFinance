@@ -1,0 +1,1 @@
+The pages directory contains your web application views. Pages directory in frontend frameworks like Next Js and Nuxt Js reads all files inside the directory and automatically creates the router configuration for you.
