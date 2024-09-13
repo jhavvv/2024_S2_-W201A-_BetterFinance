@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
-import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import Navbar from './Navbar';

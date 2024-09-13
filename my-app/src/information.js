@@ -27,7 +27,8 @@ function Infopage() {
     const [spending, setSpending] = useState('');
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
-
+    const [Essentiality, setEssentiality] = useState('');
+    const [category, setCategory] = useState('');
 
 
     return (
@@ -97,6 +98,44 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
+
+
+
+                        <input
+                            type="radio"
+                            id="essential"
+                            name="purchase"
+                            value="Essential"
+                            checked={Essentiality === 'Essential'}
+                            onChange={(e) => setEssentiality(e.target.value)}
+                        />
+                        <label htmlFor="essential">Essential Purchase</label>
+
+                        <input
+                            type="radio"
+                            id="non-essential"
+                            name="purchase"
+                            value="Non-Essential"
+                            checked={Essentiality === 'Non-Essential'}
+                            onChange={(e) => setEssentiality(e.target.value)}
+                        />
+                        <label htmlFor="non-essential">Non-Essential Purchase</label>
+
+                        <label>Category: </label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a category</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="investments">Investments</option>
+                            <option value="others">Others</option>
+                        </select>
+
+
                         <label>Amount: </label>
                         <input
                             type="number"
@@ -126,5 +165,5 @@ function Infopage() {
 
     );
 }
-// ReactDOM.render(<App />, document.getElementById('root'));
+
 export default Infopage;
