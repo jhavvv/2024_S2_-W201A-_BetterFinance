@@ -20,7 +20,7 @@ import Navbar from './Navbar';
 
 
 function Infopage() {
-
+    
     const [income, setIncome] = useState('');
     const [incomeAmount, setIncomeAmount] = useState('');
     const [incomeFrequency, setIncomeFrequency] = useState('');
