@@ -5,6 +5,9 @@ import './WelcomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import Navbar from './Navbar';
+import LineChartGraphing from './graphing';
+import PieChartCategories from './graphing';
+import PieChartEssentials from './graphing';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -39,18 +42,23 @@ function WelcomePage() {
                         <div className="graph transaction-graph">
                             <h3 className="graph-title">Transaction History</h3>
                             {/* Graph content can go here */}
+                            <TransactionHistory showOnlyList={true} />
+
                         </div>
                         <div className="graph recap-graph">
                             <h3 className="graph-title">Monthly Recap</h3>
                             {/* Graph content can go here */}
+                            <PieChartEssentials />
                         </div>
                         <div className="graph income-graph">
                             <h3 className="graph-title">Monthly Income</h3>
                             {/* Graph content can go here */}
+                            <LineChartGraphing />
                         </div>
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
                             {/* Graph content can go here */}
+                            <PieChartCategoriesChart />
                         </div>
                     </div>
 
@@ -64,6 +72,8 @@ function WelcomePage() {
                         <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
                         <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
+                        <button className="navigation-btn" onClick={() => navigate("/information")}>Update Information Page</button>
+                        
                     </aside>
                 </div>
             </main>
