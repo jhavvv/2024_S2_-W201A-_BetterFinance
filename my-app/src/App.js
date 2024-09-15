@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NotSignedIn from './NotSignedIn';
+import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import WelcomePage from './WelcomePage';
@@ -20,9 +20,9 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<NotSignedIn />} /> {/* Default route */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<LandingPage />} /> {/* Default route */}
+          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/monthly-recap" element={<MonthlyRecap />} />
