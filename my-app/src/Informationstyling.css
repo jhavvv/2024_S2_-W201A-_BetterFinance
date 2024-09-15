@@ -59,3 +59,28 @@
 .info-box button:hover {
     background-color: #0056b3;
 }
+
+.radio-container {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+}
+
+.radio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.radio-item:last-child {
+    margin-right: 0;
+}
+
+.radio-item label {
+    margin-top: 5px;
+}
+
+.essential-label {
+    text-align: left;
+}

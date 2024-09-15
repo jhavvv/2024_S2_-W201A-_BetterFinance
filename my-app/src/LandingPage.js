@@ -1,18 +1,59 @@
-/* This page was made for testing purposes and can be modified/deleted if needed */
+/* Written by Marcos.F */
 
 import React from 'react';
-import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 import './LandingPage.css';
+import landingBackground from './assets/LandingBackground.jpg';
 
-function AboutUs() {
+function LandingPage (){
     const navigate = useNavigate();
+
     return (
         <div>
             <Navbar />
-            
             <main>
-                <h1>About Us</h1>
+                <div className='title-cont' style={{ backgroundImage: `url(${landingBackground})` }}>
+
+                        <h1>BetterFinance</h1>
+                        <h2>Future Ready Finance</h2>
+
+                    <div className='title-button-cont'>
+                        <button className='title-button' onClick={() => navigate("/LoginPage")}>Login</button>
+                        <button className='title-button' onClick={() => navigate("/RegisterPage")}>Sign Up Today!</button>
+                    </div>
+                </div>
+
+                <div className='benefits-cont'>
+                    <h2>BetterFinance Benefits</h2>
+                    {/* Write about our product*/}
+                    <p></p>
+                </div>
+
+                <div className='facts-cont'>
+                    <h2>Tips and Tricks</h2>
+                    <h3 className='fact-title'>Better Budgeting for Financial Peace</h3>
+                    <p>Budgeting is all about creating a roadmap for your money, so it works for you rather than against you.
+                        By Tracking expenses, and using simple strategies like the 50/30/20 rule, you can gain grater control
+                        over your finances. A well=planned budegt doesn't just help you save more, it reduces financial stress
+                        and sets you up for long-term success.
+                    </p>
+                    {/* Write Facts*/}
+                    <h3 className='fact-title'>Track Every Expense</h3>
+                    <p className='fact-blurb'>Use an app or a spreadsheet to log every sinlge purchase. This helps you stay mindful of where your money is going and prevents small expenses from piling up unexpectedly</p>
+                    
+                    <h3 className='fact-title'>Prioritze Needs Over Wants</h3>
+                    <p className='fact-blurb'>When creating your budget, always focus on necessities first - things like rent, groceries, and utilities.
+                        Once you've accounted for those, allocate money to savings, and finally, set aside a small portion for non-essential expenses.
+                    </p>
+                   
+                    <h3 className='fact-title'>Follow a Budgeting Rule</h3>
+                    <p className='fact-blurb'>Following a simple rule of thumb like the 50/30/20 rule that suggests dividing your income into three categories:
+                        50% for needs, 30% for wants, and 20% for savings or paying off debt.
+                        It's a straightforward way to maintain financial balance without being overly restrictive.
+                    </p>
+                </div>
+               
                 <div className='about-cont'>
                     <h2>Meet The Team</h2>
                     {/* Write About us*/}
@@ -62,7 +103,7 @@ function AboutUs() {
                 </div>
             </main>
         </div>
-    );
+    )
 }
 
-export default AboutUs;
+export default LandingPage;

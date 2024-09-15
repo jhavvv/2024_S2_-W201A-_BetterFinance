@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Infopage from './information.js';
-import LoginPage from './LoginPage.js';
-import RegisterPage from './RegisterPage.js';
-import HelpPage from './help.js';
-import IndexPage from './index.js';
-import InformationPage from './information.js';
-import WelcomePage from './WelcomePage.js';
+import LandingPage from './LandingPage';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
+import WelcomePage from './WelcomePage';
+import Infopage from './information';
 import EditProfile from './EditProfile';
 import MonthlyRecap from './MonthlyRecap';
 import TransactionHistory from './TransactionHistory';
@@ -16,14 +14,16 @@ import Services from './Services';
 import AboutUs from './AboutUs';
 
 
+
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<InformationPage />} />
-          <Route path="/welcome-page" element={<WelcomePage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<LandingPage />} /> {/* Default route */}
+          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/monthly-recap" element={<MonthlyRecap />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />
@@ -31,7 +31,7 @@ function App() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/help" element={<HelpPage />} />
+          <Route path="/Infopage" element={<Infopage />} />
         </Routes>
       </div>
     </Router>
