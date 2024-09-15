@@ -3,6 +3,9 @@ import * as React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 
+
+//graphs arent actually showing real data from user just example stuff for now
+
 export function LineChartGraphing() {
     return (
         <LineChart
