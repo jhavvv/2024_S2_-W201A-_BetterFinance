@@ -10,10 +10,11 @@
 
 // import React from 'react';
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+
 import './Informationstyling.css';
 import './index.js'
 import './stylesheet.css'
+import Navbar from './Navbar';
 
 
 
@@ -34,20 +35,10 @@ function Infopage() {
     return (
         <div>
             <header>
-                <div id="navbar">
-                    {/* Transaction Page */}
-                    <a href="transactions.html" title="Transactions">Transactions</a>
 
-                    {/* Information Page */}
-                    <a href="information.js" title="Information">Information</a>
-
-                    {/* Graphs Page */}
-                    <a href="graphs.html" title="Graphs">Graphs</a>
-
-                    {/* Help Page */}
-                    <a href="help.html" title="Help">Help</a>
-                </div>
+                <Navbar />
             </header>
+
 
 
 
@@ -98,28 +89,35 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
+                        
+                        <p className="essential-label">Was this expense essential or non-essential?</p>
+                        
+                        <div className="radio-container">
+                            
+                            <div className="radio-item">
+                                <input
+                                    type="radio"
+                                    id="essential"
+                                    name="purchase"
+                                    value="Essential"
+                                    checked={Essentiality === 'Essential'}
+                                    onChange={(e) => setEssentiality(e.target.value)}
+                                />
+                                <label htmlFor="essential">Essential</label>
+                            </div>
 
-
-
-                        <input
-                            type="radio"
-                            id="essential"
-                            name="purchase"
-                            value="Essential"
-                            checked={Essentiality === 'Essential'}
-                            onChange={(e) => setEssentiality(e.target.value)}
-                        />
-                        <label htmlFor="essential">Essential Purchase</label>
-
-                        <input
-                            type="radio"
-                            id="non-essential"
-                            name="purchase"
-                            value="Non-Essential"
-                            checked={Essentiality === 'Non-Essential'}
-                            onChange={(e) => setEssentiality(e.target.value)}
-                        />
-                        <label htmlFor="non-essential">Non-Essential Purchase</label>
+                            <div className="radio-item">
+                                <input
+                                    type="radio"
+                                    id="non-essential"
+                                    name="purchase"
+                                    value="Non-Essential"
+                                    checked={Essentiality === 'Non-Essential'}
+                                    onChange={(e) => setEssentiality(e.target.value)}
+                                />
+                                <label htmlFor="non-essential">Non-Essential</label>
+                            </div>
+                        </div>
 
                         <label>Category: </label>
                         <select
@@ -136,7 +134,7 @@ function Infopage() {
                         </select>
 
 
-                        <label>Amount: </label>
+                        <label>Amount($): </label>
                         <input
                             type="number"
                             value={spendingAmount}
