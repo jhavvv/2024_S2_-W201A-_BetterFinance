@@ -23,6 +23,7 @@ function WelcomePage() {
 
     return (
         <div>
+            {/* Navbar */}
             <Navbar />
 
             {/* Welcome Message */}

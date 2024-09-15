@@ -46,7 +46,7 @@ function LoginPage() {
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" className="login-button">Login</button>
             </form>
-            <p>Don't have an account? <Link to="/register">Create</Link></p>
+            <p>Don't have an account? <Link to="/RegisterPage">Create</Link></p>
         </div>
     );
 }
