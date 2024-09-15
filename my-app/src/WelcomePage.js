@@ -5,9 +5,8 @@ import './WelcomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import Navbar from './Navbar';
-import LineChartGraphing from './graphing';
-import PieChartCategories from './graphing';
-import PieChartEssentials from './graphing';
+import { LineChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
+import TransactionHistory from './TransactionHistory';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -58,7 +57,7 @@ function WelcomePage() {
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
                             {/* Graph content can go here */}
-                            <PieChartCategoriesChart />
+                            <PieChartCategories />
                         </div>
                     </div>
 
@@ -72,7 +71,7 @@ function WelcomePage() {
                         <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
                         <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
-                        <button className="navigation-btn" onClick={() => navigate("/information")}>Update Information Page</button>
+                        <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
                         
                     </aside>
                 </div>

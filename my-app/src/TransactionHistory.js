@@ -3,7 +3,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 
-function TransactionHistory() {
+function TransactionHistory({ showOnlyList = false }) {
     // Correct list definition
     const list = [
         { id: 1, item: 'Bread' },

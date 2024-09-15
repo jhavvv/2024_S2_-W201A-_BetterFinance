@@ -3,7 +3,7 @@ import * as React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 
-export default function LineChartGraphing(calculator) {
+export function LineChartGraphing() {
     return (
         <LineChart
             xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]} //change to use income and spendings... would use calculator from financecompute to make graph
@@ -18,7 +18,7 @@ export default function LineChartGraphing(calculator) {
         />
     );
 }
-export default function PieChartEssentials() {
+export function PieChartEssentials() {
     return (
         <PieChart
             colors={['red', 'blue']}
@@ -36,7 +36,7 @@ export default function PieChartEssentials() {
         />
     );
 }
-export default function PieChartCategories() {
+export function PieChartCategories() {
     return (
         <PieChart
             colors={['green', 'purple', 'orange', 'red', 'pink', 'yellow']}
