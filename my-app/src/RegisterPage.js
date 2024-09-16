@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './firebase'; // Import Firebase auth
 import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const RegisterPage = () => {
     const [lastName, setLastName] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -37,6 +39,7 @@ const RegisterPage = () => {
             });
 
             setSuccess(true);
+            navigate("/LoginPage");
         }
         catch (err) {
             setError(err.message);
