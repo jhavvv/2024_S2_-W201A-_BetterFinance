@@ -9,12 +9,14 @@
 
 
 // import React from 'react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './Informationstyling.css';
 import './index.js'
 import './stylesheet.css'
 import Navbar from './Navbar';
+import { useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
 
 
 
@@ -31,15 +33,35 @@ function Infopage() {
     const [Essentiality, setEssentiality] = useState('');
     const [category, setCategory] = useState('');
 
+    
+        
+    const [userName, setUserName] = useState('');
+    const [userID, setUserID] = useState('');
+    const navigate = useNavigate();
+    console.log("Current User:", auth.currentUser);
+
+
+    useEffect(() => {
+        const currentUser = auth.currentUser;
+
+        // If the user is logged in, extract their display name or email
+        if (currentUser) {
+            setUserName(currentUser.displayName || currentUser.email);
+            setUserID(currentUser.uid);
+        }
+    }, []);
+
+
 
     return (
+
         <div>
             <header>
 
                 <Navbar />
             </header>
 
-
+            
 
 
 
