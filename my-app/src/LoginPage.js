@@ -48,7 +48,7 @@ const LoginPage = () => {
                 <button type="submit">Login</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button onClick={() => navigate('/welcome')}>Go to Landing Page</button>
+            <button onClick={() => navigate('/RegisterPage')}>Create an account</button>
         </div>
     );
 };
