@@ -1,0 +1,78 @@
+#navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 14px;
+}
+
+#navbar a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.title {
+    text-align: left;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-top: 30px;
+}
+
+.collapsible {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    padding: 18px;
+    width: 60%;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 5px;
+    position: relative; /* Make sure the pseudo-element is positioned correctly */
+}
+
+/* Add plus sign */
+.collapsible::after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #fff;
+    float: right;
+    margin-left: 5px;
+}
+
+/* Change plus to minus sign when active */
+.collapsible.active::after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.active, .collapsible:hover {
+    background-color: #424040;
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    padding: 0 18px;
+    background-color: #333;
+    color: #fff;
+    margin-bottom: 5px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.content.active {
+    max-height: 200px; /* Adjust this to fit the content height or set dynamically */
+    padding: 18px;
+}
