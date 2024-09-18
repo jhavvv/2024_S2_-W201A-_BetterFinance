@@ -12,6 +12,7 @@ import MonthlyIncome from './MonthlyIncome';
 import Savings from './Savings';
 import Services from './Services';
 import AboutUs from './AboutUs';
+import SuccessPage from './SuccessPage';
 
 
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/Infopage" element={<Infopage />} />
+          <Route path="/success" element={<SuccessPage />} />
         </Routes>
       </div>
     </Router>
