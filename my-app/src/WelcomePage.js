@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
-import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import Navbar from './Navbar';
+import { LineChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
+import TransactionHistory from './TransactionHistory';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -25,14 +26,6 @@ function WelcomePage() {
     return (
         <div>
             {/* Navbar */}
-            <header>
-                <div id="navbar">
-                    <img src="betterfinance.png" class="icon" alt="Logo"></img>
-                    <button onClick={() => navigate("/welcome")}>Home</button>
-                    <button onClick={() => navigate("/services")}>Services</button>
-                    <button onClick={() => navigate("/about-us")}>About Us</button>
-                </div>
-            </header>
             <Navbar />
 
             {/* Welcome Message */}
@@ -48,18 +41,23 @@ function WelcomePage() {
                         <div className="graph transaction-graph">
                             <h3 className="graph-title">Transaction History</h3>
                             {/* Graph content can go here */}
+                            <TransactionHistory showOnlyList={true} />
+
                         </div>
                         <div className="graph recap-graph">
                             <h3 className="graph-title">Monthly Recap</h3>
                             {/* Graph content can go here */}
+                            <PieChartEssentials />
                         </div>
                         <div className="graph income-graph">
                             <h3 className="graph-title">Monthly Income</h3>
                             {/* Graph content can go here */}
+                            <LineChartGraphing />
                         </div>
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
                             {/* Graph content can go here */}
+                            <PieChartCategories />
                         </div>
                     </div>
 
@@ -73,6 +71,8 @@ function WelcomePage() {
                         <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
                         <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
+                        <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
+                        
                     </aside>
                 </div>
             </main>

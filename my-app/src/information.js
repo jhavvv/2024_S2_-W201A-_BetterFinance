@@ -9,11 +9,14 @@
 
 
 // import React from 'react';
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from 'react';
+
 import './Informationstyling.css';
 import './index.js'
 import './stylesheet.css'
+import Navbar from './Navbar';
+import { useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
 
 
 
@@ -27,27 +30,40 @@ function Infopage() {
     const [spending, setSpending] = useState('');
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
+    const [Essentiality, setEssentiality] = useState('');
+    const [category, setCategory] = useState('');
+    const [spendingDate, setSpendingDate] = useState('');
+    const [spendingTime, setSpendingTime] = useState('');
+
+    
+        
+    const [userName, setUserName] = useState('');
+    const [userID, setUserID] = useState('');
+    const navigate = useNavigate();
+    console.log("Current User:", auth.currentUser);
+
+
+    useEffect(() => {
+        const currentUser = auth.currentUser;
+
+        // If the user is logged in, extract their display name or email
+        if (currentUser) {
+            setUserName(currentUser.displayName || currentUser.email);
+            setUserID(currentUser.uid);
+        }
+    }, []);
 
 
 
     return (
+
         <div>
             <header>
-                <div id="navbar">
-                    {/* Transaction Page */}
-                    <a href="transactions.html" title="Transactions">Transactions</a>
 
-                    {/* Information Page */}
-                    <a href="information.js" title="Information">Information</a>
-
-                    {/* Graphs Page */}
-                    <a href="graphs.html" title="Graphs">Graphs</a>
-
-                    {/* Help Page */}
-                    <a href="help.html" title="Help">Help</a>
-                </div>
+                <Navbar />
             </header>
 
+            
 
 
 
@@ -69,6 +85,21 @@ function Infopage() {
                             type="number"
                             value={incomeAmount}
                             onChange={(e) => setIncomeAmount(e.target.value)}
+                            required
+                        />
+                        <label>What Date and time was this:</label>
+                        <label>Date: </label>
+                        <input
+                            type="date"
+                            value={spendingDate}
+                            onChange={(e) => setSpendingDate(e.target.value)}
+                            required
+                        />
+                        <label>Time:</label>
+                        <input
+                            type="time"
+                            value={spendingTime}
+                            onChange={(e) => setSpendingTime(e.target.value)}
                             required
                         />
                         <label> How often: </label>
@@ -97,13 +128,75 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
-                        <label>Amount: </label>
+
+                        <p className="essential-label">Was this expense essential or non-essential?</p>
+
+                        <div className="radio-container">
+
+                            <div className="radio-item">
+                                <input
+                                    type="radio"
+                                    id="essential"
+                                    name="purchase"
+                                    value="Essential"
+                                    checked={Essentiality === 'Essential'}
+                                    onChange={(e) => setEssentiality(e.target.value)}
+                                />
+                                <label htmlFor="essential">Essential</label>
+                            </div>
+
+                            <div className="radio-item">
+                                <input
+                                    type="radio"
+                                    id="non-essential"
+                                    name="purchase"
+                                    value="Non-Essential"
+                                    checked={Essentiality === 'Non-Essential'}
+                                    onChange={(e) => setEssentiality(e.target.value)}
+                                />
+                                <label htmlFor="non-essential">Non-Essential</label>
+                            </div>
+                        </div>
+
+                        <label>Category: </label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a category</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="investments">Investments</option>
+                            <option value="others">Others</option>
+                        </select>
+
+
+                        <label>Amount($): </label>
                         <input
                             type="number"
                             value={spendingAmount}
                             onChange={(e) => setSpendingAmount(e.target.value)}
                             required
                         />
+
+                        <label>What Date and time was this:</label>
+                        <label>Date: </label>
+                        <input
+                            type="date"
+                            value={spendingDate}
+                            onChange={(e) => setSpendingDate(e.target.value)}
+                            required
+                        />
+                        <label>Time:</label>
+                        <input
+                            type="time"
+                            value={spendingTime}
+                            onChange={(e) => setSpendingTime(e.target.value)}
+                            required
+                        />
+
                         <label> How often: </label>
                         <select
                             value={spendingFrequency}
