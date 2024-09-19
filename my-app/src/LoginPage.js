@@ -1,54 +1,56 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import { auth } from './firebase.js';
-import './LoginPage.css';
+import { auth } from './firebase'; 
+import { useNavigate } from 'react-router-dom';
 
-function LoginPage() {
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError('');
+
+        if (!email || !password) {
+            setError('Email and Password are required');
+            return;
+        }
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/welcome'); // Navigate to WelcomePage after successful login
-        } catch (err) {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log('User logged in:', userCredential.user);
+
+            navigate('/welcome');
+        }
+        catch (err) {
             setError(err.message);
         }
     };
 
     return (
-        <div className="login-cont">
+        <div>
             <h2>Login</h2>
-            <form onSubmit={handleLogin}> {/* Corrected the form onSubmit event */}
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="login-button">Login</button>
+            <form onSubmit={handleLogin}>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                />
+                <button type="submit">Login</button>
             </form>
-            <p>Don't have an account? <Link to="/RegisterPage">Create</Link></p>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button onClick={() => navigate('/RegisterPage')}>Create an account</button>
         </div>
     );
-}
+};
 
 export default LoginPage;
