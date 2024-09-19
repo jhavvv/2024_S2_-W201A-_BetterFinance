@@ -22,7 +22,7 @@ import { auth } from './firebase';
 
 
 function Infopage() {
-    
+
     const [income, setIncome] = useState('');
     const [incomeAmount, setIncomeAmount] = useState('');
     const [incomeFrequency, setIncomeFrequency] = useState('');
@@ -32,6 +32,8 @@ function Infopage() {
     const [spendingFrequency, setSpendingFrequency] = useState('');
     const [Essentiality, setEssentiality] = useState('');
     const [category, setCategory] = useState('');
+    const [spendingDate, setSpendingDate] = useState('');
+    const [spendingTime, setSpendingTime] = useState('');
 
     
         
@@ -85,6 +87,21 @@ function Infopage() {
                             onChange={(e) => setIncomeAmount(e.target.value)}
                             required
                         />
+                        <label>What Date and time was this:</label>
+                        <label>Date: </label>
+                        <input
+                            type="date"
+                            value={spendingDate}
+                            onChange={(e) => setSpendingDate(e.target.value)}
+                            required
+                        />
+                        <label>Time:</label>
+                        <input
+                            type="time"
+                            value={spendingTime}
+                            onChange={(e) => setSpendingTime(e.target.value)}
+                            required
+                        />
                         <label> How often: </label>
                         <select
                             value={incomeFrequency}
@@ -111,11 +128,11 @@ function Infopage() {
                             onChange={(e) => setSpending(e.target.value)}
                             required
                         />
-                        
+
                         <p className="essential-label">Was this expense essential or non-essential?</p>
-                        
+
                         <div className="radio-container">
-                            
+
                             <div className="radio-item">
                                 <input
                                     type="radio"
@@ -163,6 +180,23 @@ function Infopage() {
                             onChange={(e) => setSpendingAmount(e.target.value)}
                             required
                         />
+
+                        <label>What Date and time was this:</label>
+                        <label>Date: </label>
+                        <input
+                            type="date"
+                            value={spendingDate}
+                            onChange={(e) => setSpendingDate(e.target.value)}
+                            required
+                        />
+                        <label>Time:</label>
+                        <input
+                            type="time"
+                            value={spendingTime}
+                            onChange={(e) => setSpendingTime(e.target.value)}
+                            required
+                        />
+
                         <label> How often: </label>
                         <select
                             value={spendingFrequency}
