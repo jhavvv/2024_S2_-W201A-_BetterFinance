@@ -69,7 +69,9 @@ function TransactionHistory({ showOnlyList = false }) {
                         transactions.map(transaction => (
                             <li key={transaction.id} data-id={transaction.id}>
                                 <span>{transaction.spendingSource}</span>
-                                <span> - ${transaction.amount}</span>
+                                <span> - ${transaction.amount}, </span>
+                                <span>Date: {transaction.date} </span>
+                                <span>Time: {transaction.time}</span>
                             </li>
                         ))
                     ) : (
