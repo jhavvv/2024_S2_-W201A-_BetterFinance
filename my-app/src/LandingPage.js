@@ -92,7 +92,7 @@ function LandingPage (){
                                 In his free time he enjoys playing videos games and watching anime.</p>
                         </div>
                         <div className='dev-card'>
-                            <img src="/HarryProfilePic.jpg" alt='Developer Ijaz' className='profile-img'/>
+                            <img src="/profile.jpg" alt='Developer Ijaz' className='profile-img'/>
                             <h3>Ijaz</h3>
                             <p className='dev-title'>Developer</p>
                             <p className='dev-about'>Ijaz is 22 years old and studies Computer and Information Sciences at AUT. 

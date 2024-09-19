@@ -1,4 +1,4 @@
-/* Written by Ijaz */
+
 
 import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
