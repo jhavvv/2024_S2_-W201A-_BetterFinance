@@ -25,7 +25,9 @@ function LandingPage() {
                 </div>
 
                 <div className='benefits-cont'>
-                    <h2>BetterFinance Benefits</h2>
+                    <center>
+                        <td>
+                            <h2>BetterFinance Benefits</h2></td></center>
                     {/* Write about our product*/}
                     <p></p>
                 </div>
@@ -92,7 +94,7 @@ function LandingPage() {
                                 In his free time he enjoys playing videos games and watching anime.</p>
                         </div>
                         <div className='dev-card'>
-                            <img src="/profile.jpg" alt='Developer Ijaz' className='profile-img'/>
+                            <img src="/profile.jpg" alt='Developer Ijaz' className='profile-img' />
                             <h3>Ijaz</h3>
                             <p className='dev-title'>Developer</p>
                             <p className='dev-about'>Ijaz is 22 years old and studies Computer and Information Sciences at AUT.
@@ -101,11 +103,8 @@ function LandingPage() {
                     </div>
                     {/* Add Image related to us */}
                 </div>
-                <center>
-                    <p>*This is not financial advice</p>
-                </center>
-            </main>
-        </div>
+            </main >
+        </div >
     )
 }
 
