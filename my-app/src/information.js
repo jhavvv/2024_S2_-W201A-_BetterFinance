@@ -35,8 +35,8 @@ function Infopage() {
     const [spendingDate, setSpendingDate] = useState('');
     const [spendingTime, setSpendingTime] = useState('');
 
-    
-        
+
+
     const [userName, setUserName] = useState('');
     const [userID, setUserID] = useState('');
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ function Infopage() {
                 <Navbar />
             </header>
 
-            
+
 
 
 
@@ -214,8 +214,6 @@ function Infopage() {
                 </div>
             </div>
         </div>
-
-
 
     );
 }
