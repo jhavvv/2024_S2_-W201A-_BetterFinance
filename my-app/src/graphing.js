@@ -9,14 +9,14 @@ import { PieChart } from '@mui/x-charts/PieChart';
 export function LineChartGraphing() {
     return (
         <LineChart
-            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]} //change to use income and spendings... would use calculator from financecompute to make graph
+            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]} //change to use income and spendings... would use calculator from finance computer to make graph
             series={[
                 {
                     data: [2, 5.5, 2, 8.5, 1.5, 5],
                 },
             ]}
             width={500}
-            height={300}
+            height={190}
         //would return a showing over either saving over time or comparison to spending vs incomes
         />
     );
@@ -33,8 +33,8 @@ export function PieChartEssentials() {
                     ],
                 },
             ]}
-            width={400}
-            height={200}
+            width={300}
+            height={175}
             //this pie chart would display percentage from essential spendings
         />
     );
@@ -55,8 +55,8 @@ export function PieChartCategories() {
                     ],
                 },
             ]}
-            width={400}
-            height={200}
+            width={300}
+            height={175}
             //this pie chart would display percentage from categories of spendings
         />
     );
