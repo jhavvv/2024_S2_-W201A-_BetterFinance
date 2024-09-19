@@ -7,6 +7,8 @@
 
 /* Navbar container */
 #navbar {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: left;
   background-color: #333;
