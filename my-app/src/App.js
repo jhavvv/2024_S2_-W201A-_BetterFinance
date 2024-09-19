@@ -13,6 +13,7 @@ import Savings from './Savings';
 import Services from './Services';
 import AboutUs from './AboutUs';
 import SuccessPage from './SuccessPage';
+import EditTransactions from './EditTransactions';
 
 
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/Infopage" element={<Infopage />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/edit-transactions" element={<EditTransactions />} />
         </Routes>
       </div>
     </Router>

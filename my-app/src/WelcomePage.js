@@ -72,6 +72,7 @@ function WelcomePage() {
                         <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
                         <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
                         <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
+                        <button className="navigation-btn" onClick={() => navigate("/edit-transactions")}>Edit Transactions</button>
                         
                     </aside>
                 </div>
