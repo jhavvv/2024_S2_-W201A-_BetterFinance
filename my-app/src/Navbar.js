@@ -15,7 +15,7 @@ function Navbar() {
                     height="3000"
                 />
                 <button onClick={() => navigate("/welcome")}>Home</button>
-                <button onClick={() => navigate("/services")}>Services</button>
+                <button onClick={() => navigate("/help")}>Help</button>
                 <button onClick={() => navigate("/about-us")}>About Us</button>
                 <button onClick={() => navigate("/")}>Landing Page</button>
             </div>

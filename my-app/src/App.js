@@ -10,7 +10,7 @@ import MonthlyRecap from './MonthlyRecap';
 import TransactionHistory from './TransactionHistory';
 import MonthlyIncome from './MonthlyIncome';
 import Savings from './Savings';
-import Services from './Services';
+import Help from './help';
 import AboutUs from './AboutUs';
 import SuccessPage from './SuccessPage';
 import EditTransactions from './EditTransactions';
@@ -31,7 +31,7 @@ function App() {
           <Route path="/transaction-history" element={<TransactionHistory />} />
           <Route path="/monthly-income" element={<MonthlyIncome />} />
           <Route path="/savings" element={<Savings />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/help" element={<Help />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/Infopage" element={<Infopage />} />
           <Route path="/success" element={<SuccessPage />} />
