@@ -68,7 +68,7 @@ function TransactionHistory({ showOnlyList = false }) {
                     {transactions.length > 0 ? (
                         transactions.map(transaction => (
                             <li key={transaction.id} data-id={transaction.id}>
-                                <span>{transaction.expense}</span>
+                                <span>{transaction.spendingSource}</span>
                                 <span> - ${transaction.amount}</span>
                             </li>
                         ))

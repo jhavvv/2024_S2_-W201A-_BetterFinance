@@ -8,10 +8,10 @@ import { auth, db } from './firebase';
 import { doc, collection, addDoc } from 'firebase/firestore';
 
 function Infopage() {
-
     const [income, setIncome] = useState('');
     const [incomeAmount, setIncomeAmount] = useState('');
     const [incomeFrequency, setIncomeFrequency] = useState('');
+
     const [spending, setSpending] = useState('');
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
@@ -21,8 +21,6 @@ function Infopage() {
     const [spendingDate, setSpendingDate] = useState('');
     const [spendingTime, setSpendingTime] = useState('');
 
-    
-        
     const [userName, setUserName] = useState('');
     const [userID, setUserID] = useState('');
     const navigate = useNavigate();
@@ -38,14 +36,6 @@ function Infopage() {
     const handleAddIncome = async () => {
         if (userID) {
             try {
-                // Log the values to ensure they are being captured correctly
-                console.log('Adding income:', {
-                    incomeSource: income,
-                    amount: incomeAmount,
-                    frequency: incomeFrequency,
-                    userID: userID
-                });
-                
                 // Check if the input fields are not empty before proceeding
                 if (!income || !incomeAmount || !incomeFrequency) {
                     console.error('All fields are required.');
@@ -62,7 +52,6 @@ function Infopage() {
                 });
 
                 console.log('Income added successfully');
-
                 // Navigate to SuccessPage with messageType state
                 navigate('/success', { state: { messageType: 'Income' } });
             } catch (error) {
@@ -77,7 +66,7 @@ function Infopage() {
         if (userID) {
             try {
                 // Check if the input fields are not empty before proceeding
-                if (!spending || !spendingAmount || !spendingFrequency || !essentiality || !category) {
+                if (!spending || !spendingAmount || !spendingFrequency || !essentiality || !category || !spendingDate || !spendingTime) {
                     console.error('All fields are required.');
                     return;
                 }
@@ -90,11 +79,12 @@ function Infopage() {
                     frequency: spendingFrequency,
                     essentiality: essentiality,
                     category: category,
+                    date: spendingDate,
+                    time: spendingTime,
                     timestamp: new Date()
                 });
 
                 console.log('Spending added successfully');
-
                 // Navigate to SuccessPage with messageType state
                 navigate('/success', { state: { messageType: 'Spending' } });
             } catch (error) {
@@ -134,22 +124,7 @@ function Infopage() {
                             onChange={(e) => setIncomeAmount(e.target.value)}
                             required
                         />
-                        <label>What Date and time was this:</label>
-                        <label>Date: </label>
-                        <input
-                            type="date"
-                            value={spendingDate}
-                            onChange={(e) => setSpendingDate(e.target.value)}
-                            required
-                        />
-                        <label>Time:</label>
-                        <input
-                            type="time"
-                            value={spendingTime}
-                            onChange={(e) => setSpendingTime(e.target.value)}
-                            required
-                        />
-                        <label> How often: </label>
+                        <label>How often:</label>
                         <select
                             value={incomeFrequency}
                             onChange={(e) => setIncomeFrequency(e.target.value)}
@@ -177,7 +152,6 @@ function Infopage() {
                         <p className="essential-label">Was this expense essential or non-essential?</p>
 
                         <div className="radio-container">
-
                             <div className="radio-item">
                                 <input
                                     type="radio"
@@ -226,14 +200,14 @@ function Infopage() {
                             required
                         />
 
-                        <label>What Date and time was this:</label>
-                        <label>Date: </label>
+                        <label>Date:</label>
                         <input
                             type="date"
                             value={spendingDate}
                             onChange={(e) => setSpendingDate(e.target.value)}
                             required
                         />
+
                         <label>Time:</label>
                         <input
                             type="time"
@@ -242,13 +216,14 @@ function Infopage() {
                             required
                         />
 
-                        <label> How often: </label>
+                        <label>How often:</label>
                         <select
                             value={spendingFrequency}
                             onChange={(e) => setSpendingFrequency(e.target.value)}
                             required
                         >
-                            <option value="">Select frequency (N/A if one-off)</option>
+                            <option value="">Select frequency </option>
+                            <option value="one-off">One-Off</option>
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
                             <option value="monthly">Monthly</option>
