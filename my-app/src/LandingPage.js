@@ -36,8 +36,8 @@ function LandingPage() {
                     <h2>Tips and Tricks</h2>
                     <h3 className='fact-title'>Better Budgeting for Financial Peace</h3>
                     <p>Budgeting is all about creating a roadmap for your money, so it works for you rather than against you.
-                        By Tracking expenses, and using simple strategies like the 50/30/20 rule, you can gain grater control
-                        over your finances. A well=planned budegt doesn't just help you save more, it reduces financial stress
+                        By Tracking expenses, and using simple strategies like the 50/30/20 rule, you can gain greater control
+                        over your finances. A well planned budegt doesn't just help you save more, it reduces financial stress
                         and sets you up for long-term success.
                     </p>
                     {/* Write Facts*/}
