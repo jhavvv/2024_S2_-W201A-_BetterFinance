@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './firebase'; // Import Firebase auth
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'; // Import both methods here
+import { auth, db } from './firebase'; // Import Firebase auth and Firestore
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +19,15 @@ const RegisterPage = () => {
         e.preventDefault();
         setError('');
 
-        // Password validation
+        // Password validation regex: 
+        // At least 8 characters, 1 special character, 1 number
+        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+        if (!passwordRegex.test(password)) {
+            setError("Password must be at least 8 characters long, contain a number, and a special character.");
+            return;
+        }
+
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
@@ -29,8 +37,8 @@ const RegisterPage = () => {
             // Register the user with email and password
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            console.log('User registered:', user);
-            
+
+            // Store user information in Firestore
             await setDoc(doc(db, "users", user.uid), {
                 username: username,
                 firstName: firstName,
@@ -38,10 +46,12 @@ const RegisterPage = () => {
                 email: email
             });
 
+            // Send verification email
+            await sendEmailVerification(user);
+            alert('Verification email sent! Please check your inbox.');
             setSuccess(true);
-            navigate("/LoginPage");
-        }
-        catch (err) {
+            navigate("/LoginPage"); // Redirect to login page
+        } catch (err) {
             setError(err.message);
         }
     };
@@ -71,19 +81,19 @@ const RegisterPage = () => {
                     placeholder="Last Name"
                     required
                 />
-                <input 
+                <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     required
                 />
-                <input 
+                <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    requried
+                    required
                 />
                 <input
                     type="password"
@@ -94,8 +104,8 @@ const RegisterPage = () => {
                 />
                 <button type="submit">Register</button>
             </form>
-            {error && <p style={{ color: 'red'}}>{error}</p>}
-            {success && <p>Registration successful!</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p>Registration successful! Please verify your email.</p>}
         </div>
     );
 };
