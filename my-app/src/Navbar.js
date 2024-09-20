@@ -10,14 +10,14 @@ function Navbar() {
     return (
         <header>
             <div id="navbar">
-                <img src="betterfinance.png" className="icon" alt="Logo" 
+                <img src="betterfinance.png" className="icon" alt="Logo"
                     width="3000"
                     height="3000"
                 />
                 <button onClick={() => navigate("/welcome")}>Home</button>
                 <button onClick={() => navigate("/help")}>Help</button>
                 <button onClick={() => navigate("/about-us")}>About Us</button>
-                <button onClick={() => navigate("/")}>Landing Page</button>
+                <button onClick={() => navigate("/")}>Log out</button>
             </div>
         </header>
     );
