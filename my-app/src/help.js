@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './help.css';
 import emailjs from 'emailjs-com';
+import Navbar from './Navbar';
 
 function HelpPage() {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -14,7 +15,7 @@ function HelpPage() {
     const collapsibleSections = [
         {
             title: "How To Add a New Transaction",
-            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum."
+            content: "To add a new transaction navigate back to the home page and click on the update information page. Here you can "
         },
         {
             title: "How To Analyze Your Spendings",
@@ -46,14 +47,8 @@ function HelpPage() {
 
     return (
         <div>
-            <header>
-                <div id="navbar">
-                    <a href="transactions.html" title="Transactions">Transactions</a>
-                    <a href="information.html" title="Information">Information</a>
-                    <a href="graphs.html" title="Graphs">Graphs</a>
-                    <p><Link to="/">Help</Link></p>
-                </div>
-            </header>
+            {/* Navbar */}
+            <Navbar />
 
             <main>
                 <div id="Title" className="title">
