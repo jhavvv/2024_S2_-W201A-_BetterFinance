@@ -17,6 +17,9 @@ function Infopage() {
     const [spendingFrequency, setSpendingFrequency] = useState('');
     const [essentiality, setEssentiality] = useState('');
     const [category, setCategory] = useState('');
+
+    const [incomeDate, setIncomeDate] = useState('');
+    const [incomeTime, setIncomeTime] = useState('');
     
     const [spendingDate, setSpendingDate] = useState('');
     const [spendingTime, setSpendingTime] = useState('');
@@ -36,31 +39,44 @@ function Infopage() {
     const handleAddIncome = async () => {
         if (userID) {
             try {
-                // Check if the input fields are not empty before proceeding
-                if (!income || !incomeAmount || !incomeFrequency) {
+                // Validate input fields
+                if (!income || !incomeAmount || !incomeFrequency || !incomeDate || !incomeTime) {
                     console.error('All fields are required.');
                     return;
                 }
-
+    
+                const amount = parseFloat(incomeAmount);
+                if (isNaN(amount) || amount <= 0) {
+                    console.error('Invalid income amount');
+                    return;
+                }
+    
+                // Reference to user's income sub-collection
                 const userDocRef = doc(db, 'users', userID);
                 const incomeCollectionRef = collection(userDocRef, 'income');
+    
+                // Adding the document with date and time fields
                 await addDoc(incomeCollectionRef, {
                     incomeSource: income,
-                    amount: parseFloat(incomeAmount),
+                    amount,
                     frequency: incomeFrequency,
-                    timestamp: new Date()
+                    incomeDate,
+                    time: incomeTime,
+                    timestamp: new Date() // For server-side timestamp if needed
                 });
-
+    
                 console.log('Income added successfully');
-                // Navigate to SuccessPage with messageType state
                 navigate('/success', { state: { messageType: 'Income' } });
             } catch (error) {
-                console.error('Error adding income:', error);
+                console.error('Error adding income:', error.message, error);
             }
         } else {
             console.error('User not authenticated');
         }
     };
+    
+
+    
 
     const handleAddSpending = async () => {
         if (userID) {
@@ -124,6 +140,21 @@ function Infopage() {
                             onChange={(e) => setIncomeAmount(e.target.value)}
                             required
                         />
+                        <label>Date:</label>
+                        <input
+                            type="date"
+                            value={incomeDate}
+                            onChange={(e) => setIncomeDate(e.target.value)}
+                            required
+                        />
+
+                        <label>Time:</label>
+                        <input
+                            type="time"
+                            value={incomeTime}
+                            onChange={(e) => setIncomeTime(e.target.value)}
+                            required
+                        />
                         <label>How often:</label>
                         <select
                             value={incomeFrequency}
@@ -131,6 +162,7 @@ function Infopage() {
                             required
                         >
                             <option value="">Select frequency (N/A if one-off)</option>
+                            <option value="one-off">One-Off</option>
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
                             <option value="monthly">Monthly</option>
