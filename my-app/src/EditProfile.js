@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { auth, db } from './firebase';
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { updateEmail, updatePassword, deleteUser } from "firebase/auth";
+import { updateEmail, deleteUser, sendPasswordResetEmail } from "firebase/auth";
 
 function EditProfile() {
 
@@ -10,15 +10,11 @@ function EditProfile() {
     const [showFirstNameInput, setShowFirstNameInput] = useState(false);
     const [showLastNameInput, setShowLastNameInput] = useState(false);
     const [showUsernameInput, setShowUsernameInput] = useState(false);
-    const [showEmailInput, setShowEmailInput] = useState(false);
-    const [showPasswordInput, setShowPasswordInput] = useState(false);
 
     // State for form values
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState(''); 
 
     const handleFirstNameChange = async () => {
         try {
@@ -69,30 +65,30 @@ function EditProfile() {
         try {
             const user = auth.currentUser;
             if(user) {
-                await updateEmail(user, email);
+                await updateEmail(user, user.email);
+                await user.sendEmailVerification();
+                console.log("Email verification sent to:", user.email);
+
                 const userRef = doc(db, "users", user.uid);
-                await updateEmail(userRef, { email });
-                console.log("Email updated:", email);
+                await updateDoc(userRef, { email: user.email });
             }
         }
         catch (error) {
             console.error("Error updating email:", error);
         }
-        setShowEmailInput(false);
     };
 
     const handlePasswordChange = async () => {
         try {
             const user = auth.currentUser;
             if(user) {
-                await updatePassword(user, password);
-                console.log("Password updated");
+                await sendPasswordResetEmail(auth, user.email);
+                console.log("Password reset link sent to:", user.email);
             }
         }
         catch (error) {
             console.error("Error updating password:", error)
         }
-        setShowPasswordInput(false);
     };
 
     const handleDeleteProfile = async () => {
@@ -159,32 +155,12 @@ function EditProfile() {
                 )}
 
                 {/* Change Email */}
-                <button onClick={() => setShowEmailInput(!showEmailInput)}>Change Email</button>
-                {showEmailInput && (
-                    <div>
-                        <input
-                            type="email"
-                            placeholder="New Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <button onClick={handleEmailChange}>Save Email</button>
-                    </div>
-                )}
+                <button onClick={handleEmailChange}>Change Email</button>
+                <p>Email verification link will be sent to your email address.</p>
 
                 {/* Change Password */}
-                <button onClick={() => setShowPasswordInput(!showPasswordInput)}>Change Password</button>
-                {showPasswordInput && (
-                    <div>
-                        <input
-                        type="password"
-                        placeholder="New Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <button onClick={handlePasswordChange}>Save Password</button>
-                    </div>
-                )}
+                <button onClick={handlePasswordChange}>Change Password</button>
+                <p>Password reset link will be sent to your email.</p>
 
                 {/* Delete Profile */}
                 <button onClick={handleDeleteProfile}>Delete Profile</button>

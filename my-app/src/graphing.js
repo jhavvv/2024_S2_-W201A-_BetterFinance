@@ -60,6 +60,7 @@ export function LineChartGraphing() {
     return (
         <LineChart
             xAxis={[{ data: xAxisData }]} // X-axis is the day of the month
+
             series={[
                 {
                     data: incomeData, // Y-axis is the income amount
@@ -70,8 +71,6 @@ export function LineChartGraphing() {
         />
     );
 }
-
-
 // Pie Chart for Essential and Non-Essential Spending
 export function PieChartEssentials() {
     const [data, setData] = useState(null);
