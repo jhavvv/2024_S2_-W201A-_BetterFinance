@@ -27,3 +27,108 @@
 .btn:hover {
     background-color: #0056b3;
 }
+
+/* login and register */
+
+/* Form container with a box */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* Box behind the login form */
+.login-box {
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.register-box {
+    position: absolute;
+    width: 450px;
+    /* Adjust to make it bigger than form */
+    height: 500px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 0;
+    /* Keep it behind the form */
+}
+
+.form-box {
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    /* Put the form above the background */
+    position: relative;
+    text-align: center;
+}
+
+/* Style for the h3 heading */
+h3 {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form input styles */
+.form-group {
+    margin-bottom: 20px;
+    /* Space between input fields */
+}
+
+input[type=email],
+input[type=password] {
+    width: 80%;
+    /* Adjust width as needed */
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/*register*/
+
+
+input[type=email],
+input[type=password],
+input[type=text] {
+    width: 80%;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    /* Space between fields */
+}
+
+/* Button styles */
+button {
+    background-color: #59449e;
+    color: white;
+    padding: 14px 20px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    width: 60%;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.8;
+}

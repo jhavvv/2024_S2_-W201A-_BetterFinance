@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase'; 
+import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
+import './stylesheet.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -30,27 +31,36 @@ const LoginPage = () => {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                />
-                <button type="submit">Login</button>
-            </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button onClick={() => navigate('/RegisterPage')}>Create an account</button>
+        <div className="form-container">
+            <center>
+                <div className="login-box">
+                    <h3>Login</h3>
+                    <form onSubmit={handleLogin}>
+                        <div className="form-group">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
+                            />
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <button onClick={() => navigate('/RegisterPage')}>Create an account</button>
+                </div>
+            </center>
         </div>
     );
+
 };
 
 export default LoginPage;
