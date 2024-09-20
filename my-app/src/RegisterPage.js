@@ -4,6 +4,8 @@ import { auth, db } from './firebase'; // Import Firebase auth and Firestore
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import './stylesheet.css';
+import landingBackground from './assets/LandingBackground.jpg';
+
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('');
@@ -58,57 +60,59 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="form-container">
-            <div className="form-box"> {/* Form container on top */}
-                <h3>Register</h3>
-                <form onSubmit={handleRegister}>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="First Name"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Last Name"
-                        required
-                    />
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirm Password"
-                        required
-                    />
-                    <button type="submit">Register</button>
-                </form>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {success && <p>Registration successful! Please verify your email.</p>}
-                <button onClick={() => navigate('/LoginPage')}>Already a user?</button>
+        <div className='title-cont' style={{ backgroundImage: `url(${landingBackground})` }}>
+            <div className="form-container">
+                <div className="form-box"> {/* Form container on top */}
+                    <h3>Register</h3>
+                    <form onSubmit={handleRegister}>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Username"
+                            required
+                        />
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="First Name"
+                            required
+                        />
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Last Name"
+                            required
+                        />
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                            required
+                        />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            required
+                        />
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="Confirm Password"
+                            required
+                        />
+                        <button type="submit">Register</button>
+                    </form>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p>Registration successful! Please verify your email.</p>}
+                    <button onClick={() => navigate('/LoginPage')}>Already a user?</button>
+                </div>
             </div>
         </div>
 
