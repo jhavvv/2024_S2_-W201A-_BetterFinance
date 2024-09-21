@@ -128,7 +128,6 @@ function EditTransactions() {
             <h1>Edit Transactions</h1>
             
             <div className="transaction-dropdown">
-                <label>Select a transaction:</label>
                 <select onChange={handleTransactionSelect} value={selectedTransactionId}>
                     <option value="">-- Select a transaction --</option>
                     {transactions.map(transaction => (
