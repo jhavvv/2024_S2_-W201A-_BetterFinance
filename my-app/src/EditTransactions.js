@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import './Informationstyling.css';
+import './EditTransaction.css';
 import './index.js';
 import './stylesheet.css';
 import Navbar from './Navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth, db } from './firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, updateDoc } from 'firebase/firestore';
 
 function EditTransactions() {
+    const [transactions, setTransactions] = useState([]);
+    const [selectedTransactionId, setSelectedTransactionId] = useState(''); // Track the selected transaction
     const [spending, setSpending] = useState('');
     const [spendingAmount, setSpendingAmount] = useState('');
     const [spendingFrequency, setSpendingFrequency] = useState('');
     const [essentiality, setEssentiality] = useState('');
     const [category, setCategory] = useState('');
-    
     const [spendingDate, setSpendingDate] = useState('');
     const [spendingTime, setSpendingTime] = useState('');
-
     const [userID, setUserID] = useState('');
     const navigate = useNavigate();
     const { transactionId } = useParams();
@@ -25,9 +25,25 @@ function EditTransactions() {
         const currentUser = auth.currentUser;
         if (currentUser) {
             setUserID(currentUser.uid);
-            fetchTransactionData(currentUser.uid, transactionId);
+            fetchTransactions(currentUser.uid);
+            if (transactionId) {
+                fetchTransactionData(currentUser.uid, transactionId);
+            }
         }
     }, [transactionId]);
+
+    const fetchTransactions = async (userID) => {
+        try {
+            const querySnapshot = await getDocs(collection(db, 'users', userID, 'spending'));
+            const transactionsList = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setTransactions(transactionsList);
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    };
 
     const fetchTransactionData = async (userID, transactionId) => {
         try {
@@ -53,10 +69,35 @@ function EditTransactions() {
         }
     };
 
+    const handleTransactionSelect = (event) => {
+        const selectedId = event.target.value;
+        setSelectedTransactionId(selectedId); // Update the selected transaction ID
+
+        const selectedTransaction = transactions.find(transaction => transaction.id === selectedId);
+        if (selectedTransaction) {
+            setSpending(selectedTransaction.spendingSource);
+            setSpendingAmount(selectedTransaction.amount);
+            setSpendingFrequency(selectedTransaction.frequency);
+            setEssentiality(selectedTransaction.essentiality);
+            setCategory(selectedTransaction.category);
+            setSpendingDate(selectedTransaction.date);
+            setSpendingTime(selectedTransaction.time);
+        } else {
+            // Clear fields if no selection is made
+            setSpending('');
+            setSpendingAmount('');
+            setSpendingFrequency('');
+            setEssentiality('');
+            setCategory('');
+            setSpendingDate('');
+            setSpendingTime('');
+        }
+    };
+
     const handleUpdateSpending = async () => {
-        if (userID) {
+        if (userID && selectedTransactionId) { // Ensure we have a selected transaction
             try {
-                const userDocRef = doc(db, 'users', userID, 'spending', transactionId);
+                const userDocRef = doc(db, 'users', userID, 'spending', selectedTransactionId);
                 await updateDoc(userDocRef, {
                     spendingSource: spending,
                     amount: parseFloat(spendingAmount),
@@ -74,20 +115,31 @@ function EditTransactions() {
                 console.error('Error updating spending:', error);
             }
         } else {
-            console.error('User not authenticated');
+            console.error('User not authenticated or no transaction selected');
         }
     };
 
     return (
         <div id="info-container">
-            <h1>Edit Transaction</h1>
-
-            <header>
+            <div>
                 <Navbar />
-            </header>
-        
+            </div>
+
+            <h1>Edit Transactions</h1>
+            
+            <div className="transaction-dropdown">
+                <label>Select a transaction:</label>
+                <select onChange={handleTransactionSelect} value={selectedTransactionId}>
+                    <option value="">-- Select a transaction --</option>
+                    {transactions.map(transaction => (
+                        <option key={transaction.id} value={transaction.id}>
+                            {transaction.spendingSource} - ${transaction.amount}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="info-box">
-                <p>Spending</p>
                 <label>Edit expense:</label>
                 <input
                     type="text"
@@ -97,7 +149,6 @@ function EditTransactions() {
                 />
 
                 <p className="essential-label">Was this expense essential or non-essential?</p>
-
                 <div className="radio-container">
                     <div className="radio-item">
                         <input
@@ -110,7 +161,6 @@ function EditTransactions() {
                         />
                         <label htmlFor="essential">Essential</label>
                     </div>
-
                     <div className="radio-item">
                         <input
                             type="radio"
@@ -175,6 +225,7 @@ function EditTransactions() {
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                 </select>
+                
                 <button type="button" onClick={handleUpdateSpending}>Save Changes</button>
             </div>
         </div>
