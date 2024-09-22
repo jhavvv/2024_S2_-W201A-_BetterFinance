@@ -1,3 +1,5 @@
+/* Not functional yet, code is the same as Edit Transactions because I'm using it as a starting point -Ijaz */
+
 import React, { useState, useEffect } from 'react';
 import './EditTransaction.css';
 import './index.js';
@@ -5,9 +7,9 @@ import './stylesheet.css';
 import Navbar from './Navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth, db } from './firebase';
-import { doc, getDoc, getDocs, collection, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, deleteDoc } from 'firebase/firestore';
 
-function EditTransactions() {
+function DeleteTransactions() {
     const [transactions, setTransactions] = useState([]);
     const [selectedTransactionId, setSelectedTransactionId] = useState(''); // Track the selected transaction
     const [spending, setSpending] = useState('');
@@ -72,18 +74,19 @@ function EditTransactions() {
     const handleTransactionSelect = (event) => {
         const selectedId = event.target.value;
         setSelectedTransactionId(selectedId); // Update the selected transaction ID
-
+    
         const selectedTransaction = transactions.find(transaction => transaction.id === selectedId);
         if (selectedTransaction) {
-            setSpending(selectedTransaction.spendingSource);
-            setSpendingAmount(selectedTransaction.amount);
-            setSpendingFrequency(selectedTransaction.frequency);
-            setEssentiality(selectedTransaction.essentiality);
-            setCategory(selectedTransaction.category);
-            setSpendingDate(selectedTransaction.date);
-            setSpendingTime(selectedTransaction.time);
+            // Make sure the data keys match the structure from Firestore
+            setSpending(selectedTransaction.spendingSource || ''); 
+            setSpendingAmount(selectedTransaction.amount || ''); 
+            setSpendingFrequency(selectedTransaction.frequency || ''); 
+            setEssentiality(selectedTransaction.essentiality || ''); 
+            setCategory(selectedTransaction.category || ''); 
+            setSpendingDate(selectedTransaction.date || ''); 
+            setSpendingTime(selectedTransaction.time || ''); 
         } else {
-            // Clear fields if no selection is made
+            // Clear the form fields if no valid transaction is selected
             setSpending('');
             setSpendingAmount('');
             setSpendingFrequency('');
@@ -93,26 +96,25 @@ function EditTransactions() {
             setSpendingTime('');
         }
     };
+    
 
-    const handleUpdateSpending = async () => {
+    const handleDeleteSpending = async () => {
         if (userID && selectedTransactionId) { // Ensure we have a selected transaction
             try {
                 const userDocRef = doc(db, 'users', userID, 'spending', selectedTransactionId);
-                await updateDoc(userDocRef, {
-                    spendingSource: spending,
-                    amount: parseFloat(spendingAmount),
-                    frequency: spendingFrequency,
-                    essentiality: essentiality,
-                    category: category,
-                    date: spendingDate,
-                    time: spendingTime,
-                    timestamp: new Date()
-                });
-
-                console.log('Spending updated successfully');
-                alert('Transaction updated successfully!');
+                await deleteDoc(userDocRef); // Use deleteDoc to remove the document
+    
+                console.log('Transaction deleted successfully');
+                alert('Transaction deleted successfully!');
+    
+                // Optionally, you can remove the transaction from the local state after deletion
+                setTransactions(prevTransactions =>
+                    prevTransactions.filter(transaction => transaction.id !== selectedTransactionId)
+                );
+    
+                setSelectedTransactionId(''); // Reset the selected transaction
             } catch (error) {
-                console.error('Error updating spending:', error);
+                console.error('Error deleting transaction:', error);
             }
         } else {
             console.error('User not authenticated or no transaction selected');
@@ -125,7 +127,7 @@ function EditTransactions() {
                 <Navbar />
             </div>
 
-            <h1>Edit Transactions</h1>
+            <h1>Delete Transactions</h1>
 
             <div className="info-box">
                 <label>Your Transactions:</label>
@@ -144,6 +146,7 @@ function EditTransactions() {
                     value={spending}
                     onChange={(e) => setSpending(e.target.value)}
                     required
+                    disabled 
                 />
 
                 <p className="essential-label">Was this expense essential or non-essential?</p>
@@ -156,6 +159,7 @@ function EditTransactions() {
                             value="Essential"
                             checked={essentiality === 'Essential'}
                             onChange={(e) => setEssentiality(e.target.value)}
+                            disabled 
                         />
                         <label htmlFor="essential">Essential</label>
                     </div>
@@ -167,6 +171,7 @@ function EditTransactions() {
                             value="Non-Essential"
                             checked={essentiality === 'Non-Essential'}
                             onChange={(e) => setEssentiality(e.target.value)}
+                            disabled 
                         />
                         <label htmlFor="non-essential">Non-Essential</label>
                     </div>
@@ -177,6 +182,7 @@ function EditTransactions() {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     required
+                    disabled 
                 >
                     <option value="">Select a category</option>
                     <option value="groceries">Groceries</option>
@@ -193,6 +199,7 @@ function EditTransactions() {
                     value={spendingAmount}
                     onChange={(e) => setSpendingAmount(e.target.value)}
                     required
+                    disabled 
                 />
 
                 <label>Date:</label>
@@ -201,6 +208,7 @@ function EditTransactions() {
                     value={spendingDate}
                     onChange={(e) => setSpendingDate(e.target.value)}
                     required
+                    disabled 
                 />
 
                 <label>Time:</label>
@@ -209,6 +217,7 @@ function EditTransactions() {
                     value={spendingTime}
                     onChange={(e) => setSpendingTime(e.target.value)}
                     required
+                    disabled 
                 />
 
                 <label>How often:</label>
@@ -216,6 +225,8 @@ function EditTransactions() {
                     value={spendingFrequency}
                     onChange={(e) => setSpendingFrequency(e.target.value)}
                     required
+                    disabled 
+                    
                 >
                     <option value="">Select frequency</option>
                     <option value="one-off">One-Off</option>
@@ -224,10 +235,10 @@ function EditTransactions() {
                     <option value="monthly">Monthly</option>
                 </select>
                 
-                <button type="button" onClick={handleUpdateSpending}>Save Changes</button>
+                <button type="button" onClick={handleDeleteSpending}>Delete Transaction</button>
             </div>
         </div>
     );
 }
 
-export default EditTransactions;
+export default DeleteTransactions;

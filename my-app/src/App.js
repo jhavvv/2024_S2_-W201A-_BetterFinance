@@ -14,6 +14,7 @@ import Help from './help';
 import AboutUs from './AboutUs';
 import SuccessPage from './SuccessPage';
 import EditTransactions from './EditTransactions';
+import DeleteTransactions from './DeleteTransactions';
 
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/Infopage" element={<Infopage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/edit-transactions" element={<EditTransactions />} />
+          <Route path="/delete-transactions" element={<DeleteTransactions />} />
         </Routes>
       </div>
     </Router>
