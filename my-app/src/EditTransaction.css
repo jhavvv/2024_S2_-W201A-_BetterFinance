@@ -79,19 +79,19 @@
     text-align: left;
 }
 
-/* Combo Box Styles */
+/* Combo Box */
 .transaction-dropdown {
-    margin-bottom: 20px; /* Space below the dropdown */
+    margin-bottom: 20px;
 }
 
 .transaction-dropdown label {
-    margin-bottom: 5px; /* Space between label and dropdown */
-    font-size: 16px; /* Slightly larger font for clarity */
+    margin-bottom: 5px;
+    font-size: 16px;
 }
 
 .transaction-dropdown select {
-    padding: 8px; /* Consistent padding with other inputs */
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%; /* Make it fill the width of its container */
+    width: 50%;
 }

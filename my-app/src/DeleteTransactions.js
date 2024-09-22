@@ -1,3 +1,5 @@
+/* Not functional yet, code is the same as Edit Transactions because I'm using it as a starting point -Ijaz */
+
 import React, { useState, useEffect } from 'react';
 import './EditTransaction.css';
 import './index.js';
@@ -7,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { doc, getDoc, getDocs, collection, updateDoc } from 'firebase/firestore';
 
-function EditTransactions() {
+function DeleteTransactions() {
     const [transactions, setTransactions] = useState([]);
     const [selectedTransactionId, setSelectedTransactionId] = useState(''); // Track the selected transaction
     const [spending, setSpending] = useState('');
@@ -94,7 +96,7 @@ function EditTransactions() {
         }
     };
 
-    const handleUpdateSpending = async () => {
+    const handleDeleteSpending = async () => {
         if (userID && selectedTransactionId) { // Ensure we have a selected transaction
             try {
                 const userDocRef = doc(db, 'users', userID, 'spending', selectedTransactionId);
@@ -109,10 +111,10 @@ function EditTransactions() {
                     timestamp: new Date()
                 });
 
-                console.log('Spending updated successfully');
-                alert('Transaction updated successfully!');
+                console.log('Spending deleted successfully');
+                alert('Transaction deleted successfully!');
             } catch (error) {
-                console.error('Error updating spending:', error);
+                console.error('Error deleting spending:', error);
             }
         } else {
             console.error('User not authenticated or no transaction selected');
@@ -125,7 +127,7 @@ function EditTransactions() {
                 <Navbar />
             </div>
 
-            <h1>Edit Transactions</h1>
+            <h1>Delete Transactions</h1>
 
             <div className="info-box">
                 <label>Your Transactions:</label>
@@ -224,10 +226,10 @@ function EditTransactions() {
                     <option value="monthly">Monthly</option>
                 </select>
                 
-                <button type="button" onClick={handleUpdateSpending}>Save Changes</button>
+                <button type="button" onClick={handleDeleteSpending}>Delete Transaction</button>
             </div>
         </div>
     );
 }
 
-export default EditTransactions;
+export default DeleteTransactions;
