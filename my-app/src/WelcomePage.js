@@ -63,9 +63,8 @@ function WelcomePage() {
 
                     {/* Navigation pane */}
                     <aside className="navigation-container">
-                        {/* This is a fixed image for testing purposes */}
-                        <img src="/profile.jpg" alt="Profile" className="profile-pic" />
                         {/* Navigation buttons */}
+                        <label className='label-style'>Other Pages</label>
                         <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
                         <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
@@ -73,7 +72,7 @@ function WelcomePage() {
                         <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
                         <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
                         <button className="navigation-btn" onClick={() => navigate("/edit-transactions")}>Edit Transactions</button>
-                        
+                        <button className="navigation-btn" onClick={() => navigate("/delete-transactions")}>Delete Transactions</button>
                     </aside>
                 </div>
             </main>
