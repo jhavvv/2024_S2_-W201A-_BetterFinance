@@ -44,7 +44,7 @@ function WelcomePage() {
                     {/* Graphs container */}
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
-                            <h3 className="graph-title">Transaction History</h3>
+                            <h3 className="graph-title">Transaction History for {currentMonth}</h3>
                             {/* Graph content can go here */}
                             <TransactionHistory showOnlyList={true} />
                         </div>
