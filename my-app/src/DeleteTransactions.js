@@ -1,5 +1,3 @@
-/* Not functional yet, code is the same as Edit Transactions because I'm using it as a starting point -Ijaz */
-
 import React, { useState, useEffect } from 'react';
 import './EditTransaction.css';
 import './index.js';
