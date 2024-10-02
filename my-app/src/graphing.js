@@ -3,11 +3,11 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { auth, db } from './firebase'; // Ensure firebase is imported
 import { collection, getDocs } from 'firebase/firestore';
 import { query, where} from 'firebase/firestore';
-import { LineChart } from '@mui/x-charts/LineChart'; // Assuming you're using 'recharts' for graphing
+import { LineChart } from '@mui/x-charts/LineChart'; 
+import { BarChart } from '@mui/x-charts/BarChart'; 
 
-export function LineChartGraphing() {
-    const [incomeData, setIncomeData] = useState([]);
-    const [xAxisData, setXAxisData] = useState([]);
+export function BarChartGraphing() {
+    const [incomeData, setIncomeData] = useState(Array(31).fill(0)); // Initialize with 0 for all days
     const [userID, setUserID] = useState(null); // Add userID to local state
 
     useEffect(() => {
@@ -23,54 +23,54 @@ export function LineChartGraphing() {
                 try {
                     const userDocRef = collection(db, 'users', userID, 'income'); // Use userID safely
                     const querySnapshot = await getDocs(userDocRef);
-        
-                    const incomeList = [];
-                    const dates = [];
-        
+
+                    const incomeList = Array(31).fill(0); // Initialize for 31 days
+
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
                         const incomeDate = data.incomeDate; // incomeDate is stored as yyyy-mm-dd
+                        const incomeAmount = data.amount || 0; // Get income amount, default 0 if undefined
                         
-                        // Check if incomeDate is defined
                         if (incomeDate) {
                             const [year, month, day] = incomeDate.split('-').map(Number); // Split and parse the date
                             const currentMonth = new Date().getMonth() + 1; // Get the current month
-        
+
                             if (month === currentMonth) {
-                                incomeList.push(data.amount); // Store income amount
-                                dates.push(day); // Store day of the month
+                                incomeList[day - 1] += incomeAmount; // Accumulate income for the day
                             }
                         } else {
                             console.warn(`incomeDate is undefined for document ID: ${doc.id}`); // Log a warning
                         }
                     });
-        
-                    setIncomeData(incomeList);
-                    setXAxisData(dates);
+
+                    setIncomeData(incomeList); // Update the state with the accumulated income data
                 } catch (error) {
                     console.error('Error fetching income data:', error);
                 }
             }
         };
-        
 
         fetchIncomeData();
     }, [userID]); // Trigger fetch when userID is available
 
-    return (
-        <LineChart
-            xAxis={[{ data: xAxisData }]} // X-axis is the day of the month
+    // Generate an array from 1 to 31 for the x-axis (days of the month)
+    const xAxisData = Array.from({ length: 31 }, (_, index) => index + 1);
 
-            series={[
-                {
-                    data: incomeData, // Y-axis is the income amount
-                },
-            ]}
+    return (
+        <BarChart
+            xAxis={[{ data: xAxisData, scaleType: 'band' }]} // X-axis shows days 1-31
+            series={[{
+                data: incomeData, // Y-axis shows accumulated income data, with missing days set to 0
+            }]}
             width={500}
             height={190}
         />
     );
 }
+
+
+
+
 // Pie Chart for Essential and Non-Essential Spending
 export function PieChartEssentials() {
     const [data, setData] = useState(null);

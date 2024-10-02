@@ -1,18 +1,15 @@
-
-
 import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import Navbar from './Navbar';
-import { LineChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
+import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
+    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const navigate = useNavigate();
-    console.log("Current User:", auth.currentUser);
-
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -21,6 +18,14 @@ function WelcomePage() {
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
         }
+
+        // Get the current month name
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        const currentMonthIndex = new Date().getMonth(); // Get the current month (0-11)
+        setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
     }, []);
 
     return (
@@ -42,18 +47,20 @@ function WelcomePage() {
                             <h3 className="graph-title">Transaction History</h3>
                             {/* Graph content can go here */}
                             <TransactionHistory showOnlyList={true} />
-
                         </div>
+                        
                         <div className="graph recap-graph">
-                            <h3 className="graph-title">Monthly Recap</h3>
+                            <h3 className="graph-title">Essential and Non-Essential Spending for {currentMonth}</h3>
                             {/* Graph content can go here */}
                             <PieChartEssentials />
                         </div>
+                        
                         <div className="graph income-graph">
-                            <h3 className="graph-title">Monthly Income</h3>
+                            <h3 className="graph-title">Monthly Income for {currentMonth}</h3>
                             {/* Graph content can go here */}
-                            <LineChartGraphing />
+                            <BarChartGraphing />
                         </div>
+                        
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
                             {/* Graph content can go here */}
