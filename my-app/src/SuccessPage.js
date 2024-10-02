@@ -11,7 +11,7 @@ function SuccessPage() {
     return (
         <div>
             <h1>{messageType} successfully added!</h1>
-            <button onClick={() => navigate(-1)}>Go Back</button> {/* Navigate back to the previous page */}
+            <button onClick={() => navigate("/welcome")}>Go Back</button> {/* Navigate back to the previous page */}
         </div>
     );
 }
