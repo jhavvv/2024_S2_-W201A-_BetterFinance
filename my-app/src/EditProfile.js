@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './EditProfile.css';
 import Navbar from './Navbar';
 import { auth, db } from './firebase';
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -23,6 +24,7 @@ function EditProfile() {
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, { firstName: firstName});
                 console.log("First name updated:", firstName);
+                alert("First name changed successfully");
             }
         }
         catch (error) {
@@ -38,6 +40,7 @@ function EditProfile() {
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, { lastName: lastName});
                 console.log("Last name updated:", lastName);
+                alert("Last name Changed Successfully");
             }
         }
         catch (error) {
@@ -54,6 +57,7 @@ function EditProfile() {
                 await updateDoc(userRef, { username: username });
                 console.log("Username updated:", username);
             }
+            alert("Username Changed Successfully");
         }
         catch (error) {
             console.error("Error updating username:", error);
@@ -71,6 +75,7 @@ function EditProfile() {
 
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, { email: user.email });
+                alert("Email verification link will be sent to your email address.");
             }
         }
         catch (error) {
@@ -85,6 +90,7 @@ function EditProfile() {
                 await sendPasswordResetEmail(auth, user.email);
                 console.log("Password reset link sent to:", user.email);
             }
+            alert("Password reset link will be sent to your email.");
         }
         catch (error) {
             console.error("Error updating password:", error)
@@ -98,6 +104,7 @@ function EditProfile() {
                 await deleteDoc(doc(db, "users", user.uid));
                 await deleteUser(user);
                 console.log("Profile deleted");
+                alert("Prodile Deleted Successfully");
             }
         }
         catch(error) {
@@ -156,11 +163,9 @@ function EditProfile() {
 
                 {/* Change Email */}
                 <button onClick={handleEmailChange}>Change Email</button>
-                <p>Email verification link will be sent to your email address.</p>
 
                 {/* Change Password */}
                 <button onClick={handlePasswordChange}>Change Password</button>
-                <p>Password reset link will be sent to your email.</p>
 
                 {/* Delete Profile */}
                 <button onClick={handleDeleteProfile}>Delete Profile</button>
