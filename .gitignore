@@ -466,3 +466,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+my-app/package-lock.json
+my-app/package.json
