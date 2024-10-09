@@ -49,7 +49,18 @@ function TransactionHistory({ showOnlyList = false }) {
                     }));
 
                     console.log("Fetched transactions:", fetchedTransactions); // Debug line
-                    setTransactions(fetchedTransactions);
+
+                    // If showOnlyList is true, filter for current month transactions
+                    if (showOnlyList) {
+                        const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
+                        const filteredTransactions = fetchedTransactions.filter(transaction => {
+                            const transactionDate = new Date(transaction.date); // Assuming date is in a parseable format
+                            return transactionDate.getMonth() + 1 === currentMonth;
+                        });
+                        setTransactions(filteredTransactions);
+                    } else {
+                        setTransactions(fetchedTransactions);
+                    }
                 } catch (error) {
                     console.error("Error fetching transactions: ", error);
                 }
@@ -57,7 +68,7 @@ function TransactionHistory({ showOnlyList = false }) {
 
             fetchTransactions();
         }
-    }, [userID]);
+    }, [userID, showOnlyList]);
 
     return (
         <div>

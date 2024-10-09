@@ -11,7 +11,6 @@ function LandingPage() {
 
     return (
         <div>
-            <Navbar />
             <main>
                 <div className='title-cont' style={{ backgroundImage: `url(${landingBackground})` }}>
 
