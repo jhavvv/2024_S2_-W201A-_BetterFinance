@@ -1,6 +1,114 @@
+/* Profile Picture */
 .profile-pic {
     display: block;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #444;
+}
+
+/* Title Styling */
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Input Group Styling */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    /* Add gap for better spacing */
+}
+
+.input-group input {
+    width: 70%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #666;
+    outline: none;
+}
+
+.input-group button {
+    padding: 12px 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.input-group button:hover {
+    background-color: #444;
+}
+
+.input-group button:active {
+    background-color: #222;
+    transform: translateY(0);
+}
+
+/* General Button Styling */
+button {
+    display: block;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 10px auto;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: auto;
+    min-width: 120px;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #444;
+}
+
+button:active {
+    background-color: #222;
+}
+
+/* Paragraph for additional info (optional) */
+p {
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+/* Container for mobile responsiveness */
+main {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.profile-pic {
+    display: block;
+    margin: 0 auto 20px;
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -8,86 +116,24 @@
     border: 3px solid #333;
 }
 
-h1 {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 30px;
-    color: #333;
-}
-
-button {
-    display: block;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    width: auto;
-    min-width: 150px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-button:hover {
-    background-color: #444;
-    transform: translateY(-2px);
-}
-
-button:active {
-    background-color: #222;
-    transform: translateY(0);
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="text"]:focus {
-    border-color: #666;
-    box-shadow: 0 0 5px rgba(102, 102, 102, 0.2);
-    outline: none;
-}
-
-p {
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-    margin-top: -10px;
-    margin-bottom: 20px;
-}
-
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
     main {
-        width: 80%;
-        padding: 20px;
+        width: 85%;
+        padding: 15px;
     }
 
     h1 {
         font-size: 24px;
     }
 
-    button {
-        font-size: 14px;
-        padding: 8px 15px;
+    .input-group input {
+        font-size: 13px;
+        padding: 8px;
     }
 
-    input[type="text"] {
-        font-size: 14px;
-        padding: 10px;
+    .input-group button,
+    button {
+        font-size: 13px;
+        padding: 8px 12px;
     }
 }
