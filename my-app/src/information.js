@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { doc, collection, addDoc } from 'firebase/firestore';
+import { handleDailyStreak } from './DailyStreak';
 
 function Infopage() {
     const [income, setIncome] = useState('');
@@ -64,6 +65,7 @@ function Infopage() {
                     time: incomeTime,
                     timestamp: new Date() // For server-side timestamp if needed
                 });
+                await handleDailyStreak(userID, db);
     
                 console.log('Income added successfully');
                 navigate('/success', { state: { messageType: 'Income' } });
@@ -99,7 +101,7 @@ function Infopage() {
                     time: spendingTime,
                     timestamp: new Date()
                 });
-
+                await handleDailyStreak(userID, db);
                 console.log('Spending added successfully');
                 // Navigate to SuccessPage with messageType state
                 navigate('/success', { state: { messageType: 'Spending' } });
