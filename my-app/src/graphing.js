@@ -56,7 +56,7 @@ export function BarChartGraphing({ dateRange }) {
         };
 
         fetchIncomeData();
-    }, [userID, dataRange]); // Trigger fetch when userID is available
+    }, [userID, dateRange]); // Trigger fetch when userID is available
 
     // Generate an array from 1 to 31 for the x-axis (days of the month)
     const xAxisData = Array.from({ length: 31 }, (_, index) => index + 1);

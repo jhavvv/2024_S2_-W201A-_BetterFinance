@@ -5,8 +5,11 @@ import { auth, db } from './firebase'; // Import Firestore
 import Navbar from './Navbar';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore imports
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore'; // Firestore imports
 import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
+import { IconButton, Popover } from '@mui/material';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -14,7 +17,9 @@ function WelcomePage() {
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [dateRange, setDateRange] = useState([null, null]); // Date range for filtering
+    const [streakCount, setStreakCount] = useState(0); //store daily streak
     const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -22,6 +27,7 @@ function WelcomePage() {
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
             checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
+            fetchDailyStreak(currentUser.uid);
         }
 
         // Get the current month name
@@ -32,6 +38,32 @@ function WelcomePage() {
         const currentMonthIndex = new Date().getMonth(); // Get the current month (0-11)
         setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
     }, []);
+
+
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);  // Set the anchor element to the clicked icon
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);  // Close the popover
+    };
+
+    const open = Boolean(anchorEl);  // Check if the popover is open
+    const id = open ? 'date-range-popover' : undefined;  // Optional ID for accessibility
+    const fetchDailyStreak = async (userID) => {
+        try {
+            const userDocRef = doc(db, 'users', userID);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                setStreakCount(data.streakCount || 0); // Set streak count, default to 0 if not present
+            }
+        } catch (error) {
+            console.error('Error fetching streak count:', error);
+        }
+    };
     // Handle date range change
     const handleDateRangeChange = (range) => {
         setDateRange(range); // Update the date range state
@@ -94,38 +126,134 @@ function WelcomePage() {
             <main>
                 <div className="welcome-message">
                     <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
+                    <span> | Daily Streak: {streakCount} 🔥</span>
                 </div>
 
                 {/* Graphs */}
-                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
+                {/*<BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />*/}
                 <div className="content-container">
                     {/* Graphs container */}
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
-                            <h3 className="graph-title">Transaction History for Monthly Income for 
-                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
+                            <h3 className="graph-title">Transaction History</h3>
+                            {/* Icon that opens the date range picker */}
+                            <IconButton onClick={handleClick}>
+                                <DateRangeIcon />
+                            </IconButton>
+
+                            {/* Popover containing the date range picker */}
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}  // This is the element the popover is anchored to
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',  // Position the popover below the icon
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    horizontal: 'center',
+                                }}
+                            >
+                                {/* Date range calendar inside the popover */}
+                                <BasicDateRangeCalendar />
+                            </Popover>
+
+                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
                             <TransactionHistory showOnlyList={true} />
                             <p className="date-range-display">{formatDateRange()}</p>
                         </div>
-                        
+
                         <div className="graph recap-graph">
-                            <h3 className="graph-title">Essential and Non-Essential Spending for Monthly Income for 
-                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
+                            <h3 className="graph-title">Essential and Non-Essential Spending</h3>
+                            {/* Icon that opens the date range picker */}
+                            <IconButton onClick={handleClick}>
+                                <DateRangeIcon />
+                            </IconButton>
+
+                            {/* Popover containing the date range picker */}
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}  // This is the element the popover is anchored to
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',  // Position the popover below the icon
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    horizontal: 'center',
+                                }}
+                            >
+                                {/* Date range calendar inside the popover */}
+                                <BasicDateRangeCalendar />
+                            </Popover>
+                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
                             <PieChartEssentials />
                             <p className="date-range-display">{formatDateRange()}</p>
                         </div>
-                        
+
                         <div className="graph income-graph">
-                            <h3 className="graph-title">Monthly Income for 
-                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
+                            <h3 className="graph-title">Monthly Income</h3>
+                            {/* Icon that opens the date range picker */}
+                            <IconButton onClick={handleClick}>
+                                <DateRangeIcon />
+                            </IconButton>
+
+                            {/* Popover containing the date range picker */}
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}  // This is the element the popover is anchored to
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',  // Position the popover below the icon
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    horizontal: 'center',
+                                }}
+                            >
+                                {/* Date range calendar inside the popover */}
+                                <BasicDateRangeCalendar />
+                            </Popover>
+
+
+                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
                             <BarChartGraphing />
                             <p className="date-range-display">{formatDateRange()}</p>
                         </div>
-                        
+
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
+                            {/* Icon that opens the date range picker */}
+                            <IconButton onClick={handleClick}>
+                                <DateRangeIcon />
+                            </IconButton>
+
+                            {/* Popover containing the date range picker */}
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}  // This is the element the popover is anchored to
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',  // Position the popover below the icon
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    horizontal: 'center',
+                                }}
+                            >
+                                {/* Date range calendar inside the popover */}
+                                <BasicDateRangeCalendar />
+                            </Popover>
                             <PieChartCategories />
-                            
+
                         </div>
                     </div>
 
