@@ -5,8 +5,9 @@ import { collection, getDocs } from 'firebase/firestore';
 import { query, where} from 'firebase/firestore';
 import { LineChart } from '@mui/x-charts/LineChart'; 
 import { BarChart } from '@mui/x-charts/BarChart'; 
+import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 
-export function BarChartGraphing() {
+export function BarChartGraphing({ dateRange }) {
     const [incomeData, setIncomeData] = useState(Array(31).fill(0)); // Initialize with 0 for all days
     const [userID, setUserID] = useState(null); // Add userID to local state
 
@@ -19,11 +20,15 @@ export function BarChartGraphing() {
 
     useEffect(() => {
         const fetchIncomeData = async () => {
-            if (userID) { // Only fetch data if userID exists
+            if (userID && dateRange[0] && dateRange[1]) { // Only fetch data if userID exists and date range set
                 try {
                     const userDocRef = collection(db, 'users', userID, 'income'); // Use userID safely
-                    const querySnapshot = await getDocs(userDocRef);
-
+                    const incomeQuery = query(
+                        userDocRef,
+                        where('incomeDate', '>=', dateRange[0]),
+                        where('incomeDate', '<=', dateRange[1])
+                    );
+                    const querySnapshot = await getDocs(incomeQuery);
                     const incomeList = Array(31).fill(0); // Initialize for 31 days
 
                     querySnapshot.forEach((doc) => {
@@ -51,7 +56,7 @@ export function BarChartGraphing() {
         };
 
         fetchIncomeData();
-    }, [userID]); // Trigger fetch when userID is available
+    }, [userID, dataRange]); // Trigger fetch when userID is available
 
     // Generate an array from 1 to 31 for the x-axis (days of the month)
     const xAxisData = Array.from({ length: 31 }, (_, index) => index + 1);
@@ -72,18 +77,24 @@ export function BarChartGraphing() {
 
 
 // Pie Chart for Essential and Non-Essential Spending
-export function PieChartEssentials() {
+export function PieChartEssentials({ dateRange }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         // Fetch spending data from Firestore
         const fetchSpendingData = async () => {
             const currentUser = auth.currentUser;
-            if (currentUser) {
+            if (currentUser && dateRange[0] && dateRange[1]) {
                 try {
                     const userID = currentUser.uid;
                     const userDocRef = collection(db, 'users', userID, 'spending');
-                    const spendingSnapshot = await getDocs(userDocRef);
+                    // Add a Firestore query to filter by the selected date range
+                    const spendingQuery = query(
+                        userDocRef,
+                        where('date', '>=', dateRange[0]),
+                        where('date', '<=', dateRange[1])
+                    );
+                    const spendingSnapshot = await getDocs(spendingQuery);
 
                     let essentialCount = 0;
                     let nonEssentialCount = 0;
@@ -111,7 +122,7 @@ export function PieChartEssentials() {
         };
 
         fetchSpendingData();
-    }, []);
+    }, [dateRange]);
 
     return (
         <>

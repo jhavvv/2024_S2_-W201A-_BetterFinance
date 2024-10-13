@@ -6,12 +6,14 @@ import Navbar from './Navbar';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
 import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore imports
+import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
     const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
+    const [dateRange, setDateRange] = useState([null, null]); // Date range for filtering
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,7 +32,18 @@ function WelcomePage() {
         const currentMonthIndex = new Date().getMonth(); // Get the current month (0-11)
         setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
     }, []);
+    // Handle date range change
+    const handleDateRangeChange = (range) => {
+        setDateRange(range); // Update the date range state
+    };
 
+    const formatDateRange = () => {
+        if (dateRange[0] && dateRange[1]) {
+            return `${dateRange[0]} to ${dateRange[1]}`;
+        } else {
+            return "No date range selected";
+        }
+    };
     // Function to check if total spending exceeds total income for the current month
     const checkMonthlyExcessSpending = async (userID) => {
         try {
@@ -84,27 +97,35 @@ function WelcomePage() {
                 </div>
 
                 {/* Graphs */}
+                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
                 <div className="content-container">
                     {/* Graphs container */}
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
-                            <h3 className="graph-title">Transaction History for {currentMonth}</h3>
+                            <h3 className="graph-title">Transaction History for Monthly Income for 
+                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
                             <TransactionHistory showOnlyList={true} />
+                            <p className="date-range-display">{formatDateRange()}</p>
                         </div>
                         
                         <div className="graph recap-graph">
-                            <h3 className="graph-title">Essential and Non-Essential Spending for {currentMonth}</h3>
+                            <h3 className="graph-title">Essential and Non-Essential Spending for Monthly Income for 
+                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
                             <PieChartEssentials />
+                            <p className="date-range-display">{formatDateRange()}</p>
                         </div>
                         
                         <div className="graph income-graph">
-                            <h3 className="graph-title">Monthly Income for {currentMonth}</h3>
+                            <h3 className="graph-title">Monthly Income for 
+                                {dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>
                             <BarChartGraphing />
+                            <p className="date-range-display">{formatDateRange()}</p>
                         </div>
                         
                         <div className="graph savings-graph">
                             <h3 className="graph-title">Savings</h3>
                             <PieChartCategories />
+                            
                         </div>
                     </div>
 
