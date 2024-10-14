@@ -1,0 +1,51 @@
+/* Container for Savings page */
+.savings-container {
+    display: flex; /* Use flexbox for layout */
+}
+
+/* Input and savings list on the left */
+.input-container {
+    flex: 1; /* Take up half of the container */
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Info box for input fields */
+.info-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Styles for the savings list container */
+.savings-list-container {
+    margin-top: 20px; /* Add some space above the list */
+}
+
+/* Styles for the savings list */
+.savings-list {
+    list-style-type: none;
+    padding: 0;
+    background-color: whitesmoke;
+}
+
+.saving-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.saving-item span {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Box on the right */
+.right-container {
+    flex: 0.6; /* Take up half of the container */
+    background-color: #eaeaea; /* Background color for the right box */
+    padding: 20px; /* Add some padding */
+    border-left: 1px solid #ccc; /* Optional border to separate from the left side */
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    
+}

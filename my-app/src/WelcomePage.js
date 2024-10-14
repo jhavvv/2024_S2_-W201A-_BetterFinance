@@ -125,7 +125,7 @@ function WelcomePage() {
             {/* Welcome Message */}
             <main>
                 <div className="welcome-message">
-                    <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
+                    <h2 style={{ color: 'black' }}>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
                     <span> | Daily Streak: {streakCount} 🔥</span>
                 </div>
 
@@ -157,7 +157,7 @@ function WelcomePage() {
                                 }}
                             >
                                 {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar />
+                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
                             </Popover>
 
                             {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
@@ -188,7 +188,7 @@ function WelcomePage() {
                                 }}
                             >
                                 {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar />
+                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
                             </Popover>
                             {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
                             <PieChartEssentials />
@@ -218,7 +218,7 @@ function WelcomePage() {
                                 }}
                             >
                                 {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar />
+                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
                             </Popover>
 
 
@@ -250,7 +250,7 @@ function WelcomePage() {
                                 }}
                             >
                                 {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar />
+                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
                             </Popover>
                             <PieChartCategories />
 
