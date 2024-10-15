@@ -13,6 +13,7 @@ function WelcomePage() {
     const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
+    const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
     const [backgroundColor, setBackgroundColor] = useState(); // Background color state
 
@@ -22,6 +23,7 @@ function WelcomePage() {
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
             checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
+            fetchBudget(currentUser.uid); // Fetch budget
         }
 
         // Get the current month name
@@ -32,6 +34,21 @@ function WelcomePage() {
         const currentMonthIndex = new Date().getMonth(); // Get the current month (0-11)
         setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
     }, []);
+
+    // Function to fetch budget
+    const fetchBudget = async (userID) => {
+        try {
+            const budgetRef = collection(db, 'users', userID, 'budget');
+            const budgetSnapshot = await getDocs(budgetRef);
+
+            if (!budgetSnapshot.empty) {
+                const budgetData = budgetSnapshot.docs[0].data();
+                setBudget(budgetData.monthlyBudget); // Set budget state
+            }
+        } catch (error) {
+            console.error('Error fetching budget:', error);
+        }
+    };
 
     // Function to check if total spending exceeds total income for the current month
     const checkMonthlyExcessSpending = async (userID) => {
@@ -85,6 +102,15 @@ function WelcomePage() {
                     <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
                 </div>
 
+                {/* Budget Display */}
+                <div className="budget-display">
+                    {budget !== null ? (
+                        <h3>Your Monthly Budget: ${budget}</h3>
+                    ) : (
+                        <h3>No Budget Set Yet - Enter It Here</h3>
+                    )}
+                </div>
+
                 {/* Graphs */}
                 <div className="content-container">
                     {/* Graphs container */}
@@ -105,7 +131,7 @@ function WelcomePage() {
                         </div>
                         
                         <div className="graph savings-graph">
-                            <h3 className="graph-title">Savings</h3>
+                            <h3 className="graph-title">Spending by Categories</h3>
                             <PieChartCategories />
                         </div>
                     </div>
@@ -161,6 +187,7 @@ function WelcomePage() {
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
                         />
+
                     </aside>
                 </div>
             </main>
