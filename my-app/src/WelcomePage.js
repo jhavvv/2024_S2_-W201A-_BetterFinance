@@ -131,7 +131,7 @@ function WelcomePage() {
                         </div>
                         
                         <div className="graph savings-graph">
-                            <h3 className="graph-title">Savings</h3>
+                            <h3 className="graph-title">Spending by Categories</h3>
                             <PieChartCategories />
                         </div>
                     </div>
@@ -187,6 +187,7 @@ function WelcomePage() {
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
                         />
+
                     </aside>
                 </div>
             </main>
