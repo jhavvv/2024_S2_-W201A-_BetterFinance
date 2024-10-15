@@ -15,6 +15,7 @@ import AboutUs from './AboutUs';
 import SuccessPage from './SuccessPage';
 import EditTransactions from './EditTransactions';
 import DeleteTransactions from './DeleteTransactions';
+import BudgetGoals from './BudgetGoal';
 
 
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/transaction-history" element={<TransactionHistory />} />
           <Route path="/monthly-income" element={<MonthlyIncome />} />
           <Route path="/savings" element={<Savings />} />
+          <Route path="/BudgetGoal" element={<BudgetGoals />} />
           <Route path="/help" element={<Help />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/Infopage" element={<Infopage />} />

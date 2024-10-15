@@ -143,6 +143,11 @@ function WelcomePage() {
                         />
                         <NavButtons 
                             cssName='navigation-btn'
+                            navigate={() => navigate('/BudgetGoal')}
+                            text='Set up a budget goal'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
                             navigate={() => navigate('/Infopage')}
                             text='Update Information'
                         />
