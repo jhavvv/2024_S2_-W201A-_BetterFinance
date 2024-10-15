@@ -1,29 +1,41 @@
 /* Written by Marcos.F */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    /* Remove background color */
+    height: 100%;
+    /* Ensure body and html take full height */
+}
 
 body {
     background-color: #907AD6;
 }
 
 .title-cont {
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: center;
-   height: 100vh;
-   background-size: cover;
-   background-position: center;
-   text-align: center;
-   padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-image: url('./assets/LandingBackground.jpg');
+    background-size: cover;
+    /* Ensure image covers the entire container */
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Prevent background from repeating */
+    text-align: center;
+    padding-top: 50px;
+    /* Adjust as needed */
+    min-height: 100vh;
+    /* Ensure container takes up full viewport height */
 }
 
 h1 {
     font-size: 4rem;
     color: white;
     margin: 0;
-}
-
-h2 {
-    color: white;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .title-cont h2 {
@@ -40,15 +52,16 @@ h2 {
     gap: 15px;
 }
 
-.title-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #5A3E9B;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.title-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding-top: 50px;
+    /* Reduce padding */
 }
 
 .title-button:hover {

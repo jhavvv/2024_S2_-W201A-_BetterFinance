@@ -15,6 +15,7 @@
   padding: 14px;
 }
 
+
 /* Navbar buttons */
 #navbar button {
   color: #f2f2f2;
@@ -22,7 +23,8 @@
   border: none;
   padding: 14px 20px;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 20px;
+  font-family: "Lucida Console", "Courier New", monospace;
   margin: 0 10px;
   cursor: pointer;
   border-radius: 5px;
