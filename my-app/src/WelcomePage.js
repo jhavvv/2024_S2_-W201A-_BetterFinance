@@ -10,6 +10,8 @@ import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 import { IconButton, Popover } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 
+import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore imports
+import NavButtons from './NavButtons'; // Reusable nav buttons
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -20,6 +22,7 @@ function WelcomePage() {
     const [streakCount, setStreakCount] = useState(0); //store daily streak
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -118,7 +121,7 @@ function WelcomePage() {
     };
 
     return (
-        <div>
+        <div className="main-container" style={{ backgroundColor: backgroundColor || '#907AD6', minHeight: '100vh'  }}>
             {/* Navbar */}
             <Navbar />
 
@@ -260,14 +263,49 @@ function WelcomePage() {
                     {/* Navigation pane */}
                     <aside className="navigation-container">
                         <label className='label-style'>Other Pages</label>
-                        <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
-                        <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
-                        <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
-                        <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
-                        <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
-                        <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
-                        <button className="navigation-btn" onClick={() => navigate("/edit-transactions")}>Edit Transactions</button>
-                        <button className="navigation-btn" onClick={() => navigate("/delete-transactions")}>Delete Transactions</button>
+                        <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                        <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
+                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-profile')}
+                            text='Edit Profile'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-recap')}
+                            text='Monthly Recap'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/transaction-history')}
+                            text='Transaction History'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-income')}
+                            text='Monthly Income'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/savings')}
+                            text='Savings'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/Infopage')}
+                            text='Update Information'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-transactions')}
+                            text='Edit Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/delete-transactions')}
+                            text='Delete Transactions'
+                        />
                     </aside>
                 </div>
             </main>
