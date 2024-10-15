@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './help.css';
 import emailjs from 'emailjs-com';
 import Navbar from './Navbar';
@@ -15,7 +14,7 @@ function HelpPage() {
     const collapsibleSections = [
         {
             title: "How To Add a New Transaction",
-            content: "To add a new transaction navigate back to the home page and click on the update information page. Here you can "
+            content: "To add a new transaction navigate back to the home page and click on the update information page."
         },
         {
             title: "How To Analyze Your Spendings",
@@ -31,10 +30,10 @@ function HelpPage() {
         e.preventDefault();
 
         emailjs.sendForm(
-            'service_rz4plt9',
-            'template_q0q7mhb',
-            e.target,
-            'MObDdRNy0sNI-J30L'
+            'service_rz4plt9',  // Replace with your EmailJS service ID
+            'template_q0q7mhb',  // Replace with your EmailJS template ID
+            e.target,            // This passes the form data
+            'MObDdRNy0sNI-J30L'  // Replace with your EmailJS user ID
         )
         .then((result) => {
             console.log(result.text);
@@ -47,9 +46,7 @@ function HelpPage() {
 
     return (
         <div>
-            {/* Navbar */}
             <Navbar />
-
             <main>
                 <div id="Title" className="title">
                     <h1>Frequently Asked Questions</h1>
@@ -58,7 +55,6 @@ function HelpPage() {
                 {/* Accordion Sections */}
                 {collapsibleSections.map((section, index) => {
                     const isActive = activeIndex === index;
-
                     return (
                         <div key={index}>
                             <button
@@ -84,7 +80,8 @@ function HelpPage() {
                             Name:
                             <input 
                                 type="text" 
-                                name="name" 
+                                name="from_name"     // Correct field name for EmailJS
+                                id="from_name"
                                 value={formData.name} 
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
                                 required 
@@ -94,7 +91,8 @@ function HelpPage() {
                             Email:
                             <input 
                                 type="email" 
-                                name="email" 
+                                name="reply_to"      // Correct field name for EmailJS
+                                id="reply_to"
                                 value={formData.email} 
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
                                 required 
@@ -103,7 +101,9 @@ function HelpPage() {
                         <label>
                             Message:
                             <textarea 
-                                name="message" 
+                                type="text" 
+                                name="message"       // Correct field name for EmailJS
+                                id="message"
                                 value={formData.message} 
                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })} 
                                 required 
