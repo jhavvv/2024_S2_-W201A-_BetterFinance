@@ -13,6 +13,7 @@ function WelcomePage() {
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const navigate = useNavigate();
+    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -73,7 +74,7 @@ function WelcomePage() {
     };
 
     return (
-        <div>
+        <div className="main-container" style={{ backgroundColor: backgroundColor || '#907AD6', minHeight: '100vh'  }}>
             {/* Navbar */}
             <Navbar />
 
@@ -111,7 +112,11 @@ function WelcomePage() {
                     {/* Navigation pane */}
                     <aside className="navigation-container">
                         <label className='label-style'>Other Pages</label>
+                        <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                        <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
+                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
                         <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
+                        <button className="navigation-btn" onClick={() => navigate("/EditDashboard")}>Edit Dashboard</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
                         <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
                         <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
