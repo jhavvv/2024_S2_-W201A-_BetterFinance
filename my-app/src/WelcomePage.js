@@ -123,11 +123,6 @@ function WelcomePage() {
                         />
                         <NavButtons 
                             cssName='navigation-btn'
-                            navigate={() => navigate('/EditDashbaord')}
-                            text='Edit Dashboard'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
                             navigate={() => navigate('/monthly-recap')}
                             text='Monthly Recap'
                         />
