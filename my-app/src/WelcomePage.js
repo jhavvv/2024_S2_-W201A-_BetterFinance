@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
 import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore imports
+import NavButtons from './NavButtons'; // Reusable nav buttons
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -115,15 +116,51 @@ function WelcomePage() {
                         <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
                         <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
                         <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
-                        <button className="navigation-btn" onClick={() => navigate("/edit-profile")}>Edit Profile</button>
-                        <button className="navigation-btn" onClick={() => navigate("/EditDashboard")}>Edit Dashboard</button>
-                        <button className="navigation-btn" onClick={() => navigate("/monthly-recap")}>Monthly Recap</button>
-                        <button className="navigation-btn" onClick={() => navigate("/transaction-history")}>Transaction History</button>
-                        <button className="navigation-btn" onClick={() => navigate("/monthly-income")}>Monthly Income</button>
-                        <button className="navigation-btn" onClick={() => navigate("/savings")}>Savings</button>
-                        <button className="navigation-btn" onClick={() => navigate("/Infopage")}>Update Information</button>
-                        <button className="navigation-btn" onClick={() => navigate("/edit-transactions")}>Edit Transactions</button>
-                        <button className="navigation-btn" onClick={() => navigate("/delete-transactions")}>Delete Transactions</button>
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-profile')}
+                            text='Edit Profile'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/EditDashbaord')}
+                            text='Edit Dashboard'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-recap')}
+                            text='Monthly Recap'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/transaction-history')}
+                            text='Transaction History'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-income')}
+                            text='Monthly Income'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/savings')}
+                            text='Savings'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/Infopage')}
+                            text='Update Information'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-transactions')}
+                            text='Edit Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/delete-transactions')}
+                            text='Delete Transactions'
+                        />
                     </aside>
                 </div>
             </main>
