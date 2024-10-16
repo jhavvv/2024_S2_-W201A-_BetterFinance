@@ -187,6 +187,11 @@ function WelcomePage() {
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
                         />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/articles')}
+                            text='Articles'
+                        />
 
                     </aside>
                 </div>
