@@ -13,8 +13,7 @@ import NavButtons from './NavButtons'; // Reusable nav buttons
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
-    const [totalIncome, setTotalIncome] = useState(0);
-    const [totalSpending, setTotalSpending] = useState(0);
+    
     const [transactionDateRange, setTransactionDateRange] = useState([null, null]); // Transaction history date range
     const [essentialDateRange, setEssentialDateRange] = useState([null, null]); // Essential spending date range
     const [incomeDateRange, setIncomeDateRange] = useState([null, null]); // Income graph date range
@@ -22,8 +21,13 @@ function WelcomePage() {
     const [transactionAnchorEl, setTransactionAnchorEl] = useState(null);
     const [essentialAnchorEl, setEssentialAnchorEl] = useState(null);
     const [incomeAnchorEl, setIncomeAnchorEl] = useState(null);
-    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
+    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
+    const [totalIncome, setTotalIncome] = useState(0); // Track total income
+    const [totalSpending, setTotalSpending] = useState(0); // Track total spending
+    const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
+    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
+    
     const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
@@ -33,6 +37,7 @@ function WelcomePage() {
             setUserName(currentUser.displayName || currentUser.email);
             checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
             fetchDailyStreak(currentUser.uid);
+            fetchBudget(currentUser.uid); // Fetch budget
         }
 
         // Get the current month name
@@ -114,6 +119,21 @@ function WelcomePage() {
             return 'This Month (default)';
         }
     };
+    // Function to fetch budget
+    const fetchBudget = async (userID) => {
+        try {
+            const budgetRef = collection(db, 'users', userID, 'budget');
+            const budgetSnapshot = await getDocs(budgetRef);
+
+            if (!budgetSnapshot.empty) {
+                const budgetData = budgetSnapshot.docs[0].data();
+                setBudget(budgetData.monthlyBudget); // Set budget state
+            }
+        } catch (error) {
+            console.error('Error fetching budget:', error);
+        }
+    };
+
     // Function to check if total spending exceeds total income for the current month
     const checkMonthlyExcessSpending = async (userID) => {
         try {
@@ -165,6 +185,15 @@ function WelcomePage() {
                 <div className="welcome-message">
                     <h2 style={{ color: 'black' }}>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
                     <span> | Daily Streak: {streakCount} 🔥</span>
+                </div>
+
+                {/* Budget Display */}
+                <div className="budget-display">
+                    {budget !== null ? (
+                        <h3>Your Monthly Budget: ${budget}</h3>
+                    ) : (
+                        <h3>No Budget Set Yet - Enter It Here</h3>
+                    )}
                 </div>
 
                 {/* Graphs */}
@@ -311,6 +340,11 @@ function WelcomePage() {
                         />
                         <NavButtons
                             cssName='navigation-btn'
+                            navigate={() => navigate('/BudgetGoal')}
+                            text='Set up a budget goal'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
                             navigate={() => navigate('/Infopage')}
                             text='Update Information'
                         />
@@ -324,6 +358,7 @@ function WelcomePage() {
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
                         />
+
                     </aside>
                 </div>
             </main>

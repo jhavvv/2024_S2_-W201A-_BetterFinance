@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './Informationstyling.css';
-import './index.js';
-import './stylesheet.css';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
-import { doc, collection, addDoc } from 'firebase/firestore';
+import { doc, collection, setDoc, getDoc, addDoc, getDocs } from 'firebase/firestore';
 import { handleDailyStreak } from './DailyStreak';
 
 function Infopage() {
@@ -27,6 +24,8 @@ function Infopage() {
 
     const [userName, setUserName] = useState('');
     const [userID, setUserID] = useState('');
+    const [budget, setBudget] = useState('');
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,37 +34,56 @@ function Infopage() {
             setUserName(currentUser.displayName || currentUser.email);
             setUserID(currentUser.uid);
         }
-    }, []);
+    
+        if (userID) {
+            fetchBudget();
+        }
+    }, [userID]);
+    
+    const fetchBudget = async () => {
+        if (userID) {
+            try {
+                const userDocRef = doc(db, 'users', userID);
+                const budgetCollectionRef = collection(userDocRef, 'budget');
+                const budgetSnapshot = await getDocs(budgetCollectionRef);
+    
+                if (!budgetSnapshot.empty) {
+                    const budgetData = budgetSnapshot.docs[0].data();
+                    setBudget(budgetData.monthlyBudget);
+                } else {
+                    // No budget set yet, display placeholder
+                    setBudget('');
+                }
+            } catch (error) {
+                console.error('Error fetching budget:', error.message);
+            }
+        }
+    };
 
     const handleAddIncome = async () => {
         if (userID) {
             try {
-                // Validate input fields
                 if (!income || !incomeAmount || !incomeFrequency || !incomeDate || !incomeTime) {
                     console.error('All fields are required.');
                     return;
                 }
-    
+
                 const amount = parseFloat(incomeAmount);
                 if (isNaN(amount) || amount <= 0) {
                     console.error('Invalid income amount');
                     return;
                 }
-    
-                // Reference to user's income sub-collection
+
                 const userDocRef = doc(db, 'users', userID);
                 const incomeCollectionRef = collection(userDocRef, 'income');
-    
-                // Adding the document with date and time fields
                 await addDoc(incomeCollectionRef, {
                     incomeSource: income,
                     amount,
                     frequency: incomeFrequency,
                     incomeDate,
                     time: incomeTime,
-                    timestamp: new Date() // For server-side timestamp if needed
+                    timestamp: new Date()
                 });
-                await handleDailyStreak(userID, db);
     
                 console.log('Income added successfully');
                 navigate('/success', { state: { messageType: 'Income' } });
@@ -76,14 +94,10 @@ function Infopage() {
             console.error('User not authenticated');
         }
     };
-    
-
-    
 
     const handleAddSpending = async () => {
         if (userID) {
             try {
-                // Check if the input fields are not empty before proceeding
                 if (!spending || !spendingAmount || !spendingFrequency || !essentiality || !category || !spendingDate || !spendingTime) {
                     console.error('All fields are required.');
                     return;
@@ -103,10 +117,33 @@ function Infopage() {
                 });
                 await handleDailyStreak(userID, db);
                 console.log('Spending added successfully');
-                // Navigate to SuccessPage with messageType state
                 navigate('/success', { state: { messageType: 'Spending' } });
             } catch (error) {
                 console.error('Error adding spending:', error);
+            }
+        } else {
+            console.error('User not authenticated');
+        }
+    };
+
+    const handleSaveBudget = async () => {
+        if (userID) {
+            try {
+                if (!budget || isNaN(parseFloat(budget)) || parseFloat(budget) <= 0) {
+                    console.error('Please enter a valid budget');
+                    return;
+                }
+
+                const userDocRef = doc(db, 'users', userID, 'budget', 'monthlyBudget');
+                await setDoc(userDocRef, {
+                    monthlyBudget: parseFloat(budget),
+                    timestamp: new Date()
+                });
+
+                console.log('Budget saved successfully');
+                navigate('/success', { state: { messageType: 'Budget' } });
+            } catch (error) {
+                console.error('Error saving budget:', error.message);
             }
         } else {
             console.error('User not authenticated');
@@ -263,6 +300,22 @@ function Infopage() {
                             <option value="monthly">Monthly</option>
                         </select>
                         <button type="button" onClick={handleAddSpending}>Add Expense</button>
+                    </div>
+
+                    {/* New Budget Section */}
+                    <div className="info-box">
+                        <p>Monthly Budget</p>
+                        <label htmlFor="budget">Enter your budget for the month:</label>
+                        <input
+                            id="budget"
+                            type="number"
+                            min="0"
+                            value={budget}
+                            onChange={(e) => setBudget(e.target.value)}
+                            placeholder={budget === '' ? "No Budget Set Yet - Enter It Here" : budget}
+                            required
+                        />
+                        <button type="button" onClick={handleSaveBudget}>Save Budget</button>
                     </div>
                 </div>
             </div>
