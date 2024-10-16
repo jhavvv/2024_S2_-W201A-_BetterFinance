@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-import './LandingPage.css';
 
-function Savings() {
+function Articles() {
     const [results, setResults] = useState([]);
     const [selectedKeyword, setSelectedKeyword] = useState(''); // State for selected keyword
 
@@ -77,4 +76,4 @@ function Savings() {
     );
 }
 
-export default Savings;
+export default Articles;

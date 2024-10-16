@@ -19,6 +19,9 @@ import SuccessPage from './SuccessPage';
 import EditTransactions from './EditTransactions';
 import DeleteTransactions from './DeleteTransactions';
 import Layout from './Layout';
+import BudgetGoals from './BudgetGoal';
+import Articles from './Articles';
+
 
 function App() {
   const [backgroundColor, setBackgroundColor] = useState('#907AD6'); // 
@@ -49,14 +52,15 @@ function App() {
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/edit-transactions" element={<EditTransactions />} />
           <Route path="/delete-transactions" element={<DeleteTransactions />} />
-          <Route path="/welcome" element={
-            <Layout>
-              <WelcomePage />
-            </Layout>
-          } />
-        </Routes>
-      </div>
-    </div>
+  <Route path="/welcome" element={
+    <Layout>
+      <WelcomePage />
+    </Layout>
+  } />
+          <Route path="/articles" element={<Articles />} />
+        </Routes >
+      </div >
+    </div >
   );
 }
 

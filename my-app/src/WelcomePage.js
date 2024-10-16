@@ -12,6 +12,10 @@ function WelcomePage() {
     const [currentMonth, setCurrentMonth] = useState('');
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalSpending, setTotalSpending] = useState(0);
+    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
+    const [totalIncome, setTotalIncome] = useState(0); // Track total income
+    const [totalSpending, setTotalSpending] = useState(0); // Track total spending
+    const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
     const { backgroundColor } = useBackgroundColor();
 
@@ -25,6 +29,8 @@ function WelcomePage() {
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
             checkMonthlyExcessSpending(currentUser.uid);
+            checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
+            fetchBudget(currentUser.uid); // Fetch budget
         }
 
         const monthNames = [
@@ -35,6 +41,22 @@ function WelcomePage() {
         setCurrentMonth(monthNames[currentMonthIndex]);
     }, []);
 
+    // Function to fetch budget
+    const fetchBudget = async (userID) => {
+        try {
+            const budgetRef = collection(db, 'users', userID, 'budget');
+            const budgetSnapshot = await getDocs(budgetRef);
+
+            if (!budgetSnapshot.empty) {
+                const budgetData = budgetSnapshot.docs[0].data();
+                setBudget(budgetData.monthlyBudget); // Set budget state
+            }
+        } catch (error) {
+            console.error('Error fetching budget:', error);
+        }
+    };
+
+    // Function to check if total spending exceeds total income for the current month
     const checkMonthlyExcessSpending = async (userID) => {
         try {
             const currentMonth = new Date().getMonth() + 1;
@@ -79,6 +101,17 @@ function WelcomePage() {
                 <div className="welcome-message">
                     <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
                 </div>
+
+                {/* Budget Display */}
+                <div className="budget-display">
+                    {budget !== null ? (
+                        <h3>Your Monthly Budget: ${budget}</h3>
+                    ) : (
+                        <h3>No Budget Set Yet - Enter It Here</h3>
+                    )}
+                </div>
+
+                {/* Graphs */}
                 <div className="content-container">
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
@@ -97,10 +130,69 @@ function WelcomePage() {
                         </div>
 
                         <div className="graph savings-graph">
-                            <h3 className="graph-title">Savings</h3>
+                            <h3 className="graph-title">Spending by Categories</h3>
                             <PieChartCategories />
                         </div>
                     </div>
+
+                    {/* Navigation pane */}
+                    <aside className="navigation-container">
+                        <label className='label-style'>Other Pages</label>
+                        <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                        <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
+                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-profile')}
+                            text='Edit Profile'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-recap')}
+                            text='Monthly Recap'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/transaction-history')}
+                            text='Transaction History'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-income')}
+                            text='Monthly Income'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/savings')}
+                            text='Savings'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/BudgetGoal')}
+                            text='Set up a budget goal'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/Infopage')}
+                            text='Update Information'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-transactions')}
+                            text='Edit Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/delete-transactions')}
+                            text='Delete Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/articles')}
+                            text='Articles'
+                        />
+
+                    </aside>
                 </div>
             </main>
         </div>
