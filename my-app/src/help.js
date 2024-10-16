@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './help.css';
 import emailjs from 'emailjs-com';
-import Navbar from './Navbar';
 
 function HelpPage() {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -46,7 +45,6 @@ function HelpPage() {
 
     return (
         <div>
-            <Navbar />
             <main>
                 <div id="Title" className="title">
                     <h1>Frequently Asked Questions</h1>

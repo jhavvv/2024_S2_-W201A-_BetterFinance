@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+import './LandingPage.css';
 
 function Savings() {
     const [results, setResults] = useState([]);
