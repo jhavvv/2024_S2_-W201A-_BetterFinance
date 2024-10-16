@@ -151,7 +151,7 @@ function Savings() {
                 <div className="right-container">
                     {/* Content for the right side will go here */}
                     <h3>Additional Information</h3>
-                    <p>This box will be used for additional content.</p>
+                    <p>Recap of what was on the landing page: </p>
                     <div className='facts-cont'>
                     <h2>Tips and Tricks for saving!</h2>
                     <h3 className='fact-title'>Better Budgeting for Financial Peace</h3>

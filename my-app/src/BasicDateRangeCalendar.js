@@ -19,8 +19,9 @@ export default function BasicDateRangeCalendar({ onDateRangeChange }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangeCalendar']}>
-        <DateRangeCalendar value={dateRange} onChange={handleDateChange} />
+        <DateRangeCalendar/>
       </DemoContainer>
     </LocalizationProvider>
   );
 }
+//value={dateRange} onChange={handleDateChange}

@@ -9,20 +9,22 @@ import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firesto
 import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 import { IconButton, Popover } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore imports
 import NavButtons from './NavButtons'; // Reusable nav buttons
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
-    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
-    const [totalIncome, setTotalIncome] = useState(0); // Track total income
-    const [totalSpending, setTotalSpending] = useState(0); // Track total spending
-    const [dateRange, setDateRange] = useState([null, null]); // Date range for filtering
-    const [streakCount, setStreakCount] = useState(0); //store daily streak
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [totalSpending, setTotalSpending] = useState(0);
+    const [transactionDateRange, setTransactionDateRange] = useState([null, null]); // Transaction history date range
+    const [essentialDateRange, setEssentialDateRange] = useState([null, null]); // Essential spending date range
+    const [incomeDateRange, setIncomeDateRange] = useState([null, null]); // Income graph date range
+    const [streakCount, setStreakCount] = useState(0); // Store daily streak
+    const [transactionAnchorEl, setTransactionAnchorEl] = useState(null);
+    const [essentialAnchorEl, setEssentialAnchorEl] = useState(null);
+    const [incomeAnchorEl, setIncomeAnchorEl] = useState(null);
+    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -39,10 +41,16 @@ function WelcomePage() {
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
         const currentMonthIndex = new Date().getMonth(); // Get the current month (0-11)
-        setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
+        //setCurrentMonth(monthNames[currentMonthIndex]); // Set the month name
+        // Set default date range to current month for each graph
+        const now = new Date();
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        setTransactionDateRange([firstDayOfMonth, lastDayOfMonth]);
+        setEssentialDateRange([firstDayOfMonth, lastDayOfMonth]);
+        setIncomeDateRange([firstDayOfMonth, lastDayOfMonth]);
     }, []);
-
-
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);  // Set the anchor element to the clicked icon
@@ -54,6 +62,36 @@ function WelcomePage() {
 
     const open = Boolean(anchorEl);  // Check if the popover is open
     const id = open ? 'date-range-popover' : undefined;  // Optional ID for accessibility
+
+
+    // Handle opening date range popovers
+    const handleTransactionClick = (event) => {
+        setTransactionAnchorEl(event.currentTarget);
+    };
+
+    const handleEssentialClick = (event) => {
+        setEssentialAnchorEl(event.currentTarget);
+    };
+
+    const handleIncomeClick = (event) => {
+        setIncomeAnchorEl(event.currentTarget);
+    };
+
+    // Handle closing popovers
+    const handleTransactionClose = () => setTransactionAnchorEl(null);
+    const handleEssentialClose = () => setEssentialAnchorEl(null);
+    const handleIncomeClose = () => setIncomeAnchorEl(null);
+
+    // Handle date range changes
+    const handleTransactionDateRangeChange = (range) => setTransactionDateRange(range);
+    const handleEssentialDateRangeChange = (range) => setEssentialDateRange(range);
+    const handleIncomeDateRangeChange = (range) => setIncomeDateRange(range);
+
+
+    //const open = Boolean(anchorEl);  // Check if the popover is open
+
+    //const id = open ? 'date-range-popover' : undefined;  // Optional ID for accessibility
+
     const fetchDailyStreak = async (userID) => {
         try {
             const userDocRef = doc(db, 'users', userID);
@@ -67,16 +105,13 @@ function WelcomePage() {
             console.error('Error fetching streak count:', error);
         }
     };
-    // Handle date range change
-    const handleDateRangeChange = (range) => {
-        setDateRange(range); // Update the date range state
-    };
 
-    const formatDateRange = () => {
-        if (dateRange[0] && dateRange[1]) {
-            return `${dateRange[0]} to ${dateRange[1]}`;
+
+    const formatDateRange = (range) => {
+        if (range[0] && range[1]) {
+            return `${range[0].toLocaleDateString()} to ${range[1].toLocaleDateString()}`;
         } else {
-            return "No date range selected";
+            return 'This Month (default)';
         }
     };
     // Function to check if total spending exceeds total income for the current month
@@ -121,7 +156,7 @@ function WelcomePage() {
     };
 
     return (
-        <div className="main-container" style={{ backgroundColor: backgroundColor || '#907AD6', minHeight: '100vh'  }}>
+        <div className="main-container" style={{ backgroundColor: backgroundColor || '#907AD6', minHeight: '100vh' }}>
             {/* Navbar */}
             <Navbar />
 
@@ -139,124 +174,107 @@ function WelcomePage() {
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
                             <h3 className="graph-title">Transaction History</h3>
-                            {/* Icon that opens the date range picker */}
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={handleTransactionClick}>
                                 <DateRangeIcon />
                             </IconButton>
 
-                            {/* Popover containing the date range picker */}
                             <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}  // This is the element the popover is anchored to
-                                onClose={handleClose}
+                                open={Boolean(transactionAnchorEl)}
+                                anchorEl={transactionAnchorEl}
+                                onClose={handleTransactionClose}
                                 anchorOrigin={{
-                                    vertical: 'bottom',  // Position the popover below the icon
+                                    vertical: 'bottom',
                                     horizontal: 'center',
                                 }}
                                 transformOrigin={{
-                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    vertical: 'top',
                                     horizontal: 'center',
                                 }}
                             >
-                                {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
+                                <BasicDateRangeCalendar onDateRangeChange={handleTransactionDateRangeChange} />
                             </Popover>
-
-                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
-                            <TransactionHistory showOnlyList={true} />
-                            <p className="date-range-display">{formatDateRange()}</p>
+                            <TransactionHistory showOnlyList={true} dateRange={transactionDateRange} />
+                            <p className="date-range-display">{formatDateRange(transactionDateRange)}</p>
                         </div>
 
+                        {/* Essential and Non-Essential Spending Graph */}
                         <div className="graph recap-graph">
                             <h3 className="graph-title">Essential and Non-Essential Spending</h3>
-                            {/* Icon that opens the date range picker */}
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={handleEssentialClick}>
                                 <DateRangeIcon />
                             </IconButton>
 
-                            {/* Popover containing the date range picker */}
                             <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}  // This is the element the popover is anchored to
-                                onClose={handleClose}
+                                open={Boolean(essentialAnchorEl)}
+                                anchorEl={essentialAnchorEl}
+                                onClose={handleEssentialClose}
                                 anchorOrigin={{
-                                    vertical: 'bottom',  // Position the popover below the icon
+                                    vertical: 'bottom',
                                     horizontal: 'center',
                                 }}
                                 transformOrigin={{
-                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    vertical: 'top',
                                     horizontal: 'center',
                                 }}
                             >
-                                {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
+                                <BasicDateRangeCalendar onDateRangeChange={handleEssentialDateRangeChange} />
                             </Popover>
-                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
-                            <PieChartEssentials />
-                            <p className="date-range-display">{formatDateRange()}</p>
+                            <PieChartEssentials dateRange={essentialDateRange} />
+                            <p className="date-range-display">{formatDateRange(essentialDateRange)}</p>
                         </div>
 
+                        {/* Monthly Income Graph */}
                         <div className="graph income-graph">
                             <h3 className="graph-title">Monthly Income</h3>
-                            {/* Icon that opens the date range picker */}
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={handleIncomeClick}>
                                 <DateRangeIcon />
                             </IconButton>
 
-                            {/* Popover containing the date range picker */}
                             <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}  // This is the element the popover is anchored to
-                                onClose={handleClose}
+                                open={Boolean(incomeAnchorEl)}
+                                anchorEl={incomeAnchorEl}
+                                onClose={handleIncomeClose}
                                 anchorOrigin={{
-                                    vertical: 'bottom',  // Position the popover below the icon
+                                    vertical: 'bottom',
                                     horizontal: 'center',
                                 }}
                                 transformOrigin={{
-                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    vertical: 'top',
                                     horizontal: 'center',
                                 }}
                             >
-                                {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
+                                <BasicDateRangeCalendar onDateRangeChange={handleIncomeDateRangeChange} />
                             </Popover>
-
-
-                            {/*dateRange[0] && dateRange[1] ? `${dateRange[0].toLocaleDateString()} to ${dateRange[1].toLocaleDateString()}` : "No date range selected"}</h3>*/}
-                            <BarChartGraphing />
-                            <p className="date-range-display">{formatDateRange()}</p>
+                            <BarChartGraphing dateRange={incomeDateRange} />
+                            <p className="date-range-display">{formatDateRange(incomeDateRange)}</p>
                         </div>
-
                         <div className="graph savings-graph">
-                            <h3 className="graph-title">Savings</h3>
+                            <h3 className="graph-title">Categories of Spending</h3>
                             {/* Icon that opens the date range picker */}
                             <IconButton onClick={handleClick}>
                                 <DateRangeIcon />
                             </IconButton>
-
                             {/* Popover containing the date range picker */}
+
                             <Popover
                                 id={id}
                                 open={open}
-                                anchorEl={anchorEl}  // This is the element the popover is anchored to
+                                anchorEl={anchorEl}  // This is the element the popover is anchored to 
                                 onClose={handleClose}
                                 anchorOrigin={{
-                                    vertical: 'bottom',  // Position the popover below the icon
+                                    vertical: 'bottom',  // Position the popover below the icon 
                                     horizontal: 'center',
                                 }}
                                 transformOrigin={{
-                                    vertical: 'top',  // Align the popover's top to the icon's bottom
+                                    vertical: 'top',  // Align the popover's top to the icon's bottom 
                                     horizontal: 'center',
-                                }}
-                            >
+                                }}>
+
                                 {/* Date range calendar inside the popover */}
-                                <BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />
+                                <BasicDateRangeCalendar onDateRangeChange={handleIncomeDateRangeChange} />
                             </Popover>
                             <PieChartCategories />
-
+                            <p className="date-range-display">{formatDateRange(incomeDateRange)}</p>
                         </div>
                     </div>
 
@@ -266,42 +284,42 @@ function WelcomePage() {
                         <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
                         <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
                         <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/edit-profile')}
                             text='Edit Profile'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/monthly-recap')}
                             text='Monthly Recap'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/transaction-history')}
                             text='Transaction History'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/monthly-income')}
                             text='Monthly Income'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/savings')}
                             text='Savings'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/Infopage')}
                             text='Update Information'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/edit-transactions')}
                             text='Edit Transactions'
                         />
-                        <NavButtons 
+                        <NavButtons
                             cssName='navigation-btn'
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
