@@ -101,6 +101,7 @@ function EditProfile() {
                 await updateDoc(userRef, { username: username });
                 alert("Username changed successfully");
             }
+            alert("Username Changed Successfully");
         }
         catch (error) {
             console.error("Error updating username:", error);
@@ -130,6 +131,7 @@ function EditProfile() {
                 await sendPasswordResetEmail(auth, user.email);
                 alert("Password reset link sent to your email.");
             }
+            alert("Password reset link will be sent to your email.");
         }
         catch (error) {
             console.error("Error updating password:", error);
