@@ -1,0 +1,97 @@
+/* Hamburger nav */
+.hamburger-nav {
+    position: absolute;
+    /* Keep it absolute */
+    top: 0;
+    /* Add space from the top, adjust this value as needed */
+    right: 0;
+    width: 200px;
+    height: auto;
+    background-color: #333;
+    padding: 10px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+    position: fixed;
+    /* Keep it fixed as well */
+    top: 20px;
+    /* Adjust to your desired spacing from the top */
+    right: 20px;
+    /* Adjust to your desired spacing from the right */
+    z-index: 2000;
+    /* Ensure it's above the nav */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hamburger-icon {
+    font-size: 40px;
+    color: #fff;
+    margin-bottom: 10px;
+    z-index: 2000;
+    /* Ensure hamburger icon stays visible */
+}
+
+
+/* Color Circles for background selection */
+.color-circles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    /* Push the circles to the bottom of the hamburger menu */
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #333;
+}
+
+.circle.original {
+    background-color: #907AD6;
+    /* Original color */
+}
+
+.circle.white {
+    background-color: white;
+    border: 2px solid #333;
+    /* Ensure visibility of the white circle */
+}
+
+.circle.black {
+    background-color: black;
+}
+
+/* Hamburger nav button styles */
+.hamburger-nav button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    /* Adjust margin for buttons */
+    color: #fff;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    /* Reduced padding */
+    font-size: 16px;
+    /* Adjust font size */
+    cursor: pointer;
+}
+
+.hamburger-nav button:hover {
+    background-color: #444;
+}

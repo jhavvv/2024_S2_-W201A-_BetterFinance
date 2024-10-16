@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
 import { useNavigate } from 'react-router-dom';
-import { auth, db } from './firebase'; // Import Firestore
-import Navbar from './Navbar';
+import { auth, db } from './firebase';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore'; // Firestore imports
@@ -21,26 +20,37 @@ function WelcomePage() {
     const [transactionAnchorEl, setTransactionAnchorEl] = useState(null);
     const [essentialAnchorEl, setEssentialAnchorEl] = useState(null);
     const [incomeAnchorEl, setIncomeAnchorEl] = useState(null);
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useBackgroundColor } from './BackgroundColorContext';
+
+function WelcomePage() {
+    const [userName, setUserName] = useState('');
+    
     const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
-    const [backgroundColor, setBackgroundColor] = useState(); // Background color state
+    
     
     const [anchorEl, setAnchorEl] = useState(null);
+    const { backgroundColor } = useBackgroundColor();
+
+    useEffect(() => {
+        console.log('Current background color:', backgroundColor);
+    }, [backgroundColor]);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
 
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
+            checkMonthlyExcessSpending(currentUser.uid);
             checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
             fetchDailyStreak(currentUser.uid);
             fetchBudget(currentUser.uid); // Fetch budget
         }
 
-        // Get the current month name
         const monthNames = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
@@ -55,6 +65,8 @@ function WelcomePage() {
         setTransactionDateRange([firstDayOfMonth, lastDayOfMonth]);
         setEssentialDateRange([firstDayOfMonth, lastDayOfMonth]);
         setIncomeDateRange([firstDayOfMonth, lastDayOfMonth]);
+        
+        setCurrentMonth(monthNames[currentMonthIndex]);
     }, []);
 
     const handleClick = (event) => {
@@ -137,36 +149,34 @@ function WelcomePage() {
     // Function to check if total spending exceeds total income for the current month
     const checkMonthlyExcessSpending = async (userID) => {
         try {
-            const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
+            const currentMonth = new Date().getMonth() + 1;
             const currentYear = new Date().getFullYear();
 
-            // Query user's income for the current month
             const incomeRef = collection(db, 'users', userID, 'income');
-            const incomeQuery = query(incomeRef, where('incomeDate', '>=', `${currentYear}-${currentMonth}-01`), where('incomeDate', '<=', `${currentYear}-${currentMonth}-31`));
+            const incomeQuery = query(
+                incomeRef,
+                where('incomeDate', '>=', `${currentYear}-${currentMonth}-01`),
+                where('incomeDate', '<=', `${currentYear}-${currentMonth}-31`)
+            );
             const incomeSnapshot = await getDocs(incomeQuery);
 
-            let totalIncomeAmount = 0;
-            incomeSnapshot.forEach(doc => {
-                totalIncomeAmount += doc.data().amount;
-            });
+            const totalIncomeAmount = incomeSnapshot.docs.reduce((total, doc) => total + doc.data().amount, 0);
 
-            // Query user's spending for the current month
             const spendingRef = collection(db, 'users', userID, 'spending');
-            const spendingQuery = query(spendingRef, where('date', '>=', `${currentYear}-${currentMonth}-01`), where('date', '<=', `${currentYear}-${currentMonth}-31`));
+            const spendingQuery = query(
+                spendingRef,
+                where('date', '>=', `${currentYear}-${currentMonth}-01`),
+                where('date', '<=', `${currentYear}-${currentMonth}-31`)
+            );
             const spendingSnapshot = await getDocs(spendingQuery);
 
-            let totalSpendingAmount = 0;
-            spendingSnapshot.forEach(doc => {
-                totalSpendingAmount += doc.data().amount;
-            });
+            const totalSpendingAmount = spendingSnapshot.docs.reduce((total, doc) => total + doc.data().amount, 0);
 
-            setTotalIncome(totalIncomeAmount); // Update total income state
-            setTotalSpending(totalSpendingAmount); // Update total spending state
+            setTotalIncome(totalIncomeAmount);
+            setTotalSpending(totalSpendingAmount);
 
-            // Check if spending exceeds income
             if (totalSpendingAmount > totalIncomeAmount) {
                 console.log('Spending exceeds income for this month');
-                // You can add a notification, alert, or UI indicator here if needed
             } else {
                 console.log('Spending is within income limits for this month');
             }
@@ -181,6 +191,7 @@ function WelcomePage() {
             <Navbar />
 
             {/* Welcome Message */}
+        <div style={{ backgroundColor, minHeight: '100vh' }}>
             <main>
                 <div className="welcome-message">
                     <h2 style={{ color: 'black' }}>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
@@ -199,7 +210,6 @@ function WelcomePage() {
                 {/* Graphs */}
                 {/*<BasicDateRangeCalendar onDateRangeChange={handleDateRangeChange} />*/}
                 <div className="content-container">
-                    {/* Graphs container */}
                     <div className="graphs-container">
                         <div className="graph transaction-graph">
                             <h3 className="graph-title">Transaction History</h3>
@@ -226,7 +236,6 @@ function WelcomePage() {
                             <p className="date-range-display">{formatDateRange(transactionDateRange)}</p>
                         </div>
 
-                        {/* Essential and Non-Essential Spending Graph */}
                         <div className="graph recap-graph">
                             <h3 className="graph-title">Essential and Non-Essential Spending</h3>
                             <IconButton onClick={handleEssentialClick}>
@@ -252,7 +261,6 @@ function WelcomePage() {
                             <p className="date-range-display">{formatDateRange(essentialDateRange)}</p>
                         </div>
 
-                        {/* Monthly Income Graph */}
                         <div className="graph income-graph">
                             <h3 className="graph-title">Monthly Income</h3>
                             <IconButton onClick={handleIncomeClick}>
@@ -358,12 +366,19 @@ function WelcomePage() {
                             navigate={() => navigate('/delete-transactions')}
                             text='Delete Transactions'
                         />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/articles')}
+                            text='Articles'
+                        />
 
                     </aside>
                 </div>
             </main>
         </div>
+        </div>
     );
+
 }
 
 export default WelcomePage;

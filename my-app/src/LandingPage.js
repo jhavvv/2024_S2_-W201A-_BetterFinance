@@ -1,8 +1,5 @@
-/* Written by Marcos.F */
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
 import './LandingPage.css';
 import landingBackground from './assets/LandingBackground.jpg';
 
@@ -11,28 +8,27 @@ function LandingPage() {
 
     return (
         <div>
-            <main>
-                <div className='title-cont' style={{ backgroundImage: `url(${landingBackground})` }}>
 
-                    <h1>BetterFinance</h1>
-                    <h2>Future Ready Finance</h2>
+            <div className='title-cont' style={{ backgroundImage: `url(${landingBackground})` }}>
 
-                    <div className='title-button-cont'>
-                        <button className='title-button' onClick={() => navigate("/LoginPage")}>Login</button>
-                        <button className='title-button' onClick={() => navigate("/RegisterPage")}>Sign Up Today!</button>
-                    </div>
+                <h1>BetterFinance</h1>
+                <h2>Future Ready Finance</h2>
+
+                <div className='title-button-cont'>
+                    <button className='title-button' onClick={() => navigate("/LoginPage")}>Login</button>
+                    <button className='title-button' onClick={() => navigate("/RegisterPage")}>Sign Up Today!</button>
                 </div>
-
+            </div>
+            <main>
                 <div className='benefits-cont'>
                     <center>
-                        <td>
-                            <h2>BetterFinance Benefits</h2></td></center>
+                        <h2>BetterFinance Benefits</h2></center>
                     {/* Write about our product*/}
                     <p></p>
                 </div>
 
-                <div className='facts-cont'>
-                    <h2>Tips and Tricks</h2>
+                <div className='facts-cont'><center>
+                    <h2>Tips and Tricks</h2></center>
                     <h3 className='fact-title'>Better Budgeting for Financial Peace</h3>
                     <p>Budgeting is all about creating a roadmap for your money, so it works for you rather than against you.
                         By Tracking expenses, and using simple strategies like the 50/30/20 rule, you can gain greater control

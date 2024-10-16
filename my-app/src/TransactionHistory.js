@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './EditTransaction.css';
+import './index.js';
+import './stylesheet.css';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';

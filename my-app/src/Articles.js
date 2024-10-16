@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
 
-function GoogleSearch() {
-    const [query, setQuery] = useState('');
+function Articles() {
     const [results, setResults] = useState([]);
+    const [selectedKeyword, setSelectedKeyword] = useState(''); // State for selected keyword
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        if (query.trim()) {
+    const handleSearch = async (keyword) => {
+        if (keyword) {
             try {
                 const apiKey = 'AIzaSyB-quvLBsvQBw1qWflzAY3YIGvkk05CclY'; // Replace with your actual API key
                 const searchEngineId = 'd479c64ae589f4dc5'; // Replace with your actual search engine ID
 
                 const response = await axios.get(
-                    `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${searchEngineId}`
+                    `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(keyword)}&key=${apiKey}&cx=${searchEngineId}`
                 );
 
                 setResults(response.data.items || []);
@@ -23,19 +23,38 @@ function GoogleSearch() {
         }
     };
 
+    const handleDropdownChange = (e) => {
+        const keyword = e.target.value;
+        setSelectedKeyword(keyword); // Update selected keyword state
+        if (keyword) {
+            handleSearch(keyword); // Trigger search with selected keyword
+        }
+    };
+
     return (
         <div>
-            <h1>Google Search</h1>
-            <form onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Enter search keyword..."
-                    required
-                />
-                <button type="submit">Search</button>
-            </form>
+            <header>
+                <Navbar />
+            </header>
+
+            <h1>Search for Saving Tools and Strategies</h1>
+
+            {/* Dropdown for predefined search keywords */}
+            <div className="dropdown-container">
+                <select onChange={handleDropdownChange} value={selectedKeyword}>
+                    <option value="">Select a topic</option>
+                    <option value="Investment Strategies">Investment Strategies</option>
+                    <option value="Saving Money">Saving Money</option>
+                    <option value="Spending Wisely">Spending Wisely</option>
+                </select>
+            </div>
+
+            {/* Display selected keyword */}
+            {selectedKeyword && (
+                <p style={{ marginTop: '10px' }}>
+                    You searched for: <strong>{selectedKeyword}</strong>
+                </p>
+            )}
 
             {/* Display search results */}
             {results.length > 0 && (
@@ -57,4 +76,4 @@ function GoogleSearch() {
     );
 }
 
-export default GoogleSearch;
+export default Articles;

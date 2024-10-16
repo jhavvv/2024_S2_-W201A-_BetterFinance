@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, getDocs, addDoc, doc } from 'firebase/firestore';
 import './Savingscss.css';
 
+import './LandingPage.css';
 
 function Savings() {
     return (

@@ -1,50 +1,35 @@
-/* Written by Ijaz */
-
-/* Navbar container
-#navbar {
-    display: flex;
-    justify-content: left;
-    background-color: #333;
-    padding: 14px;
-  }
-  
-  /* Navbar buttons 
-  #navbar button {
-    color: #f2f2f2;
-    background: none;
-    border: none;
-    padding: 14px 20px;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 0 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }*/
-
-/* Button hover effect */
-#navbar button:hover {
-  background-color: #555;
-}
-
-
-
 /* Main content container */
 .content-container {
   display: flex;
   margin-top: 20px;
   width: 100%;
   justify-content: space-between;
+  padding-top: 50px;
 }
 
 /* Graphs container */
 .graphs-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* Responsive columns */
   gap: 20px;
-  width: 1000px;
+  width: 100%;
+  /* Use full width */
+  max-width: 1000px;
+  /* Max width to prevent overflow */
   padding: 20px;
+  margin: auto;
+  /* Center it within the parent */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .graphs-container {
+    grid-template-columns: 1fr;
+    /* Stack all items in a single column */
+    grid-template-rows: auto;
+    /* Allow rows to size automatically */
+  }
 }
 
 /* Individual graph styling */
@@ -54,7 +39,8 @@
   border-radius: 8px;
   padding: 20px;
   font-size: 18px;
-  height: 150px;
+  height: auto;
+  /* Allow height to adjust based on content */
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -64,53 +50,11 @@
 /* Graph title styling */
 .graph-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 1.2rem;
+  /* Change to rem for responsiveness */
   position: absolute;
   top: 10px;
   left: 10px;
-}
-
-/* Navigation pane container */
-.navigation-container {
-  width: 180px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  position: absolute;
-  top: 220px;
-  right: 12px;
-}
-
-/* Profile picture styling */
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-
-/* Navigation buttons styling */
-.navigation-btn {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 16px;
-  color: white;
-  background-color: #333;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s ease;
-}
-
-/* Button hover effect */
-.navigation-btn:hover {
-  background-color: #555;
 }
 
 .label-style {
@@ -119,5 +63,3 @@
   font-weight: bold;
   color: #333;
 }
-
-
