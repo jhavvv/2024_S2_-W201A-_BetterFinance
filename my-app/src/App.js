@@ -15,7 +15,7 @@ import AboutUs from './AboutUs';
 import SuccessPage from './SuccessPage';
 import EditTransactions from './EditTransactions';
 import DeleteTransactions from './DeleteTransactions';
-
+import CurrencyCalculator from './CurrencyCalculator';
 
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/edit-transactions" element={<EditTransactions />} />
           <Route path="/delete-transactions" element={<DeleteTransactions />} />
+          <Route path ="/currency-calculator" element={<CurrencyCalculator />} />
         </Routes>
       </div>
     </Router>
