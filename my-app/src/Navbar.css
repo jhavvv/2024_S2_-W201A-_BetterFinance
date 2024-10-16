@@ -1,44 +1,47 @@
-/* 
-
-  This will be used later so the Navbar will show up in every page 
-  (as of now it only works in the welcome page)
-  
-*/
-
-/* Navbar container */
 #navbar {
-  position: sticky;
+  position: fixed;
+  /* Keeps the navbar at the top */
   top: 0;
+  /* Aligns it at the top of the page */
+  left: 0;
+  /* Aligns to the left */
+  right: 0;
+  /* Aligns to the right, making it full width */
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
+  /* Space between items */
+  align-items: center;
+  /* Center items vertically */
   background-color: #333;
   padding: 14px;
+  z-index: 1000;
+  /* Ensure it's on top of other elements */
 }
 
+.icon {
+  width: 100px;
+  /* Adjust icon size as needed */
+}
 
-/* Navbar buttons */
-#navbar button {
+.navbar-buttons {
+  display: flex;
+  gap: 10px;
+  /* Space between buttons */
+  margin: 0 auto;
+  /* Center the button group */
+}
+
+button {
   color: #f2f2f2;
   background: none;
   border: none;
   padding: 14px 20px;
-  text-decoration: none;
-  font-size: 20px;
-  font-family: "Lucida Console", "Courier New", monospace;
-  margin: 0 10px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
-#navbar button:hover {
+button:hover {
   background-color: #555;
-}
-
-/* Icon in the Navbar */
-#navbar img.icon {
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
 }

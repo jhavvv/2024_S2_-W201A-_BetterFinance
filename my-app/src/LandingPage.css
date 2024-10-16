@@ -1,12 +1,9 @@
-/* Written by Marcos.F */
 body,
 html {
     margin: 0;
     padding: 0;
     background-color: transparent;
-    /* Remove background color */
     height: 100%;
-    /* Ensure body and html take full height */
 }
 
 body {
@@ -33,9 +30,9 @@ body {
 
 h1 {
     font-size: 4rem;
-    color: white;
     margin: 0;
     font-family: "Times New Roman", Times, serif;
+    color: white;
 }
 
 .title-cont h2 {
@@ -46,10 +43,10 @@ h1 {
 }
 
 .title-button-cont {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .title-cont {

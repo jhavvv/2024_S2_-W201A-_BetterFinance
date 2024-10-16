@@ -2,16 +2,18 @@
 
 import React from 'react';
 import Navbar from './Navbar';
+import './LandingPage.css';
 
 function Savings() {
     return (
         <div>
             <Navbar />
-            
             <main>
-                <h1>Savings</h1>
+                <td>
+                    <h1>Savings</h1>
+                </td>
             </main>
-        </div>
+        </div >
     )
 }
 
