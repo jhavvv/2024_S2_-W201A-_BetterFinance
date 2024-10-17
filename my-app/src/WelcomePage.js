@@ -6,18 +6,16 @@ import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './grap
 import TransactionHistory from './TransactionHistory';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useBackgroundColor } from './BackgroundColorContext';
+import NavButtons from './NavButtons';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
-    const [currentMonth, setCurrentMonth] = useState('');
-    const [totalIncome, setTotalIncome] = useState(0);
-    const [totalSpending, setTotalSpending] = useState(0);
     const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
-    const { backgroundColor } = useBackgroundColor();
+    const { backgroundColor, setBackgroundColor } = useBackgroundColor();
 
     useEffect(() => {
         console.log('Current background color:', backgroundColor);
@@ -29,7 +27,6 @@ function WelcomePage() {
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
             checkMonthlyExcessSpending(currentUser.uid);
-            checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
             fetchBudget(currentUser.uid); // Fetch budget
         }
 
@@ -191,13 +188,11 @@ function WelcomePage() {
                             navigate={() => navigate('/articles')}
                             text='Articles'
                         />
-
                     </aside>
                 </div>
             </main>
         </div>
     );
-
 }
 
 export default WelcomePage;
