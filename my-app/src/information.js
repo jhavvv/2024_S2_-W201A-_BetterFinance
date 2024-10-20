@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { doc, collection, setDoc, getDoc, addDoc, getDocs } from 'firebase/firestore';
+import Modal from './Modal';
 
 function Infopage() {
     const [income, setIncome] = useState('');
@@ -17,13 +18,16 @@ function Infopage() {
 
     const [incomeDate, setIncomeDate] = useState('');
     const [incomeTime, setIncomeTime] = useState('');
-    
+
     const [spendingDate, setSpendingDate] = useState('');
     const [spendingTime, setSpendingTime] = useState('');
 
     const [userName, setUserName] = useState('');
     const [userID, setUserID] = useState('');
     const [budget, setBudget] = useState('');
+
+    const [showModal, setShowModal] = useState(false); // For modal visibility
+    const [lastInputTimestamp, setLastInputTimestamp] = useState(null); // Store last input time
 
     const navigate = useNavigate();
 
@@ -33,19 +37,43 @@ function Infopage() {
             setUserName(currentUser.displayName || currentUser.email);
             setUserID(currentUser.uid);
         }
-    
+
         if (userID) {
             fetchBudget();
+            checkLastInputTime(); // Call function to check last input time
         }
     }, [userID]);
-    
+
+    const checkLastInputTime = async () => {
+        if (userID) {
+            const userDocRef = doc(db, 'users', userID);
+            const userDocSnapshot = await getDoc(userDocRef);
+
+            if (userDocSnapshot.exists()) {
+                const userData = userDocSnapshot.data();
+                const lastTimestamp = userData.lastInputTimestamp?.toDate(); // Convert Firestore timestamp
+
+                if (lastTimestamp) {
+                    setLastInputTimestamp(lastTimestamp);
+                    const now = new Date();
+                    const timeDifference = now - lastTimestamp;
+                    const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+                    if (hoursDifference > 24) {
+                        setShowModal(true); // Show the modal if more than 24 hours have passed
+                    }
+                }
+            }
+        }
+    };
+
     const fetchBudget = async () => {
         if (userID) {
             try {
                 const userDocRef = doc(db, 'users', userID);
                 const budgetCollectionRef = collection(userDocRef, 'budget');
                 const budgetSnapshot = await getDocs(budgetCollectionRef);
-    
+
                 if (!budgetSnapshot.empty) {
                     const budgetData = budgetSnapshot.docs[0].data();
                     setBudget(budgetData.monthlyBudget);
@@ -84,6 +112,9 @@ function Infopage() {
                     timestamp: new Date()
                 });
 
+                // Update last input timestamp in the user's document
+                await setDoc(userDocRef, { lastInputTimestamp: new Date() }, { merge: true });
+
                 console.log('Income added successfully');
                 navigate('/success', { state: { messageType: 'Income' } });
             } catch (error) {
@@ -93,7 +124,6 @@ function Infopage() {
             console.error('User not authenticated');
         }
     };
-
     const handleAddSpending = async () => {
         if (userID) {
             try {
@@ -114,6 +144,9 @@ function Infopage() {
                     time: spendingTime,
                     timestamp: new Date()
                 });
+
+                // Update last input timestamp in the user's document
+                await setDoc(userDocRef, { lastInputTimestamp: new Date() }, { merge: true });
 
                 console.log('Spending added successfully');
                 navigate('/success', { state: { messageType: 'Spending' } });
@@ -157,6 +190,15 @@ function Infopage() {
 
             <div id="info-container">
                 <h1>Information</h1>
+                {/* Modal to remind the user */}
+                {showModal && (
+                    <Modal
+                        show={showModal}
+                        onClose={() => setShowModal(false)}
+                        title="Reminder"
+                        message="You have not added or updated your transactions in the last 24 hours."
+                    />
+                )}
 
                 <div id="boxes-container">
                     {/* Income Section */}

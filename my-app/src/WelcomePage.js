@@ -4,33 +4,28 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { useBackgroundColor } from './BackgroundColorContext';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
-    const [currentMonth, setCurrentMonth] = useState('');
-    const [totalIncome, setTotalIncome] = useState(0);
-    const [totalSpending, setTotalSpending] = useState(0);
     const [currentMonth, setCurrentMonth] = useState(''); // State for current month
     const [totalIncome, setTotalIncome] = useState(0); // Track total income
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
-    const { backgroundColor } = useBackgroundColor();
 
-    useEffect(() => {
-        console.log('Current background color:', backgroundColor);
-    }, [backgroundColor]);
+
+
 
     useEffect(() => {
         const currentUser = auth.currentUser;
 
         if (currentUser) {
             setUserName(currentUser.displayName || currentUser.email);
-            checkMonthlyExcessSpending(currentUser.uid);
             checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
             fetchBudget(currentUser.uid); // Fetch budget
+            checkTimeDifference(currentUser.uid); // Check 24-hour time difference
         }
 
         const monthNames = [
@@ -40,6 +35,26 @@ function WelcomePage() {
         const currentMonthIndex = new Date().getMonth();
         setCurrentMonth(monthNames[currentMonthIndex]);
     }, []);
+
+    // Check the time difference since last input
+    const checkTimeDifference = async (userID) => {
+        try {
+            const userDoc = await getDoc(doc(db, 'users', userID));
+            if (userDoc.exists()) {
+                const lastInputTimestamp = userDoc.data().lastInputTimestamp?.toDate();
+                const currentTime = new Date();
+
+                // Calculate the time difference in hours
+                const timeDifference = Math.abs(currentTime - lastInputTimestamp) / 36e5;
+
+                if (timeDifference > 24) {
+                    alert("It’s been more than 24 hours since your last update. Please update or add information.");
+                }
+            }
+        } catch (error) {
+            console.error('Error checking time difference:', error);
+        }
+    };
 
     // Function to fetch budget
     const fetchBudget = async (userID) => {
@@ -96,106 +111,45 @@ function WelcomePage() {
     };
 
     return (
-        <div style={{ backgroundColor, minHeight: '100vh' }}>
-            <main>
-                <div className="welcome-message">
-                    <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
-                </div>
+        <main>
+            <div className="welcome-message">
+                <h2>Welcome {userName ? `@${userName}` : 'Guest'}!</h2>
+            </div>
 
-                {/* Budget Display */}
-                <div className="budget-display">
-                    {budget !== null ? (
-                        <h3>Your Monthly Budget: ${budget}</h3>
-                    ) : (
-                        <h3>No Budget Set Yet - Enter It Here</h3>
-                    )}
-                </div>
+            {/* Budget Display */}
+            <div className="budget-display">
+                {budget !== null ? (
+                    <h3>Your Monthly Budget: ${budget}</h3>
+                ) : (
+                    <h3>No Budget Set Yet - Enter It Here</h3>
+                )}
+            </div>
 
-                {/* Graphs */}
-                <div className="content-container">
-                    <div className="graphs-container">
-                        <div className="graph transaction-graph">
-                            <h3 className="graph-title">Transaction History for {currentMonth}</h3>
-                            <TransactionHistory showOnlyList={true} />
-                        </div>
-
-                        <div className="graph recap-graph">
-                            <h3 className="graph-title">Essential and Non-Essential Spending for {currentMonth}</h3>
-                            <PieChartEssentials />
-                        </div>
-
-                        <div className="graph income-graph">
-                            <h3 className="graph-title">Monthly Income for {currentMonth}</h3>
-                            <BarChartGraphing />
-                        </div>
-
-                        <div className="graph savings-graph">
-                            <h3 className="graph-title">Spending by Categories</h3>
-                            <PieChartCategories />
-                        </div>
+            {/* Graphs */}
+            <div className="content-container">
+                <div className="graphs-container">
+                    <div className="graph transaction-graph">
+                        <h3 className="graph-title">Transaction History for {currentMonth}</h3>
+                        <TransactionHistory showOnlyList={true} />
                     </div>
 
-                    {/* Navigation pane */}
-                    <aside className="navigation-container">
-                        <label className='label-style'>Other Pages</label>
-                        <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
-                        <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
-                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/edit-profile')}
-                            text='Edit Profile'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/monthly-recap')}
-                            text='Monthly Recap'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/transaction-history')}
-                            text='Transaction History'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/monthly-income')}
-                            text='Monthly Income'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/savings')}
-                            text='Savings'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/BudgetGoal')}
-                            text='Set up a budget goal'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/Infopage')}
-                            text='Update Information'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/edit-transactions')}
-                            text='Edit Transactions'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/delete-transactions')}
-                            text='Delete Transactions'
-                        />
-                        <NavButtons 
-                            cssName='navigation-btn'
-                            navigate={() => navigate('/articles')}
-                            text='Articles'
-                        />
+                    <div className="graph recap-graph">
+                        <h3 className="graph-title">Essential and Non-Essential Spending for {currentMonth}</h3>
+                        <PieChartEssentials />
+                    </div>
 
-                    </aside>
+                    <div className="graph income-graph">
+                        <h3 className="graph-title">Monthly Income for {currentMonth}</h3>
+                        <BarChartGraphing />
+                    </div>
+
+                    <div className="graph savings-graph">
+                        <h3 className="graph-title">Spending by Categories</h3>
+                        <PieChartCategories />
+                    </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     );
 
 }
