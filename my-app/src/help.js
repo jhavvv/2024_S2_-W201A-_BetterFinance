@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './help.css';
 import emailjs from 'emailjs-com';
-import Navbar from './Navbar';
 
 function HelpPage() {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -18,7 +17,7 @@ function HelpPage() {
         },
         {
             title: "How To Analyze Your Spendings",
-            content: "Curabitur ut eros non enim posuere efficitur. Fusce eget tortor urna."
+            content: "Look at your spendings"
         },
         {
             title: "Section 3",
@@ -35,18 +34,17 @@ function HelpPage() {
             e.target,            // This passes the form data
             'MObDdRNy0sNI-J30L'  // Replace with your EmailJS user ID
         )
-        .then((result) => {
-            console.log(result.text);
-            alert("Help request sent successfully!");
-        }, (error) => {
-            console.log(error.text);
-            alert("Failed to send help request.");
-        });
+            .then((result) => {
+                console.log(result.text);
+                alert("Help request sent successfully!");
+            }, (error) => {
+                console.log(error.text);
+                alert("Failed to send help request.");
+            });
     };
 
     return (
         <div>
-            <Navbar />
             <main>
                 <div id="Title" className="title">
                     <h1>Frequently Asked Questions</h1>
@@ -78,35 +76,35 @@ function HelpPage() {
                     <form onSubmit={handleSubmit}>
                         <label>
                             Name:
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 name="from_name"     // Correct field name for EmailJS
                                 id="from_name"
-                                value={formData.name} 
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
-                                required 
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                required
                             />
                         </label>
                         <label>
                             Email:
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 name="reply_to"      // Correct field name for EmailJS
                                 id="reply_to"
-                                value={formData.email} 
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
-                                required 
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                required
                             />
                         </label>
                         <label>
                             Message:
-                            <textarea 
-                                type="text" 
+                            <textarea
+                                type="text"
                                 name="message"       // Correct field name for EmailJS
                                 id="message"
-                                value={formData.message} 
-                                onChange={(e) => setFormData({ ...formData, message: e.target.value })} 
-                                required 
+                                value={formData.message}
+                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                required
                             />
                         </label>
                         <button type="submit">Send</button>

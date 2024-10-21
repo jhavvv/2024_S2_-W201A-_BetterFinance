@@ -1,14 +1,16 @@
 #info-container {
-    padding: 20px;
+    padding: 100px;
     text-align: center;
 }
 
 /* Flexbox for the boxes */
 #boxes-container {
     display: flex;
-    justify-content: space-between; /* Space out the boxes evenly */
-    margin-top: 20px;
-    gap: 20px; /* Add spacing between the boxes */
+    justify-content: space-between;
+    /* Space out the boxes evenly */
+    margin-top: 200px;
+    gap: 20px;
+    /* Add spacing between the boxes */
 }
 
 /* Individual box styling */
@@ -27,14 +29,17 @@
 }
 
 .info-box label {
-    display: block; /* Make sure labels stack on top of each other */
+    display: block;
+    /* Make sure labels stack on top of each other */
     margin-bottom: 5px;
 }
 
 .info-box input,
 .info-box select {
-    width: 100%; /* Make inputs and selects fill the width of the box */
-    margin-bottom: 10px; /* Space out the inputs and selects */
+    width: 100%;
+    /* Make inputs and selects fill the width of the box */
+    margin-bottom: 10px;
+    /* Space out the inputs and selects */
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -46,7 +51,8 @@
     color: white;
     border: none;
     cursor: pointer;
-    width: 100%; /* Make the button fill the width of the box */
+    width: 100%;
+    /* Make the button fill the width of the box */
     border-radius: 4px;
 }
 

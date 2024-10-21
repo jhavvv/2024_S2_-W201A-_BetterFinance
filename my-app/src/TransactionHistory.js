@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './EditTransaction.css';
+import './index.js';
+import './stylesheet.css';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
@@ -9,6 +12,8 @@ function TransactionHistory({ showOnlyList = false }) {
     const [userName, setUserName] = useState('');
     const [userID, setUserID] = useState('');
     const [transactions, setTransactions] = useState([]);
+    const [sortCriteria, setSortCriteria] = useState('name'); // New state for sorting
+    const [dropdownVisible, setDropdownVisible] = useState(false); // State to manage dropdown visibility
     const transactionListRef = useRef(null); // Create a ref for the list element
     const navigate = useNavigate();
 
@@ -70,11 +75,44 @@ function TransactionHistory({ showOnlyList = false }) {
         }
     }, [userID, showOnlyList]);
 
+    // Function to sort transactions
+    const sortTransactions = (criteria) => {
+        setSortCriteria(criteria);
+        const sortedTransactions = [...transactions].sort((a, b) => {
+            if (criteria === 'name') {
+                return a.spendingSource.localeCompare(b.spendingSource);
+            } else if (criteria === 'date') {
+                return new Date(a.date) - new Date(b.date);
+            } else if (criteria === 'price') {
+                return a.amount - b.amount;
+            }
+            return 0; // Default case
+        });
+        setTransactions(sortedTransactions);
+        setDropdownVisible(false); // Close dropdown after sorting
+    };
+
     return (
         <div>
-            {!showOnlyList && <Navbar />}  {/* Only render Navbar if showOnlyList is false */}
+            {!showOnlyList && <Navbar />}
             <main>
-                {!showOnlyList && <h1>Transaction History</h1>}  {/* Only show the heading if showOnlyList is false */}
+                {!showOnlyList && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h1>Transaction History</h1>
+                        <div style={{ position: 'relative' }}>
+                            <button onClick={() => setDropdownVisible(!dropdownVisible)}>
+                                Sort
+                            </button>
+                            {dropdownVisible && (
+                                <div className="dropdown-menu" style={{ position: 'absolute', right: 0 }}>
+                                    <button onClick={() => sortTransactions('name')}>Sort by Name</button>
+                                    <button onClick={() => sortTransactions('date')}>Sort by Date</button>
+                                    <button onClick={() => sortTransactions('price')}>Sort by Price</button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
                 <ul id="transactions-list" ref={transactionListRef}>
                     {transactions.length > 0 ? (
                         transactions.map(transaction => (

@@ -1,80 +1,121 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EditProfile.css';
 import Navbar from './Navbar';
-import { auth, db } from './firebase';
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { auth, db, storage } from './firebase'; // Import storage from firebase
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { updateEmail, deleteUser, sendPasswordResetEmail } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage functions
 
 function EditProfile() {
-
-    // State for toggling form fields
-    const [showFirstNameInput, setShowFirstNameInput] = useState(false);
-    const [showLastNameInput, setShowLastNameInput] = useState(false);
-    const [showUsernameInput, setShowUsernameInput] = useState(false);
-
-    // State for form values
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [profilePic, setProfilePic] = useState(null); // State for storing the profile picture URL
+    const [newProfilePic, setNewProfilePic] = useState(null); // State for the new image file
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    const userRef = doc(db, "users", user.uid);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        const userData = userSnap.data();
+                        setFirstName(userData.firstName || '');
+                        setLastName(userData.lastName || '');
+                        setUsername(userData.username || '');
+                        setEmail(user.email || '');
+                        setProfilePic(userData.profilePic || '/profile.jpg'); // Set the profile picture URL
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchUserData();
+    }, []);
+
+    // Handle file selection for profile picture
+    const handleProfilePicChange = (e) => {
+        if (e.target.files[0]) {
+            setNewProfilePic(e.target.files[0]); // Store the selected file
+        }
+    };
+
+    // Upload the new profile picture to Firebase Storage
+    const handleProfilePicUpload = async () => {
+        try {
+            const user = auth.currentUser;
+            if (user && newProfilePic) {
+                const profilePicRef = ref(storage, `profile_pics/${user.uid}`);
+                await uploadBytes(profilePicRef, newProfilePic);
+                const profilePicURL = await getDownloadURL(profilePicRef);
+
+                // Update the profile picture in Firestore
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, { profilePic: profilePicURL });
+
+                setProfilePic(profilePicURL); // Update the displayed profile picture
+                alert("Profile picture updated successfully!");
+            }
+        } catch (error) {
+            console.error("Error uploading profile picture:", error);
+        }
+    };
 
     const handleFirstNameChange = async () => {
         try {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, { firstName: firstName});
-                console.log("First name updated:", firstName);
+                await updateDoc(userRef, { firstName: firstName });
                 alert("First name changed successfully");
             }
         }
         catch (error) {
             console.error("Error updating first name:", error);
         }
-        setShowFirstNameInput(false);
     };
 
     const handleLastNameChange = async () => {
         try {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, { lastName: lastName});
-                console.log("Last name updated:", lastName);
-                alert("Last name Changed Successfully");
+                await updateDoc(userRef, { lastName: lastName });
+                alert("Last name changed successfully");
             }
         }
         catch (error) {
             console.error("Error updating last name:", error);
         }
-        setShowLastNameInput(false);
     };
 
     const handleUsernameChange = async () => {
         try {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, { username: username });
-                console.log("Username updated:", username);
+                alert("Username changed successfully");
             }
             alert("Username Changed Successfully");
         }
         catch (error) {
             console.error("Error updating username:", error);
         }
-        setShowUsernameInput(false);
     };
 
     const handleEmailChange = async () => {
         try {
             const user = auth.currentUser;
-            if(user) {
-                await updateEmail(user, user.email);
+            if (user) {
+                await updateEmail(user, email);
                 await user.sendEmailVerification();
-                console.log("Email verification sent to:", user.email);
-
                 const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, { email: user.email });
+                await updateDoc(userRef, { email: email });
                 alert("Email verification link will be sent to your email address.");
             }
         }
@@ -86,83 +127,87 @@ function EditProfile() {
     const handlePasswordChange = async () => {
         try {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 await sendPasswordResetEmail(auth, user.email);
-                console.log("Password reset link sent to:", user.email);
+                alert("Password reset link sent to your email.");
             }
             alert("Password reset link will be sent to your email.");
         }
         catch (error) {
-            console.error("Error updating password:", error)
+            console.error("Error updating password:", error);
         }
     };
 
     const handleDeleteProfile = async () => {
-        try{
+        try {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 await deleteDoc(doc(db, "users", user.uid));
                 await deleteUser(user);
-                console.log("Profile deleted");
-                alert("Prodile Deleted Successfully");
+                alert("Profile deleted successfully.");
             }
         }
-        catch(error) {
-            console.error("Error deleting profile", error);
+        catch (error) {
+            console.error("Error deleting profile:", error);
         }
-     };
+    };
 
     return (
         <div>
-            <Navbar />           
+            <Navbar />
             <main>
                 <h1>Edit Profile</h1>
-                <img src="/profile.jpg" alt="Profile" className="profile-pic" />
+                <img src={profilePic} alt="Profile" className="profile-pic" /> {/* Dynamically display the profile picture */}
+
+                {/* File input for uploading a new profile picture */}
+                <div className="input-group">
+                    <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                    <button onClick={handleProfilePicUpload}>Upload Profile Picture</button>
+                </div>
 
                 {/* Change First Name */}
-                <button onClick={() => setShowFirstNameInput(!showFirstNameInput)}>Change First Name</button>
-                {showFirstNameInput && (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="New First Name"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                        />
-                        <button onClick={handleFirstNameChange}>Save First Name</button>
-                    </div>
-                )}
+                <div className="input-group">
+                    <input
+                        type="text"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    <button onClick={handleFirstNameChange}>Save</button>
+                </div>
 
                 {/* Change Last Name */}
-                <button onClick={() => setShowLastNameInput(!showLastNameInput)}>Change Last Name</button>
-                {showLastNameInput && (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="New Last Name"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                        />
-                        <button onClick={handleLastNameChange}>Save Last Name</button>
-                    </div>
-                )}
+                <div className="input-group">
+                    <input
+                        type="text"
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                    <button onClick={handleLastNameChange}>Save</button>
+                </div>
 
                 {/* Change Username */}
-                <button onClick={() => setShowUsernameInput(!showUsernameInput)}>Change Username</button>
-                {showUsernameInput && (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="New Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <button onClick={handleUsernameChange}>Save Username</button>
-                    </div>
-                )}
+                <div className="input-group">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <button onClick={handleUsernameChange}>Save</button>
+                </div>
 
                 {/* Change Email */}
-                <button onClick={handleEmailChange}>Change Email</button>
+                <div className="input-group">
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button onClick={handleEmailChange}>Save</button>
+                </div>
 
                 {/* Change Password */}
                 <button onClick={handlePasswordChange}>Change Password</button>
@@ -171,7 +216,7 @@ function EditProfile() {
                 <button onClick={handleDeleteProfile}>Delete Profile</button>
             </main>
         </div>
-    )
+    );
 }
 
 export default EditProfile;
