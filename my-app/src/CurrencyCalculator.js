@@ -16,7 +16,7 @@ const exchangeRates = {
   AUD: 0.91,
   USD: 0.61,
   EUR: 0.56,
-  JPY: 91.29,
+  JPY: 90.72,
 };
 
 const CurrencyCalculator = () => {
