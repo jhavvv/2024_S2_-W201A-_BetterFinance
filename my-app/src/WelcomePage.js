@@ -9,7 +9,6 @@ import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 import { IconButton, Popover } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NavButtons from './NavButtons'; // Reusable nav buttons
-import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useBackgroundColor } from './BackgroundColorContext';
 
 function WelcomePage() {
@@ -189,7 +188,7 @@ function WelcomePage() {
         return (
             <div className="main-container" style={{ backgroundColor: backgroundColor || '#907AD6', minHeight: '100vh' }}>
                 {/* Navbar */}
-                <Navbar />
+                {/* <Navbar /> */}
 
                 {/* Welcome Message */}
                 <div style={{ backgroundColor, minHeight: '100vh' }}>
@@ -319,9 +318,10 @@ function WelcomePage() {
                             {/* Navigation pane */}
                             <aside className="navigation-container">
                                 <label className='label-style'>Other Pages</label>
-                                <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                                
+                                {/* <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
                                 <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
-                                <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
+                                <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button> */}
                                 <NavButtons
                                     cssName='navigation-btn'
                                     navigate={() => navigate('/edit-profile')}
