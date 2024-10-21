@@ -6,15 +6,14 @@ import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './grap
 import TransactionHistory from './TransactionHistory';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useBackgroundColor } from './BackgroundColorContext';
+import NavButtons from './NavButtons';
+import HamburgerMenu from './HamburgerMenu';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
     const [currentMonth, setCurrentMonth] = useState('');
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalSpending, setTotalSpending] = useState(0);
-    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
-    const [totalIncome, setTotalIncome] = useState(0); // Track total income
-    const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
     const { backgroundColor } = useBackgroundColor();
@@ -138,9 +137,9 @@ function WelcomePage() {
                     {/* Navigation pane */}
                     <aside className="navigation-container">
                         <label className='label-style'>Other Pages</label>
-                        <button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                        {/*<button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
                         <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
-                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>
+                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>*/}
                         <NavButtons 
                             cssName='navigation-btn'
                             navigate={() => navigate('/edit-profile')}
