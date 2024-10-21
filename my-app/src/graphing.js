@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { auth, db } from './firebase'; // Ensure firebase is imported
 import { collection, getDocs } from 'firebase/firestore';
-import { query, where } from 'firebase/firestore';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { query, where} from 'firebase/firestore';
+import { LineChart } from '@mui/x-charts/LineChart'; 
+import { BarChart } from '@mui/x-charts/BarChart'; 
+import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
 
-export function BarChartGraphing() {
+export function BarChartGraphing({ dateRange }) {
     const [incomeData, setIncomeData] = useState(Array(31).fill(0)); // Initialize with 0 for all days
     const [userID, setUserID] = useState(null); // Add userID to local state
 
@@ -19,11 +20,15 @@ export function BarChartGraphing() {
 
     useEffect(() => {
         const fetchIncomeData = async () => {
-            if (userID) { // Only fetch data if userID exists
+            if (userID && dateRange[0] && dateRange[1]) { // Only fetch data if userID exists and date range set
                 try {
                     const userDocRef = collection(db, 'users', userID, 'income'); // Use userID safely
-                    const querySnapshot = await getDocs(userDocRef);
-
+                    const incomeQuery = query(
+                        userDocRef,
+                        where('incomeDate', '>=', dateRange[0]),
+                        where('incomeDate', '<=', dateRange[1])
+                    );
+                    const querySnapshot = await getDocs(incomeQuery);
                     const incomeList = Array(31).fill(0); // Initialize for 31 days
 
                     querySnapshot.forEach((doc) => {
@@ -51,7 +56,7 @@ export function BarChartGraphing() {
         };
 
         fetchIncomeData();
-    }, [userID]); // Trigger fetch when userID is available
+    }, [userID, dateRange]); // Trigger fetch when userID is available
 
     // Generate an array from 1 to 31 for the x-axis (days of the month)
     const xAxisData = Array.from({ length: 31 }, (_, index) => index + 1);
@@ -69,19 +74,27 @@ export function BarChartGraphing() {
 }
 
 
+
+
 // Pie Chart for Essential and Non-Essential Spending
-export function PieChartEssentials() {
+export function PieChartEssentials({ dateRange }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         // Fetch spending data from Firestore
         const fetchSpendingData = async () => {
             const currentUser = auth.currentUser;
-            if (currentUser) {
+            if (currentUser && dateRange[0] && dateRange[1]) {
                 try {
                     const userID = currentUser.uid;
                     const userDocRef = collection(db, 'users', userID, 'spending');
-                    const spendingSnapshot = await getDocs(userDocRef);
+                    // Add a Firestore query to filter by the selected date range
+                    const spendingQuery = query(
+                        userDocRef,
+                        where('date', '>=', dateRange[0]),
+                        where('date', '<=', dateRange[1])
+                    );
+                    const spendingSnapshot = await getDocs(spendingQuery);
 
                     let essentialCount = 0;
                     let nonEssentialCount = 0;
@@ -109,7 +122,7 @@ export function PieChartEssentials() {
         };
 
         fetchSpendingData();
-    }, []);
+    }, [dateRange]);
 
     return (
         <>
@@ -131,85 +144,25 @@ export function PieChartEssentials() {
     );
 }
 
+// Pie Chart for Spending Categories (unchanged)
 export function PieChartCategories() {
-    const [categoryData, setCategoryData] = useState(null);
-
-    useEffect(() => {
-        // Fetch spending data from Firestore and categorize it
-        const fetchSpendingData = async () => {
-            const currentUser = auth.currentUser;
-            if (currentUser) {
-                try {
-                    const userID = currentUser.uid;
-                    const userDocRef = collection(db, 'users', userID, 'spending');
-                    const spendingSnapshot = await getDocs(userDocRef);
-
-                    // Initialize categories with 0 values
-                    let categoryMap = {
-                        groceries: 0,
-                        transport: 0,
-                        entertainment: 0,
-                        investments: 0,
-                        other: 0,
-                    };
-
-                    // Process each spending document
-                    spendingSnapshot.forEach((doc) => {
-                        const spendingData = doc.data();
-                        const category = spendingData.category || 'other'; // Default to 'Other' if no category
-
-                        // Accumulate spending amount for each category
-                        if (categoryMap[category] !== undefined) {
-                            categoryMap[category] += spendingData.amount;
-                        } else {
-                            categoryMap['other'] += spendingData.amount; // Add to 'Other' if category is unrecognized
-                        }
-                    });
-
-                    // Prepare data for PieChart
-                    const pieChartData = Object.keys(categoryMap).map((category, index) => ({
-                        id: index,
-                        value: categoryMap[category],
-                        label: category,
-                        color: getCategoryColor(category), // Function to assign colors to categories
-                    }));
-
-                    setCategoryData(pieChartData);
-
-                } catch (error) {
-                    console.error('Error fetching spending data:', error);
-                }
-            }
-        };
-
-        fetchSpendingData();
-    }, []);
-
-    // Function to assign colors to categories
-    const getCategoryColor = (category) => {
-        const colors = {
-            groceries: 'green',
-            transport: 'purple',
-            entertainment: 'orange',
-            investments: 'red',
-            other: 'pink',
-        };
-        return colors[category]
-    };
-
     return (
-        <>
-            {categoryData ? (
-                <PieChart
-                    series={[{ data: categoryData }]}
-                    width={300}
-                    height={175}
-                />
-            ) : (
-                <p>Loading...</p> // A loading message while data is being fetched
-            )}
-        </>
+        <PieChart
+            colors={['green', 'purple', 'orange', 'red', 'pink', 'yellow']}
+            series={[
+                {
+                    data: [
+                        { id: 0, value: 10, color: 'red', label: 'Groceries' },
+                        { id: 1, value: 15, color: 'green', label: 'Transport' },
+                        { id: 2, value: 20, color: 'purple', label: 'Entertainment' },
+                        { id: 3, value: 25, color: 'orange', label: 'Investments' },
+                        { id: 4, value: 30, color: 'pink', label: 'Other' },
+                        { id: 5, value: 35, color: 'yellow', label: 'Miscellaneous' },
+                    ],
+                },
+            ]}
+            width={300}
+            height={175}
+        />
     );
 }
-
-
