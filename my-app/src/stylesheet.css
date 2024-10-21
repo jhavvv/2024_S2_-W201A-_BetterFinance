@@ -1,43 +1,27 @@
+/* Container for the login/register pages */
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    /* You might want to change this if it's too tall */
     font-family: Arial, sans-serif;
+
 }
 
-.button-group {
-    display: flex;
-    gap: 20px;
-    /* Space between buttons */
-    margin-top: 10px;
-}
-
-.btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
-/* login and register */
-
-/* Form container with a box */
+/* Adjust form container */
 .form-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    position: relative;
+    align-items: flex-start;
+    /* Align items to the start */
+    height: auto;
+    /* Change to auto to fit content */
+    padding: 20px;
+    /* Add padding for spacing */
+    margin-top: 20px;
+    /* Space below navbar */
 }
 
 /* Box behind the login form */
@@ -49,21 +33,11 @@
     border: 1px solid #ccc;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin-bottom: 20px;
+    /* Space below the box */
 }
 
-.register-box {
-    position: absolute;
-    width: 450px;
-    /* Adjust to make it bigger than form */
-    height: 500px;
-    border-radius: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 0;
-    /* Keep it behind the form */
-}
-
+/* Form box above the background */
 .form-box {
     width: 400px;
     padding: 20px;
@@ -72,7 +46,6 @@
     border: 1px solid #ccc;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     z-index: 1;
-    /* Put the form above the background */
     position: relative;
     text-align: center;
 }
@@ -92,19 +65,7 @@ h3 {
     /* Space between input fields */
 }
 
-input[type=email],
-input[type=password] {
-    width: 80%;
-    /* Adjust width as needed */
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-/*register*/
-
-
+/* Input fields styles */
 input[type=email],
 input[type=password],
 input[type=text] {
