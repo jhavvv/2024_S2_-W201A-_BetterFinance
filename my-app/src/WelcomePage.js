@@ -10,7 +10,6 @@ import { IconButton, Popover } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NavButtons from './NavButtons'; // Reusable nav buttons
 import { useBackgroundColor } from './BackgroundColorContext';
-import NavButtons from './NavButtons';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
