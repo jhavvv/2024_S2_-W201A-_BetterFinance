@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import Modal from './Modal';
 
 
 function WelcomePage() {
@@ -14,20 +16,70 @@ function WelcomePage() {
     const [totalSpending, setTotalSpending] = useState(0); // Track total spending
     const [budget, setBudget] = useState(null); // State for budget
     const navigate = useNavigate();
-
-
-
+    const [showModal, setShowModal] = useState(false);
+    const [userID, setUserID] = useState('');
 
     useEffect(() => {
-        const currentUser = auth.currentUser;
-
+        const currentUser = auth.currentUser; // Assuming you have auth defined
         if (currentUser) {
-            setUserName(currentUser.displayName || currentUser.email);
-            checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
-            fetchBudget(currentUser.uid); // Fetch budget
-            checkTimeDifference(currentUser.uid); // Check 24-hour time difference
+            setUserID(currentUser.uid);
+            checkLastInputTime(currentUser.uid); // Check last input time when user logs in
         }
+    }, []);
 
+    const addLastInputTimestamp = async (userID, timestamp) => {
+        const userDocRef = doc(db, 'users', userID);
+        await setDoc(userDocRef, {
+            lastInputTimestamp: timestamp
+        }, { merge: true });  // Merge to avoid overwriting other fields
+    };
+
+    const checkLastInputTime = async (userID) => {
+        const userDocRef = doc(db, 'users', userID);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            const lastTimestamp = userData.lastInputTimestamp;
+
+            if (!lastTimestamp) {
+                // If lastInputTimestamp does not exist, show the modal
+                setShowModal(true);
+            } else {
+                const now = new Date();
+                const lastTimestampDate = lastTimestamp.toDate(); // Convert Firestore timestamp
+                const timeDifference = now - lastTimestampDate;
+                const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+                if (hoursDifference > 24) {
+                    setShowModal(true); // Show the modal if more than 24 hours have passed
+                }
+            }
+        } else {
+            console.log('User document does not exist.');
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName || user.email);
+                checkMonthlyExcessSpending(user.uid);
+                fetchBudget(user.uid);
+
+                // Delay the checkTimeDifference to ensure user data is ready
+                setTimeout(() => {
+                    checkTimeDifference(user.uid);
+                }, 1000);
+            } else {
+                navigate('/login'); // Redirect to login if not authenticated
+            }
+        });
+
+        return () => unsubscribe(); // Cleanup the listener on component unmount
+    }, []);
+
+    useEffect(() => {
         const monthNames = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
@@ -42,19 +94,27 @@ function WelcomePage() {
             const userDoc = await getDoc(doc(db, 'users', userID));
             if (userDoc.exists()) {
                 const lastInputTimestamp = userDoc.data().lastInputTimestamp?.toDate();
+                console.log("Last input timestamp:", lastInputTimestamp);
                 const currentTime = new Date();
+                console.log("Current time:", currentTime);
 
                 // Calculate the time difference in hours
                 const timeDifference = Math.abs(currentTime - lastInputTimestamp) / 36e5;
+                console.log("Time difference in hours:", timeDifference);
 
                 if (timeDifference > 24) {
                     alert("It’s been more than 24 hours since your last update. Please update or add information.");
+                } else {
+                    console.log("No need to prompt, time difference is less than 24 hours.");
                 }
+            } else {
+                console.log("User document not found");
             }
         } catch (error) {
             console.error('Error checking time difference:', error);
         }
     };
+
 
     // Function to fetch budget
     const fetchBudget = async (userID) => {

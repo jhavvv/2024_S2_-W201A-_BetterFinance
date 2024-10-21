@@ -130,13 +130,13 @@ function EditTransactions() {
             <div className="info-box">
                 <label>Your Transactions:</label>
                 <select onChange={handleTransactionSelect} value={selectedTransactionId}>
-                        <option value="">-- Select a transaction --</option>
-                        {transactions.map(transaction => (
-                            <option key={transaction.id} value={transaction.id}>
-                                {transaction.spendingSource} - ${transaction.amount}
-                            </option>
-                        ))}
-                    </select>
+                    <option value="">-- Select a transaction --</option>
+                    {transactions.map(transaction => (
+                        <option key={transaction.id} value={transaction.id}>
+                            {transaction.spendingSource} - ${transaction.amount}
+                        </option>
+                    ))}
+                </select>
 
                 <label>Expense Name:</label>
                 <input
@@ -223,7 +223,7 @@ function EditTransactions() {
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                 </select>
-                
+
                 <button type="button" onClick={handleUpdateSpending}>Save Changes</button>
             </div>
         </div>

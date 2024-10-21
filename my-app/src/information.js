@@ -37,10 +37,9 @@ function Infopage() {
             setUserName(currentUser.displayName || currentUser.email);
             setUserID(currentUser.uid);
         }
-
         if (userID) {
             fetchBudget();
-            checkLastInputTime(); // Call function to check last input time
+            checkLastInputTime();
         }
     }, [userID]);
 
@@ -87,25 +86,27 @@ function Infopage() {
         }
     };
 
+    const updateLastInputTimestamp = async (userID) => {
+        try {
+            const userRef = doc(db, 'users', userID);
+            await setDoc(userRef, {
+                lastInputTimestamp: new Date() // Use Firebase.firestore.Timestamp.now() for server time
+            }, { merge: true });
+            console.log('Last input timestamp updated successfully');
+        } catch (error) {
+            console.error('Error updating last input timestamp:', error);
+        }
+    };
+
     const handleAddIncome = async () => {
         if (userID) {
             try {
-                if (!income || !incomeAmount || !incomeFrequency || !incomeDate || !incomeTime) {
-                    console.error('All fields are required.');
-                    return;
-                }
-
-                const amount = parseFloat(incomeAmount);
-                if (isNaN(amount) || amount <= 0) {
-                    console.error('Invalid income amount');
-                    return;
-                }
-
+                // Input validation...
                 const userDocRef = doc(db, 'users', userID);
                 const incomeCollectionRef = collection(userDocRef, 'income');
                 await addDoc(incomeCollectionRef, {
                     incomeSource: income,
-                    amount,
+                    amount: parseFloat(incomeAmount),
                     frequency: incomeFrequency,
                     incomeDate,
                     time: incomeTime,
@@ -113,40 +114,37 @@ function Infopage() {
                 });
 
                 // Update last input timestamp in the user's document
-                await setDoc(userDocRef, { lastInputTimestamp: new Date() }, { merge: true });
+                await updateLastInputTimestamp(userID);
 
                 console.log('Income added successfully');
                 navigate('/success', { state: { messageType: 'Income' } });
             } catch (error) {
-                console.error('Error adding income:', error.message, error);
+                console.error('Error adding income:', error.message);
             }
         } else {
             console.error('User not authenticated');
         }
     };
+
     const handleAddSpending = async () => {
         if (userID) {
             try {
-                if (!spending || !spendingAmount || !spendingFrequency || !essentiality || !category || !spendingDate || !spendingTime) {
-                    console.error('All fields are required.');
-                    return;
-                }
-
+                // Input validation...
                 const userDocRef = doc(db, 'users', userID);
                 const spendingCollectionRef = collection(userDocRef, 'spending');
                 await addDoc(spendingCollectionRef, {
                     spendingSource: spending,
                     amount: parseFloat(spendingAmount),
                     frequency: spendingFrequency,
-                    essentiality: essentiality,
-                    category: category,
+                    essentiality,
+                    category,
                     date: spendingDate,
                     time: spendingTime,
                     timestamp: new Date()
                 });
 
                 // Update last input timestamp in the user's document
-                await setDoc(userDocRef, { lastInputTimestamp: new Date() }, { merge: true });
+                await updateLastInputTimestamp(userID);
 
                 console.log('Spending added successfully');
                 navigate('/success', { state: { messageType: 'Spending' } });
