@@ -27,9 +27,7 @@ function HamburgerMenu({ setBackgroundColor }) {
                 <aside className="hamburger-nav">
                     {/* Navigation Buttons */}
                     <NavButtons cssName='navigation-btn' navigate={() => navigate('/edit-profile')} text='Edit Profile' />
-                    <NavButtons cssName='navigation-btn' navigate={() => navigate('/monthly-recap')} text='Monthly Recap' />
                     <NavButtons cssName='navigation-btn' navigate={() => navigate('/transaction-history')} text='Transaction History' />
-                    <NavButtons cssName='navigation-btn' navigate={() => navigate('/monthly-income')} text='Monthly Income' />
                     <NavButtons cssName='navigation-btn' navigate={() => navigate('/savings')} text='Savings' />
                     <NavButtons cssName='navigation-btn' navigate={() => navigate('/BudgetGoal')} text='Set up a budget goal' />
                     <NavButtons cssName='navigation-btn' navigate={() => navigate('/Infopage')} text='Update Information' />

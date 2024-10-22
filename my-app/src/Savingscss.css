@@ -1,37 +1,74 @@
+body,
+html {
+    margin: 0;
+    padding: 20px;
+    height: 100%;
+    /* Ensures the body and html take up the full viewport */
+    box-sizing: border-box;
+}
+
 /* Container for Savings page */
 .savings-container {
-    display: flex; /* Use flexbox for layout */
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: space-between;
+    /* Space between left and right containers */
+    align-items: flex-start;
+    /* Align items at the top */
+    background-color: #FFFFFF;
+    /* Light background */
+    padding: 40px;
+    /* Match padding to facts-cont from second style */
+    border-radius: 10px;
+    /* Soft corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Soft shadow for depth */
+    max-width: 1200px;
+    /* Limit width to prevent stretching */
+    margin: 40px auto;
+    /* Center container with margin */
 }
 
 /* Input and savings list on the left */
 .input-container {
-    flex: 1; /* Take up half of the container */
+    flex: 1;
+    /* Take up most of the space */
     padding: 20px;
+    background-color: #f9f9f9;
+    /* Subtle background for contrast */
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Info box for input fields */
 .info-box {
-    background-color: #f9f9f9;
+    background-color: #FFFFFF;
+    /* White background for input boxes */
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
+    border: 1px solid #ddd;
+    /* Soft border */
 }
 
 /* Styles for the savings list container */
 .savings-list-container {
-    margin-top: 20px; /* Add some space above the list */
+    margin-top: 20px;
+    /* Add some space above the list */
 }
 
 /* Styles for the savings list */
 .savings-list {
     list-style-type: none;
     padding: 0;
-    background-color: whitesmoke;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
 }
 
 .saving-item {
-    padding: 10px;
+    padding: 15px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -42,10 +79,30 @@
 
 /* Box on the right */
 .right-container {
-    flex: 0.6; /* Take up half of the container */
-    background-color: #eaeaea; /* Background color for the right box */
-    padding: 20px; /* Add some padding */
-    border-left: 1px solid #ccc; /* Optional border to separate from the left side */
+    flex: 0.6;
+    /* Take up slightly less space */
+    background-color: #4F3A7A;
+    /* Matching color palette from second CSS */
+    padding: 20px;
+    /* Add some padding */
+    border-radius: 8px;
+    color: #FFFFFF;
+    /* White text for contrast */
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    
+    /* Soft shadow for depth */
+}
+
+/* Heading styles to match second style */
+h2 {
+    font-size: 2rem;
+    color: #907AD6;
+    /* Consistent color usage */
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    /* White text inside the right container */
+    margin-bottom: 15px;
 }
