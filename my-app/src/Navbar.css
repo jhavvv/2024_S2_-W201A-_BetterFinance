@@ -45,3 +45,27 @@ button {
 button:hover {
   background-color: #555;
 }
+
+.nav-button {
+  color: #f2f2f2;
+  /* Text color */
+  background: none;
+  /* Remove default background */
+  border: none;
+  /* Remove border */
+  padding: 14px 20px;
+  /* Padding around the text */
+  font-size: 16px;
+  /* Font size */
+  cursor: pointer;
+  /* Pointer on hover */
+  border-radius: 10px;
+  /* Rounded corners */
+  transition: background-color 0.3s ease;
+  /* Smooth transition for background */
+}
+
+.nav-button:hover {
+  background-color: #555;
+  /* Background color on hover */
+}
