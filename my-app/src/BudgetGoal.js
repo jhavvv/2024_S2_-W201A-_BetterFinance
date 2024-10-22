@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, updateDoc, doc, onSnapshot } from 'firebase/firestore'; 
 import { db, auth } from './firebase';
 import Navbar from './Navbar';
+import './BudgetGoals.css';
 
 function BudgetGoals() {
     const [budgetGoals, setBudgetGoals] = useState([]); // State for budget goals
@@ -10,12 +11,31 @@ function BudgetGoals() {
     const [currentGoalId, setCurrentGoalId] = useState(null); // State to track which goal is being edited
     const [userID, setUserID] = useState('');
 
+    // Fetch the current logged in user
     useEffect(() => {
         const currentUser = auth.currentUser;
         if (currentUser) {
             setUserID(currentUser.uid);
         }
     }, []);
+
+    // Fetch the users budget goals
+    useEffect(() => {
+        if(userID) {
+            const userDocRef = doc(db, 'users', userID);
+            const budgetGoalsRef = collection(userDocRef, 'budgetGoals');
+
+            // Snapshot listener for users goals
+            const unsubscribe = onSnapshot(budgetGoalsRef, (snapshot) => {
+                const goals = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setBudgetGoals(goals); // Store goals
+            });
+            return () => unsubscribe();
+        }
+    }, [userID]);
 
     // Create a budget goal
     const addBudgetGoal = async () => {
@@ -45,15 +65,15 @@ function BudgetGoals() {
     const updateBudgetGoal = async (id, updatedGoal) => {
         try {
             // Reference to the specific budget goal document
-            const userDocRef = doc(db, 'users', userID);  // Reference to the user's document
-            const budgetGoalRef = doc(userDocRef, 'budgetGoals', id); // Reference to the budget goal in user's subcollection
+            const userDocRef = doc(db, 'users', userID);  
+            const budgetGoalRef = doc(userDocRef, 'budgetGoals', id); 
 
             // Update the document with the new values
             await updateDoc(budgetGoalRef, {
-                amount: updatedGoal.amount,        // Update amount
-                description: updatedGoal.description, // Update description
-                timePeriod: updatedGoal.timePeriod, // Update time period
-                updatedAt: new Date()                // Optionally track the update time
+                amount: updatedGoal.amount,        
+                description: updatedGoal.description, 
+                timePeriod: updatedGoal.timePeriod, 
+                updatedAt: new Date()                
             });
 
             // Update local state to reflect the change
@@ -67,38 +87,30 @@ function BudgetGoals() {
 
     // Handle save
     const handleSave = async () => {
-        if (userID) {
-            if (editing) {
-                try {
-                    // Call update function
-                    await updateBudgetGoal(currentGoalId, newGoal);
-                    console.log('Goal updated successfully');
-                    setEditing(false); // Reset the editing state after update
-                } catch (error) {
-                    console.error('Error updating goal:', error);
-                }
-            } else {
-                try {
-                    // Call add function
-                    await addBudgetGoal(newGoal);
-                    console.log('Goal added successfully');
-                } catch (error) {
-                    console.error('Error adding goal:', error);
-                }
-            }
-        } else {
-            console.error("User ID not found, cannot save goal.");
+        if(editing){
+            await updateBudgetGoal(currentGoalId, newGoal);
+        }
+        else {
+            await addBudgetGoal();
         }
     };
+
+    // Handle editing an exisiting goal
+    const handleEdit = (goal) => {
+        setNewGoal(goal);
+        setCurrentGoalId(goal.id);
+        setEditing(true);
+    }
 
     return (
         <div className="main-cont">
             <Navbar />
     
-            <h1>{editing ? 'Update Your Budget Goal' : 'Set Up a Budget Goal'}</h1>
+            <h1>Manage Your Budget Goals</h1>
     
             <div className="budget-cont">
                 <div className="budget-form">
+                    <h2>{editing ? 'Update Budget Goal' : 'Add Budget Goal'}</h2>
                     <label>Goal Amount</label>
                     <input 
                         type="number"
@@ -135,9 +147,28 @@ function BudgetGoals() {
                 </div>
     
                 {editing && (
-                    <div className="cancel-edit">
-                        <button onClick={() => setEditing(false)}>Cancel Edit</button>
-                    </div>
+                    <button onClick={() => {
+                        setEditing(false);
+                        setNewGoal({});
+                    }}>
+                        Cancel Edit
+                    </button>
+                )}
+            </div>
+
+            <div className="goal-list">
+                <h2>Your Current Budget Goals</h2>
+                {budgetGoals.length > 0 ? (
+                    <ul>
+                        {budgetGoals.map((goal) => (
+                            <li key={goal.id}>
+                                <strong>{goal.description}</strong>: {goal.amount} ({goal.timePeriod})
+                                <button onClick={() => handleEdit(goal)}>Edit</button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No budget goals to display</p>
                 )}
             </div>
         </div>
