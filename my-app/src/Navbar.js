@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
+import NavButtons from './NavButtons';  // Ensure this path is correct
 
 function Navbar() {
     const navigate = useNavigate();
@@ -22,10 +23,11 @@ function Navbar() {
             <div id="navbar">
                 <img src="betterfinance.png" className="icon" alt="Logo" />
                 <div className="navbar-buttons">
-                    <button onClick={() => navigate("/welcome")}>Home</button>
-                    <button onClick={() => navigate("/help")}>Help</button>
-                    <button onClick={() => navigate("/about-us")}>About Us</button>
-                    <button onClick={handleLogout}>Log Out</button>
+                    <NavButtons cssName="nav-button" navigate={() => navigate("/welcome")} text="Home" />
+                    <NavButtons cssName="nav-button" navigate={() => navigate("/help")} text="Help" />
+                    <NavButtons cssName="nav-button" navigate={() => navigate("/about-us")} text="About Us" />
+                    <NavButtons cssName="nav-button" navigate={() => navigate("/currency-calculator")} text="Currency Calculator" />
+                    <NavButtons cssName="nav-button" navigate={handleLogout} text="Log Out" />
                 </div>
             </div>
         </header>

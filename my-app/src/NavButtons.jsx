@@ -1,12 +1,10 @@
 import React from 'react';
 
-const NavButtons = ({
-    cssName,
-    navigate,
-    text
-}) => {
+const NavButtons = ({ cssName, navigate, text }) => {
     return (
-        <button className={cssName} onClick={navigate}>{text}</button>
+        <button className={cssName} onClick={navigate}>
+            {text}
+        </button>
     );
 }
 

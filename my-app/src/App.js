@@ -21,47 +21,47 @@ import DeleteTransactions from './DeleteTransactions';
 import Layout from './Layout';
 import BudgetGoals from './BudgetGoal';
 import Articles from './Articles';
-
+import CurrencyCalculator from './CurrencyCalculator';
 
 function App() {
-  const [backgroundColor, setBackgroundColor] = useState('#907AD6'); // 
-  const location = useLocation(); // Get the current route
+  const [backgroundColor, setBackgroundColor] = useState('#907AD6');
+  const location = useLocation();
 
-  // Define the routes where the Navbar should be hidden
+  // Define the routes where the Navbar and HamburgerMenu should be hidden
   const hideNavbarRoutes = ['/LandingPage', '/LoginPage', '/RegisterPage', '/success', '/'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
-    <div style={{ backgroundColor }}>
-      {shouldShowNavbar && <Navbar setBackgroundColor={setBackgroundColor} />}
-      {shouldShowNavbar && <HamburgerMenu setBackgroundColor={setBackgroundColor} />} {/* Pass setBackgroundColor here */}
+    <BackgroundColorProvider value={{ backgroundColor, setBackgroundColor }}>
+      <div style={{ backgroundColor }}>
+        {shouldShowNavbar && <Navbar setBackgroundColor={setBackgroundColor} />}
+        {shouldShowNavbar && <HamburgerMenu setBackgroundColor={setBackgroundColor} />}
 
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/LoginPage" element={<LoginPage />} />
-          <Route path="/RegisterPage" element={<RegisterPage />} />
-          <Route path="/welcome" element={<WelcomePage />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="/transaction-history" element={<TransactionHistory />} />
-          <Route path="/monthly-income" element={<MonthlyIncome />} />
-          <Route path="/savings" element={<Savings />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/Infopage" element={<Infopage />} />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/edit-transactions" element={<EditTransactions />} />
-          <Route path="/delete-transactions" element={<DeleteTransactions />} />
-  <Route path="/welcome" element={
-    <Layout>
-      <WelcomePage />
-    </Layout>
-  } />
-          <Route path="/articles" element={<Articles />} />
-        </Routes >
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/LoginPage" element={<LoginPage />} />
+            <Route path="/RegisterPage" element={<RegisterPage />} />
+            <Route path="/welcome" element={<Layout><WelcomePage /></Layout>} />
+            <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="/transaction-history" element={<TransactionHistory />} />
+            <Route path="/monthly-income" element={<MonthlyIncome />} />
+            <Route path="/savings" element={<Savings />} />
+            <Route path="/BudgetGoal" element={<BudgetGoals />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/Infopage" element={<Infopage />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/edit-transactions" element={<EditTransactions />} />
+            <Route path="/delete-transactions" element={<DeleteTransactions />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/currency-calculator" element={<CurrencyCalculator />} />
+          </Routes>
+        </div >
       </div >
-    </div >
+    </BackgroundColorProvider>
   );
 }
+
 
 export default App;

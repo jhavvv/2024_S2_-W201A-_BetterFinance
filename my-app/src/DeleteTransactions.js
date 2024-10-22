@@ -122,7 +122,9 @@ function DeleteTransactions() {
     return (
         <div id="info-container">
             <div>
-                <Navbar />
+                <header>
+                    <Navbar />
+                </header>
             </div>
 
             <h1>Delete Transactions</h1>
