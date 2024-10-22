@@ -26,6 +26,7 @@ function Navbar() {
                     <NavButtons cssName="nav-button" navigate={() => navigate("/welcome")} text="Home" />
                     <NavButtons cssName="nav-button" navigate={() => navigate("/help")} text="Help" />
                     <NavButtons cssName="nav-button" navigate={() => navigate("/about-us")} text="About Us" />
+                    <NavButtons cssName="nav-button" navigate={() => navigate("/articles")} text="Find Articles" />
                     <NavButtons cssName="nav-button" navigate={() => navigate("/currency-calculator")} text="Currency Calculator" />
                     <NavButtons cssName="nav-button" navigate={handleLogout} text="Log Out" />
                 </div>

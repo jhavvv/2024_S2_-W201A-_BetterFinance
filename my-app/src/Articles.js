@@ -32,11 +32,7 @@ function Articles() {
     };
 
     return (
-        <div>
-            <header>
-                <Navbar />
-            </header>
-
+        <div style={{paddingTop: 10 + 'em'}}>
             <h1>Search for Saving Tools and Strategies</h1>
 
             {/* Dropdown for predefined search keywords */}
