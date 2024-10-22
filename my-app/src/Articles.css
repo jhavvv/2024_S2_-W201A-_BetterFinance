@@ -1,0 +1,83 @@
+/* Articles.css */
+
+.wrapper {
+    background-color: #FFFFFF;
+    /* White background for the wrapper */
+    padding: 40px;
+    /* Padding around the content */
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    max-width: 800px;
+    /* Maximum width for the wrapper */
+    margin: 20px auto;
+    /* Center the wrapper with margin */
+}
+
+h1 {
+    color: #4F3A7A;
+    /* Heading color, adjust as needed */
+    text-align: center;
+    /* Center align heading */
+}
+
+.dropdown-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    /* Space between heading and dropdown */
+}
+
+select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    /* Border styling */
+    margin-right: 10px;
+}
+
+h2 {
+    color: #907AD6;
+    /* Heading color for search results */
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 800px;
+    /* Limit the width of results */
+}
+
+li {
+    padding: 10px;
+    background-color: #f9f9f9;
+    /* Light background color for results */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Slight shadow for depth */
+    margin-bottom: 10px;
+}
+
+li a {
+    font-weight: bold;
+    /* Bold links for better visibility */
+    color: #4F3A7A;
+    /* Link color */
+    text-decoration: none;
+    /* No underline */
+}
+
+li a:hover {
+    text-decoration: underline;
+    /* Underline on hover */
+}
+
+p {
+    color: #4F3A7A;
+    /* Text color for snippets */
+    margin: 0;
+}
