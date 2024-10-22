@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@mui/icons-material": "^6.1.4",
+    "@mui/x-date-pickers-pro": "^7.21.0",
     "axios": "^1.7.7",
     "emailjs-com": "^3.2.0"
   },
@@ -10,5 +12,8 @@
     "@testing-library/react": "^16.0.1",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0"
+    "dayjs": "^1.11.13",
+    "emailjs-com": "^3.2.0",
+    "mui": "^0.0.1"
   }
 }
