@@ -20,43 +20,33 @@ function WelcomePage() {
     const [userID, setUserID] = useState('');
 
     useEffect(() => {
-        const currentUser = auth.currentUser; // Assuming you have auth defined
-        if (currentUser) {
-            setUserID(currentUser.uid);
-            checkLastInputTime(currentUser.uid); // Check last input time when user logs in
-        }
-    }, []);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                checkLastInputTime(user.uid); // Check transaction time
+            }
+        });
 
-    const addLastInputTimestamp = async (userID, timestamp) => {
-        const userDocRef = doc(db, 'users', userID);
-        await setDoc(userDocRef, {
-            lastInputTimestamp: timestamp
-        }, { merge: true });  // Merge to avoid overwriting other fields
-    };
+        return () => unsubscribe();
+    }, []);
 
     const checkLastInputTime = async (userID) => {
         const userDocRef = doc(db, 'users', userID);
         const userDocSnapshot = await getDoc(userDocRef);
 
         if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            const lastTimestamp = userData.lastInputTimestamp;
+            const lastTimestamp = userDocSnapshot.data().lastInputTimestamp;
 
             if (!lastTimestamp) {
-                // If lastInputTimestamp does not exist, show the modal
                 setShowModal(true);
             } else {
                 const now = new Date();
-                const lastTimestampDate = lastTimestamp.toDate(); // Convert Firestore timestamp
-                const timeDifference = now - lastTimestampDate;
-                const hoursDifference = timeDifference / (1000 * 60 * 60);
+                const lastTimestampDate = lastTimestamp.toDate();
+                const timeDifference = (now - lastTimestampDate) / (1000 * 60 * 60); // Convert to hours
 
-                if (hoursDifference > 24) {
-                    setShowModal(true); // Show the modal if more than 24 hours have passed
+                if (timeDifference > 24) {
+                    setShowModal(true);
                 }
             }
-        } else {
-            console.log('User document does not exist.');
         }
     };
 
