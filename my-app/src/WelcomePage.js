@@ -4,36 +4,113 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { BarChartGraphing, PieChartCategories, PieChartEssentials } from './graphing';
 import TransactionHistory from './TransactionHistory';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore'; // Firestore imports
-import BasicDateRangeCalendar from './BasicDateRangeCalendar.js';
-import { IconButton, Popover } from '@mui/material';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import NavButtons from './NavButtons'; // Reusable nav buttons
-import { useBackgroundColor } from './BackgroundColorContext';
-import NavButtons from './NavButtons';
-import HamburgerMenu from './HamburgerMenu';
+import { collection, query, where, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import Modal from './Modal';
+
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
+    const [currentMonth, setCurrentMonth] = useState(''); // State for current month
+    const [totalIncome, setTotalIncome] = useState(0); // Track total income
+    const [totalSpending, setTotalSpending] = useState(0); // Track total spending
+    const [budget, setBudget] = useState(null); // State for budget
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [userID, setUserID] = useState('');
 
-    const [transactionDateRange, setTransactionDateRange] = useState([null, null]); // Transaction history date range
-    const [essentialDateRange, setEssentialDateRange] = useState([null, null]); // Essential spending date range
-    const [incomeDateRange, setIncomeDateRange] = useState([null, null]); // Income graph date range
-    const [streakCount, setStreakCount] = useState(0); // Store daily streak
-    const [transactionAnchorEl, setTransactionAnchorEl] = useState(null);
-    const [essentialAnchorEl, setEssentialAnchorEl] = useState(null);
-    const [incomeAnchorEl, setIncomeAnchorEl] = useState(null);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                checkLastInputTime(user.uid); // Check transaction time
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const checkLastInputTime = async (userID) => {
+        const userDocRef = doc(db, 'users', userID);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+            const lastTimestamp = userDocSnapshot.data().lastInputTimestamp;
+
+            if (!lastTimestamp) {
+                setShowModal(true);
+            } else {
+                const now = new Date();
+                const lastTimestampDate = lastTimestamp.toDate();
+                const timeDifference = (now - lastTimestampDate) / (1000 * 60 * 60); // Convert to hours
+
+                if (timeDifference > 24) {
+                    setShowModal(true);
+                }
+            }
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName || user.email);
+                checkMonthlyExcessSpending(user.uid);
+                fetchBudget(user.uid);
+
+                // Delay the checkTimeDifference to ensure user data is ready
+                setTimeout(() => {
+                    checkTimeDifference(user.uid);
+                }, 1000);
+            } else {
+                navigate('/login'); // Redirect to login if not authenticated
+            }
+        });
+
+        return () => unsubscribe(); // Cleanup the listener on component unmount
+    }, []);
+
+    useEffect(() => {
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        const currentMonthIndex = new Date().getMonth();
+        setCurrentMonth(monthNames[currentMonthIndex]);
+    }, []);
+
+    // Check the time difference since last input
+    const checkTimeDifference = async (userID) => {
+        try {
+            const userDoc = await getDoc(doc(db, 'users', userID));
+            if (userDoc.exists()) {
+                const lastInputTimestamp = userDoc.data().lastInputTimestamp?.toDate();
+                console.log("Last input timestamp:", lastInputTimestamp);
+                const currentTime = new Date();
+                console.log("Current time:", currentTime);
+
+                // Calculate the time difference in hours
+                const timeDifference = Math.abs(currentTime - lastInputTimestamp) / 36e5;
+                console.log("Time difference in hours:", timeDifference);
+
+                if (timeDifference > 24) {
+                    alert("It’s been more than 24 hours since your last update. Please update or add information.");
+                } else {
+                    console.log("No need to prompt, time difference is less than 24 hours.");
+                }
+            } else {
+                console.log("User document not found");
+            }
+        } catch (error) {
+            console.error('Error checking time difference:', error);
+        }
+    };
 
 
-    function WelcomePage() {
-        const [userName, setUserName] = useState('');
-
-        const [currentMonth, setCurrentMonth] = useState(''); // State for current month
-        const [totalIncome, setTotalIncome] = useState(0); // Track total income
-        const [totalSpending, setTotalSpending] = useState(0); // Track total spending
-        const [budget, setBudget] = useState(null); // State for budget
-        const navigate = useNavigate();
-
+    // Function to fetch budget
+    const fetchBudget = async (userID) => {
+        try {
+            const budgetRef = collection(db, 'users', userID, 'budget');
+            const budgetSnapshot = await getDocs(budgetRef);
 
         const [anchorEl, setAnchorEl] = useState(null);
         const { backgroundColor } = useBackgroundColor();
