@@ -13,15 +13,11 @@ function HelpPage() {
     const collapsibleSections = [
         {
             title: "How To Add a New Transaction",
-            content: "To add a new transaction navigate back to the home page and click on the update information page."
+            content: "To add a new transaction navigate to the information page, by clicking on the menu on the top right of the page. From here click on the 'Update Information' button. You will now be redirected to the information page, where you can add in your information such as the income you earned, any spendings you have made and a monthly budget that you can set for the month. Just fill in the section that you want to add and click on the button at the button of that section and it will automatically be added."
         },
         {
             title: "How To Analyze Your Spendings",
             content: "Look at your spendings"
-        },
-        {
-            title: "Section 3",
-            content: "Morbi vel justo nec mi convallis aliquet. Nullam dictum metus vel lectus suscipit, ut laoreet orci posuere."
         }
     ];
 
