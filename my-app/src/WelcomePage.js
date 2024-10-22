@@ -48,8 +48,7 @@ function WelcomePage() {
             if (currentUser) {
                 setUserName(currentUser.displayName || currentUser.email);
                 checkMonthlyExcessSpending(currentUser.uid);
-                checkMonthlyExcessSpending(currentUser.uid); // Call the monthly check function
-                fetchDailyStreak(currentUser.uid);
+                    fetchDailyStreak(currentUser.uid);
                 fetchBudget(currentUser.uid); // Fetch budget
             }
 
@@ -437,7 +436,6 @@ function WelcomePage() {
                 </div>
             </div>
         );
-
     }
 }
 

@@ -25,6 +25,7 @@ function Navbar() {
                     <button onClick={() => navigate("/welcome")}>Home</button>
                     <button onClick={() => navigate("/help")}>Help</button>
                     <button onClick={() => navigate("/about-us")}>About Us</button>
+                    <button onClick={() => navigate("/currency-calculator")}>Currency Calculator</button>
                     <button onClick={handleLogout}>Log Out</button>
                 </div>
             </div>

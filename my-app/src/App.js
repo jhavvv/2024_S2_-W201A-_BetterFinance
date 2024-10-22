@@ -20,7 +20,7 @@ import EditTransactions from './EditTransactions';
 import DeleteTransactions from './DeleteTransactions';
 import Layout from './Layout';
 import BudgetGoals from './BudgetGoal';
-import Articles from './Articles';
+import Articles from './Articles';import CurrencyCalculator from './CurrencyCalculator';
 
 
 function App() {
@@ -59,6 +59,7 @@ function App() {
     </Layout>
   } />
           <Route path="/articles" element={<Articles />} />
+          <Route path ="/currency-calculator" element={<CurrencyCalculator />} />
         </Routes >
       </div >
     </div >
