@@ -14,6 +14,7 @@ function EditProfile() {
     const [profilePic, setProfilePic] = useState(null); // State for storing the profile picture URL
     const [newProfilePic, setNewProfilePic] = useState(null); // State for the new image file
 
+    // Fetch user data and profile picture on component mount
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -27,7 +28,11 @@ function EditProfile() {
                         setLastName(userData.lastName || '');
                         setUsername(userData.username || '');
                         setEmail(user.email || '');
-                        setProfilePic(userData.profilePic || '/profile.jpg'); // Set the profile picture URL
+
+                        // Fetch profile picture from Firebase Storage
+                        const profilePicRef = ref(storage, `profile_pics/${user.uid}`);
+                        const profilePicURL = await getDownloadURL(profilePicRef);
+                        setProfilePic(profilePicURL); // Set profile picture
                     }
                 }
             } catch (error) {
@@ -53,11 +58,14 @@ function EditProfile() {
                 await uploadBytes(profilePicRef, newProfilePic);
                 const profilePicURL = await getDownloadURL(profilePicRef);
 
+                // Add a timestamp to force refresh the image
+                const profilePicWithTimestamp = `${profilePicURL}?t=${new Date().getTime()}`;
+
                 // Update the profile picture in Firestore
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, { profilePic: profilePicURL });
 
-                setProfilePic(profilePicURL); // Update the displayed profile picture
+                setProfilePic(profilePicWithTimestamp); // Update the displayed profile picture with the new URL
                 alert("Profile picture updated successfully!");
             }
         } catch (error) {
@@ -73,8 +81,7 @@ function EditProfile() {
                 await updateDoc(userRef, { firstName: firstName });
                 alert("First name changed successfully");
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error updating first name:", error);
         }
     };
@@ -87,8 +94,7 @@ function EditProfile() {
                 await updateDoc(userRef, { lastName: lastName });
                 alert("Last name changed successfully");
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error updating last name:", error);
         }
     };
@@ -101,9 +107,7 @@ function EditProfile() {
                 await updateDoc(userRef, { username: username });
                 alert("Username changed successfully");
             }
-            alert("Username Changed Successfully");
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error updating username:", error);
         }
     };
@@ -118,8 +122,7 @@ function EditProfile() {
                 await updateDoc(userRef, { email: email });
                 alert("Email verification link will be sent to your email address.");
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error updating email:", error);
         }
     };
@@ -131,9 +134,7 @@ function EditProfile() {
                 await sendPasswordResetEmail(auth, user.email);
                 alert("Password reset link sent to your email.");
             }
-            alert("Password reset link will be sent to your email.");
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error updating password:", error);
         }
     };
@@ -146,8 +147,7 @@ function EditProfile() {
                 await deleteUser(user);
                 alert("Profile deleted successfully.");
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error deleting profile:", error);
         }
     };
@@ -157,7 +157,7 @@ function EditProfile() {
             <Navbar />
             <main>
                 <h1>Edit Profile</h1>
-                <img src={profilePic} alt="Profile" className="profile-pic" /> {/* Dynamically display the profile picture */}
+                <img src={profilePic || '/default-profile.jpg'} alt="Profile" className="profile-pic" /> {/* Dynamically display the profile picture */}
 
                 {/* File input for uploading a new profile picture */}
                 <div className="input-group">

@@ -5,31 +5,24 @@
   width: 100%;
   justify-content: space-between;
   padding-top: 50px;
+  flex-wrap: wrap;
+  /* Allow wrapping on smaller screens */
 }
 
 /* Graphs container */
 .graphs-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  /* Responsive columns */
+  display: flex;
+  /* Change to flex for horizontal alignment */
+  flex-wrap: wrap;
+  /* Allow wrapping */
   gap: 20px;
+  /* Space between boxes */
   width: 100%;
-  /* Use full width */
   max-width: 1000px;
   /* Max width to prevent overflow */
   padding: 20px;
   margin: auto;
-  /* Center it within the parent */
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .graphs-container {
-    grid-template-columns: 1fr;
-    /* Stack all items in a single column */
-    grid-template-rows: auto;
-    /* Allow rows to size automatically */
-  }
+  /* Center within the parent */
 }
 
 /* Individual graph styling */
@@ -39,27 +32,37 @@
   border-radius: 8px;
   padding: 20px;
   font-size: 18px;
-  height: auto;
-  /* Allow height to adjust based on content */
+  flex: 1 1 300px;
+  /* Flex-grow, flex-shrink, flex-basis */
+  /* Allow the graph to grow, shrink, and have a minimum width */
   display: flex;
+  flex-direction: column;
+  /* Stack items vertically within the graph */
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+  min-width: 250px;
+  /* Ensure a minimum width for each box */
 }
 
 /* Graph title styling */
 .graph-title {
   margin: 0;
-  font-size: 1.2rem;
-  /* Change to rem for responsiveness */
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  font-size: 1.5rem;
+  /* Increased font size for better visibility */
+  font-weight: bold;
+  /* Make the title bold */
 }
 
-.label-style {
-  font-family: 'Arial', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
+/* Responsive styles */
+@media (max-width: 768px) {
+  .graphs-container {
+    flex-direction: column;
+    /* Stack items in a single column on smaller screens */
+  }
+}
+
+h3 {
+  color: black !important;
+  /* Force color to black */
 }

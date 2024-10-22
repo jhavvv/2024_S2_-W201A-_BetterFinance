@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+import './Articles.css'; // Make sure to import your CSS
 
 function Articles() {
     const [results, setResults] = useState([]);
-    const [selectedKeyword, setSelectedKeyword] = useState(''); // State for selected keyword
+    const [selectedKeyword, setSelectedKeyword] = useState('');
 
     const handleSearch = async (keyword) => {
         if (keyword) {
@@ -25,49 +26,48 @@ function Articles() {
 
     const handleDropdownChange = (e) => {
         const keyword = e.target.value;
-        setSelectedKeyword(keyword); // Update selected keyword state
+        setSelectedKeyword(keyword);
         if (keyword) {
-            handleSearch(keyword); // Trigger search with selected keyword
+            handleSearch(keyword);
         }
     };
 
     return (
-        <div style={{paddingTop: 10 + 'em'}}>
-            <h1>Search for Saving Tools and Strategies</h1>
-
-            {/* Dropdown for predefined search keywords */}
-            <div className="dropdown-container">
-                <select onChange={handleDropdownChange} value={selectedKeyword}>
-                    <option value="">Select a topic</option>
-                    <option value="Investment Strategies">Investment Strategies</option>
-                    <option value="Saving Money">Saving Money</option>
-                    <option value="Spending Wisely">Spending Wisely</option>
-                </select>
-            </div>
-
-            {/* Display selected keyword */}
-            {selectedKeyword && (
-                <p style={{ marginTop: '10px' }}>
-                    You searched for: <strong>{selectedKeyword}</strong>
-                </p>
-            )}
-
-            {/* Display search results */}
-            {results.length > 0 && (
-                <div>
-                    <h2>Search Results:</h2>
-                    <ul>
-                        {results.map((item) => (
-                            <li key={item.link}>
-                                <a href={item.link} target="_blank" rel="noopener noreferrer">
-                                    {item.title}
-                                </a>
-                                <p>{item.snippet}</p>
-                            </li>
-                        ))}
-                    </ul>
+        <div style={{ paddingTop: '10em' }}>
+            <Navbar />
+            <div className="wrapper">
+                <h1>Search for Saving Tools and Strategies</h1>
+                <div className="dropdown-container">
+                    <select onChange={handleDropdownChange} value={selectedKeyword}>
+                        <option value="">Select a topic</option>
+                        <option value="Investment Strategies">Investment Strategies</option>
+                        <option value="Saving Money">Saving Money</option>
+                        <option value="Spending Wisely">Spending Wisely</option>
+                    </select>
                 </div>
-            )}
+
+                {selectedKeyword && (
+                    <p style={{ marginTop: '10px', textAlign: 'center' }}>
+                        You searched for: <strong>{selectedKeyword}</strong>
+                    </p>
+                )}
+
+                {results.length > 0 && (
+                    <div>
+                        <h2>Search Results:</h2>
+                        <ul>
+                            {results.map((item) => (
+                                <li key={item.link}>
+                                    <a href={item.link} target="_blank" rel="noopener noreferrer">
+                                        {item.title}
+                                    </a>
+                                    <p>{item.snippet}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
