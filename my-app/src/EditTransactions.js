@@ -122,7 +122,9 @@ function EditTransactions() {
     return (
         <div id="info-container">
             <div>
-                <Navbar />
+                <header>
+                    <Navbar />
+                </header>
             </div>
 
             <h1>Edit Transactions</h1>

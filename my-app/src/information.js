@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { doc, collection, setDoc, getDoc, addDoc, getDocs } from 'firebase/firestore';
 import Modal from './Modal';
+import { handleDailyStreak } from './DailyStreak';
 
 function Infopage() {
     const [income, setIncome] = useState('');
@@ -116,6 +117,7 @@ function Infopage() {
                 // Update last input timestamp in the user's document
                 await updateLastInputTimestamp(userID);
 
+    
                 console.log('Income added successfully');
                 navigate('/success', { state: { messageType: 'Income' } });
             } catch (error) {
@@ -146,6 +148,7 @@ function Infopage() {
                 // Update last input timestamp in the user's document
                 await updateLastInputTimestamp(userID);
 
+                await handleDailyStreak(userID, db);
                 console.log('Spending added successfully');
                 navigate('/success', { state: { messageType: 'Spending' } });
             } catch (error) {
