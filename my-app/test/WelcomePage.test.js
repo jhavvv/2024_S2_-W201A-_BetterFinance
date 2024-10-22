@@ -68,12 +68,13 @@ describe('WelcomePage component', () => {
         render(<WelcomePage />);
 
         await waitFor(() => {
-            expect(screen.getByText('Error checking time difference')).toBeInTheDocument(); // Adjust the error message as per your UI
+            expect(screen.getByText('Error checking time difference')).toBeInTheDocument();
         });
     });
 
     afterEach(() => {
         jest.useRealTimers();
+        jest.clearAllMocks()
     });
 
     test('dummy test', () => {
