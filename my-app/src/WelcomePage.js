@@ -10,6 +10,8 @@ import { IconButton, Popover } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NavButtons from './NavButtons'; // Reusable nav buttons
 import { useBackgroundColor } from './BackgroundColorContext';
+import NavButtons from './NavButtons';
+import HamburgerMenu from './HamburgerMenu';
 
 function WelcomePage() {
     const [userName, setUserName] = useState('');
@@ -372,6 +374,62 @@ function WelcomePage() {
                                     navigate={() => navigate('/articles')}
                                     text='Articles'
                                 />
+                    {/* Navigation pane */}
+                    <aside className="navigation-container">
+                        <label className='label-style'>Other Pages</label>
+                        {/*<button onClick={() => setBackgroundColor('black')}>Dark Mode</button>
+                        <button onClick={() => setBackgroundColor('white')}>Light Mode</button>
+                        <button onClick={() => setBackgroundColor('#907AD6')}>Original Mode</button>*/}
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-profile')}
+                            text='Edit Profile'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-recap')}
+                            text='Monthly Recap'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/transaction-history')}
+                            text='Transaction History'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/monthly-income')}
+                            text='Monthly Income'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/savings')}
+                            text='Savings'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/BudgetGoal')}
+                            text='Set up a budget goal'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/Infopage')}
+                            text='Update Information'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/edit-transactions')}
+                            text='Edit Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/delete-transactions')}
+                            text='Delete Transactions'
+                        />
+                        <NavButtons 
+                            cssName='navigation-btn'
+                            navigate={() => navigate('/articles')}
+                            text='Articles'
+                        />
 
                             </aside>
                         </div>
