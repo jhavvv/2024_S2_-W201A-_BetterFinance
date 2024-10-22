@@ -34,4 +34,3 @@ export const handleDailyStreak = async (userID, db) => {
         console.error('User not authenticated');
     }
 };
-

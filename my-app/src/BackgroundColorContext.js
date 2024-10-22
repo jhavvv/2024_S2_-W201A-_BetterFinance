@@ -14,5 +14,9 @@ export const BackgroundColorProvider = ({ children }) => {
 };
 
 export const useBackgroundColor = () => {
-    return useContext(BackgroundColorContext);
+    const context = useContext(BackgroundColorContext);
+    if (!context) {
+        throw new Error('useBackgroundColor must be used within a BackgroundColorProvider');
+    }
+    return context;
 };
