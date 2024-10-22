@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
 import './stylesheet.css';
 import landingBackground from './assets/LandingBackground.jpg';
-
+import { checkTimeDifference } from './timeUtils';
+import Modal from './Modal'; // Import the modal
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const checkTime = async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const hasNotUpdated = await checkTimeDifference(user.uid);
+                if (hasNotUpdated) {
+                    setShowModal(true); // Show the modal if no updates within 24 hours
+                }
+            }
+        };
+        checkTime();
+    }, []);
+
     const handleLogin = async (e) => {
+
         e.preventDefault();
         setError('');
 
@@ -62,6 +78,7 @@ const LoginPage = () => {
                     </div>
                 </center>
             </div>
+            <Modal show={showModal} onClose={() => setShowModal(false)} />
         </div>
     );
 
